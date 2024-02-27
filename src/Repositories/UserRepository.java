@@ -16,9 +16,9 @@ import java.sql.ResultSet;
 public class UserRepository {
     DbConnection dbConnection;
 
-    
+    //CHECKLOGIN
     public Boolean checkLogin(String userID, String passCode){
-        String sql = "SELECT * FROM NhanVien WHERE TenDangNhap = ? AND MatKhau = ?";
+        String sql = "SELECT * FROM NguoiDung WHERE TenDangNhap = ? AND MatKhau = ?";
         User u = null;
         
         try (Connection conn = dbConnection.getConnection();
@@ -43,4 +43,5 @@ public class UserRepository {
             return true;
         }
     }
+   
 }

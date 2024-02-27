@@ -10,16 +10,15 @@ package Models;
  */
 public class SanPham {
     private Integer maSP, maDM;
-    private String tenDM, trangThai;
+    private String trangThai;
     private Double giaNhap, giaBan;
 
     public SanPham() {
     }
 
-    public SanPham(Integer maSP, Integer maDM, String tenDM, String trangThai, Double giaNhap, Double giaBan) {
+    public SanPham(Integer maSP, Integer maDM, String trangThai, Double giaNhap, Double giaBan) {
         this.maSP = maSP;
         this.maDM = maDM;
-        this.tenDM = tenDM;
         this.trangThai = trangThai;
         this.giaNhap = giaNhap;
         this.giaBan = giaBan;
@@ -33,20 +32,14 @@ public class SanPham {
         this.maSP = maSP;
     }
 
+    
+
     public Integer getMaDM() {
         return maDM;
     }
 
     public void setMaDM(Integer maDM) {
         this.maDM = maDM;
-    }
-
-    public String getTenDM() {
-        return tenDM;
-    }
-
-    public void setTenDM(String tenDM) {
-        this.tenDM = tenDM;
     }
 
     public String getTrangThai() {
@@ -72,7 +65,8 @@ public class SanPham {
     public void setGiaBan(Double giaBan) {
         this.giaBan = giaBan;
     }
-    
+
+   
     
     
 }

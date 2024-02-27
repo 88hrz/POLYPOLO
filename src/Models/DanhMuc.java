@@ -10,7 +10,8 @@ package Models;
  */
 public class DanhMuc {
     private Integer maDM;
-    private String tenDM, trangThai;
+    private String tenDM;
+    private String trangThai;
 
     public DanhMuc() {
     }

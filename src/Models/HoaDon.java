@@ -12,23 +12,34 @@ import java.util.Date;
  */
 public class HoaDon {
     private Integer maHD, maNV;
-    private String tenNV, tenKH, trangThai, phuongThuc;
+    private String tenNV, tenKH, phuongThuc;
     private Double tongTien;
     private Date ngayLap;
+    private String trangThai;
 
     public HoaDon() {
     }
 
-    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String trangThai, String phuongThuc, Double tongTien, Date ngayLap) {
+    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, Double tongTien, Date ngayLap, String trangThai) {
         this.maHD = maHD;
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.tenKH = tenKH;
-        this.trangThai = trangThai;
         this.phuongThuc = phuongThuc;
         this.tongTien = tongTien;
         this.ngayLap = ngayLap;
+        this.trangThai = trangThai;
     }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    
 
     public Integer getMaHD() {
         return maHD;
@@ -62,12 +73,12 @@ public class HoaDon {
         this.tenKH = tenKH;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getPhuongThuc() {
+        return phuongThuc;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setPhuongThuc(String phuongThuc) {
+        this.phuongThuc = phuongThuc;
     }
 
     public Double getTongTien() {
@@ -84,14 +95,6 @@ public class HoaDon {
 
     public void setNgayLap(Date ngayLap) {
         this.ngayLap = ngayLap;
-    }
-
-    public String getPhuongThuc() {
-        return phuongThuc;
-    }
-
-    public void setPhuongThuc(String phuongThuc) {
-        this.phuongThuc = phuongThuc;
     }
     
     

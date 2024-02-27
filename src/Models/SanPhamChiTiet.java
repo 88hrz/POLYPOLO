@@ -9,31 +9,23 @@ package Models;
  * @author X1
  */
 public class SanPhamChiTiet {
-    private Integer id_SPCT, maSP, maMau, maSize;
-    private Integer soLuongTon;
-    private String ten_SPCT, mauSac, size, trangThai;
+    private Integer maSP;
+    private String tenSP;
+    private String maSize;
+    private String maMau;
+    private String trangThai;
+    private Integer soLuong;
 
     public SanPhamChiTiet() {
     }
 
-    public SanPhamChiTiet(Integer id_SPCT, Integer maSP, Integer maMau, Integer maSize, Integer soLuongTon, String ten_SPCT, String mauSac, String size, String trangThai) {
-        this.id_SPCT = id_SPCT;
+    public SanPhamChiTiet(Integer maSP, String tenSP, String maSize, String maMau, String trangThai, Integer soLuong) {
         this.maSP = maSP;
-        this.maMau = maMau;
+        this.tenSP = tenSP;
         this.maSize = maSize;
-        this.soLuongTon = soLuongTon;
-        this.ten_SPCT = ten_SPCT;
-        this.mauSac = mauSac;
-        this.size = size;
+        this.maMau = maMau;
         this.trangThai = trangThai;
-    }
-
-    public Integer getId_SPCT() {
-        return id_SPCT;
-    }
-
-    public void setId_SPCT(Integer id_SPCT) {
-        this.id_SPCT = id_SPCT;
+        this.soLuong = soLuong;
     }
 
     public Integer getMaSP() {
@@ -44,52 +36,28 @@ public class SanPhamChiTiet {
         this.maSP = maSP;
     }
 
-    public Integer getMaMau() {
-        return maMau;
+    public String getTenSP() {
+        return tenSP;
     }
 
-    public void setMaMau(Integer maMau) {
-        this.maMau = maMau;
+    public void setTenSP(String tenSP) {
+        this.tenSP = tenSP;
     }
 
-    public Integer getMaSize() {
+    public String getMaSize() {
         return maSize;
     }
 
-    public void setMaSize(Integer maSize) {
+    public void setMaSize(String maSize) {
         this.maSize = maSize;
     }
 
-    public Integer getSoLuongTon() {
-        return soLuongTon;
+    public String getMaMau() {
+        return maMau;
     }
 
-    public void setSoLuongTon(Integer soLuongTon) {
-        this.soLuongTon = soLuongTon;
-    }
-
-    public String getTen_SPCT() {
-        return ten_SPCT;
-    }
-
-    public void setTen_SPCT(String ten_SPCT) {
-        this.ten_SPCT = ten_SPCT;
-    }
-
-    public String getMauSac() {
-        return mauSac;
-    }
-
-    public void setMauSac(String mauSac) {
-        this.mauSac = mauSac;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
+    public void setMaMau(String maMau) {
+        this.maMau = maMau;
     }
 
     public String getTrangThai() {
@@ -99,6 +67,16 @@ public class SanPhamChiTiet {
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
     }
+
+    public Integer getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(Integer soLuong) {
+        this.soLuong = soLuong;
+    }
+    
+    
 
     
     

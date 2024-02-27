@@ -9,19 +9,23 @@ package ViewModels;
  * @author X1
  */
 public class GioHangViewModel {
-    private Integer maSP, soLuong;
-    private String tenSP, mauSac, kichCo;
-    private Double donGia, thanhTien;
+    private Integer maSP;
+    private String tenSP;
+    private String mauSac;
+    private String kichCo;
+    private Integer soLuong;
+    private Double donGia;
+    private Double thanhTien;
 
     public GioHangViewModel() {
     }
 
-    public GioHangViewModel(Integer maSP, Integer soLuong, String tenSP, String mauSac, String kichCo, Double donGia, Double thanhTien) {
+    public GioHangViewModel(Integer maSP, String tenSP, String mauSac, String kichCo, Integer soLuong, Double donGia, Double thanhTien) {
         this.maSP = maSP;
-        this.soLuong = soLuong;
         this.tenSP = tenSP;
         this.mauSac = mauSac;
         this.kichCo = kichCo;
+        this.soLuong = soLuong;
         this.donGia = donGia;
         this.thanhTien = thanhTien;
     }
@@ -32,14 +36,6 @@ public class GioHangViewModel {
 
     public void setMaSP(Integer maSP) {
         this.maSP = maSP;
-    }
-
-    public Integer getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(Integer soLuong) {
-        this.soLuong = soLuong;
     }
 
     public String getTenSP() {
@@ -66,6 +62,14 @@ public class GioHangViewModel {
         this.kichCo = kichCo;
     }
 
+    public Integer getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(Integer soLuong) {
+        this.soLuong = soLuong;
+    }
+
     public Double getDonGia() {
         return donGia;
     }
@@ -81,6 +85,8 @@ public class GioHangViewModel {
     public void setThanhTien(Double thanhTien) {
         this.thanhTien = thanhTien;
     }
+
+    
     
     
 }

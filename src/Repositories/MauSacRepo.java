@@ -15,9 +15,59 @@ import java.sql.*;
 public class MauSacRepo {
     DbConnection dbConnection;
     
+    //HIDE_UNHIDE
+    public Boolean hideTTMS(MauSac ms){
+        String sql = "UPDATE MauSac SET Deleted = 1 WHERE MaMau = ?";
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, ms.getMaMau());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Boolean unhideTTMS(MauSac ms){
+        String sql = "UPDATE MauSac SET Deleted = 0 WHERE MaMau = ?";
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, ms.getMaMau());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     //GETLIST MAUSAC
     public ArrayList<MauSac> getList(){
-        String sql = "SELECT * FROM MauSac";
+        String sql = "SELECT * FROM MauSac WHERE Deleted !=1";
+        ArrayList<MauSac> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Integer maMau = rs.getInt("MaMau");
+                String tenMau = rs.getString("TenMau");
+                
+                MauSac ms = new MauSac(maMau, tenMau);
+                ls.add(ms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    public ArrayList<MauSac> getListHide(){
+        String sql = "SELECT * FROM MauSac WHERE Deleted !=0";
         ArrayList<MauSac> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
@@ -36,24 +86,61 @@ public class MauSacRepo {
         return ls;
     }
     
-    //GET_NAME BY ID COLOR
-    public MauSac getNameByID(String id){
-        String sql = "SELECT * FROM MauSac WHERE MaMau = "+ id +"";
-        MauSac ms = new MauSac();
+    //GET_ID BY NAME COLOR
+    public MauSac getIdByName(String name){
+        String sql = "SELECT MaMau, TenMau FROM MauSac WHERE TenMau = ?";
+        MauSac ms = null;
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
-            ps.setObject(1, id);
+            ps.setObject(1, name);
             
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {                
                 Integer maMau = rs.getInt("MaMau");
                 String tenMau = rs.getString("TenMau");
+                
                 ms = new MauSac(maMau, tenMau);
             }  
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ms;
+    }
+    
+    //ADD
+    public Boolean addColor(MauSac ms){
+        String sql = "INSERT INTO MauSac (TenMau,Deleted) VALUES (?,0);";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps =conn.prepareCall(sql)){
+            ps.setNString(1, ms.getTenMau());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    //UPDATE
+    public Boolean updateColor(MauSac ms){
+        String sql = "UPDATE MauSac SET TenMau = ? WHERE MaMau = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, ms.getTenMau());
+            ps.setObject(2, ms.getMaMau());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

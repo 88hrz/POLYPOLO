@@ -12,10 +12,10 @@ import java.sql.*;
  *
  * @author X1
  */
-public class DanhMucRepository {
+public class DanhMucRepo {
     DbConnection dbConnection;
     
-    //GETLIST DANH MUC
+    //GET LIST
     public ArrayList<DanhMuc> getList(){
         String sql = "SELECT * FROM DanhMuc";
         ArrayList<DanhMuc> ls = new ArrayList<>();
@@ -35,5 +35,27 @@ public class DanhMucRepository {
             e.printStackTrace();
         }
         return ls;
+    }
+    
+    //GET_ID
+    public DanhMuc getIdByName(String name){
+        String sql = "SELECT MaDanhMuc, TenDanhMuc FROM DanhMuc WHERE TenDanhMuc = ?";
+        DanhMuc dm = null;
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maDM = rs.getInt("MaDanhMuc");
+                String tenDM = rs.getString("TenDanhMuc");
+                
+                dm = new DanhMuc(maDM, tenDM);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dm;
     }
 }

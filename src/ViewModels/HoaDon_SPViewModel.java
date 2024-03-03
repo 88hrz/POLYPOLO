@@ -13,7 +13,7 @@ public class HoaDon_SPViewModel {
     private String tenSP;
     private String tenDM;
     private String maSac;
-    private String kichCo;
+    private String kichCo;    
     private Double donGia;
     private Integer soLuong;
     private String trangThai;

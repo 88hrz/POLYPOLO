@@ -4,36 +4,23 @@
  */
 package Models;
 
-import java.util.Date;
 
 /**
  *
  * @author X1
  */
 public class HoaDonChiTiet {
-    private Integer maHD;
-    private String tenNV, tenKH, phuongThuc, trangThai;
-    private Date ngayLap;
-    private Double tongTien;
-
-    public String getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
-    }
+    private Integer maHD, maSPCT, soLuong;
+    private Double donGia;
 
     public HoaDonChiTiet() {
     }
 
-    public HoaDonChiTiet(Integer maHD, String tenNV, String tenKH, String phuongThuc, Date ngayLap, Double tongTien) {
+    public HoaDonChiTiet(Integer maHD, Integer maSPCT, Integer soLuong, Double donGia) {
         this.maHD = maHD;
-        this.tenNV = tenNV;
-        this.tenKH = tenKH;
-        this.phuongThuc = phuongThuc;
-        this.ngayLap = ngayLap;
-        this.tongTien = tongTien;
+        this.maSPCT = maSPCT;
+        this.soLuong = soLuong;
+        this.donGia = donGia;
     }
 
     public Integer getMaHD() {
@@ -44,45 +31,33 @@ public class HoaDonChiTiet {
         this.maHD = maHD;
     }
 
-    public String getTenNV() {
-        return tenNV;
+
+    public Integer getMaSPCT() {
+        return maSPCT;
     }
 
-    public void setTenNV(String tenNV) {
-        this.tenNV = tenNV;
+    public void setMaSPCT(Integer maSPCT) {
+        this.maSPCT = maSPCT;
     }
 
-    public String getTenKH() {
-        return tenKH;
+    public Integer getSoLuong() {
+        return soLuong;
     }
 
-    public void setTenKH(String tenKH) {
-        this.tenKH = tenKH;
+    public void setSoLuong(Integer soLuong) {
+        this.soLuong = soLuong;
     }
 
-    public String getPhuongThuc() {
-        return phuongThuc;
+
+    public Double getDonGia() {
+        return donGia;
     }
 
-    public void setPhuongThuc(String phuongThuc) {
-        this.phuongThuc = phuongThuc;
+    public void setDonGia(Double donGia) {
+        this.donGia = donGia;
     }
-
-    public Date getNgayLap() {
-        return ngayLap;
-    }
-
-    public void setNgayLap(Date ngayLap) {
-        this.ngayLap = ngayLap;
-    }
-
-    public Double getTongTien() {
-        return tongTien;
-    }
-
-    public void setTongTien(Double tongTien) {
-        this.tongTien = tongTien;
-    }
+    
+    
     
     
 }

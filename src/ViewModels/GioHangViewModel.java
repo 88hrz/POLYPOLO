@@ -79,7 +79,7 @@ public class GioHangViewModel {
     }
 
     public Double getThanhTien() {
-        return thanhTien;
+        return donGia*soLuong;
     }
 
     public void setThanhTien(Double thanhTien) {

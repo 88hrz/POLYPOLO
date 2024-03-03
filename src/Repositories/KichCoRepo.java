@@ -17,9 +17,25 @@ import java.util.ArrayList;
 public class KichCoRepo {
     DbConnection dbConnection;
     
+    //HIDE
+    public Boolean hideTTSz(KichCo sz){
+        String sql = "UPDATE Size SET Deleted = 1 WHERE MaSize = ?";
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, sz.getMaSize());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     //GETLIST
     public ArrayList<KichCo> getList(){
-        String sql = "SELECT * FROM Size";
+        String sql = "SELECT * FROM Size WHERE Deleted !=1";
         ArrayList<KichCo> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
@@ -38,14 +54,14 @@ public class KichCoRepo {
         return ls;
     }
     
-    //GET_NAME BY ID SZ
-    public KichCo getNameByID(String id){
-        String sql = "SELECT * FROM Size WHERE MaSize = " + id +"" ;
-        KichCo sz = new KichCo();
+    //GET_ID BY NAME SZ
+    public KichCo getIdByName(String name){
+        String sql = "SELECT MaSize, TenSize FROM Size WHERE TenSize = ?" ;
+        KichCo sz = null;
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
-            ps.setObject(1, id);
+            ps.setString(1, name);
             
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {                
@@ -58,5 +74,41 @@ public class KichCoRepo {
             e.printStackTrace();
         }
         return sz;
+    }
+    
+    //ADD
+    public Boolean addSz(KichCo sz){
+        String sql = "INSERT INTO Size (TenSize,Deleted) VALUES (?,0)";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, sz.getTenSize());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    //UPDATE
+    public Boolean updateSz(KichCo sz){
+        String sql = "UPDATE Size SET TenSize = ? WHERE MaSize =?"; 
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps =conn.prepareCall(sql)){
+            ps.setObject(1, sz.getTenSize());
+            ps.setObject(2, sz.getMaSize());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

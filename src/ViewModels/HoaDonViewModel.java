@@ -4,7 +4,6 @@
  */
 package ViewModels;
 
-import java.util.Date;
 
 /**
  *
@@ -14,15 +13,46 @@ public class HoaDonViewModel {
     private Integer maHD;
     private String tenKH;
     private Integer soDT;
-    private String phuongThuc;
+    private String phuongThuc, trangThai;
     private Double tongTien;
-    private Date ngayLap;
+    private String ngayLap;
     private String tenNV;
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
 
     public HoaDonViewModel() {
     }
 
-    public HoaDonViewModel(Integer maHD, String tenKH, Integer soDT, String phuongThuc, Double tongTien, Date ngayLap, String tenNV) {
+    public HoaDonViewModel(Double tongTien) {
+        this.tongTien = tongTien;
+    }
+
+    public HoaDonViewModel(Integer maHD, String tenKH, Integer soDT, String phuongThuc, String trangThai, Double tongTien, String ngayLap, String tenNV) {
+        this.maHD = maHD;
+        this.tenKH = tenKH;
+        this.soDT = soDT;
+        this.phuongThuc = phuongThuc;
+        this.trangThai = trangThai;
+        this.tongTien = tongTien;
+        this.ngayLap = ngayLap;
+        this.tenNV = tenNV;
+    }
+    public HoaDonViewModel(Integer maHD, String tenKH, Integer soDT, String phuongThuc, String ngayLap, String tenNV) {
+        this.maHD = maHD;
+        this.tenKH = tenKH;
+        this.soDT = soDT;
+        this.phuongThuc = phuongThuc;
+        this.ngayLap = ngayLap;
+        this.tenNV = tenNV;
+    }
+
+    public HoaDonViewModel(Integer maHD, String tenKH, Integer soDT, String phuongThuc, Double tongTien, String ngayLap, String tenNV) {
         this.maHD = maHD;
         this.tenKH = tenKH;
         this.soDT = soDT;
@@ -72,11 +102,11 @@ public class HoaDonViewModel {
         this.tongTien = tongTien;
     }
 
-    public Date getNgayLap() {
+    public String getNgayLap() {
         return ngayLap;
     }
 
-    public void setNgayLap(Date ngayLap) {
+    public void setNgayLap(String ngayLap) {
         this.ngayLap = ngayLap;
     }
 

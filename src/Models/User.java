@@ -9,22 +9,47 @@ package Models;
  * @author X1
  */
 public class User {
-    String userID;
-    String passCode;
+    Integer userID;
+    String userName, passCode, role;
 
     public User() {
     }
 
-    public User(String userID, String passCode) {
+    public User(Integer userID, String userName, String passCode, String role) {
         this.userID = userID;
+        this.userName = userName;
+        this.passCode = passCode;
+        this.role = role;
+    }
+
+    
+
+    public User(String userName, String passCode) {
+        this.userName = userName;
         this.passCode = passCode;
     }
 
-    public String getUserID() {
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 

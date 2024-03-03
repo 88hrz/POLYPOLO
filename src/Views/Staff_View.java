@@ -6,39 +6,29 @@ package Views;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
+import java.time.Clock;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author X1
  */
-public class Main extends javax.swing.JFrame {
+public class Staff_View extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
     /**
      * Creates new form Main
      */
             
-    public Main() {
+    public Staff_View() {
         initComponents();
         setLocationRelativeTo(null);
         DefaultColor = new Color(13, 36, 51);
         ClickedColor = new Color(240, 151, 57);
         dashBoard();
         
-        //BANHANG
-//        QuanLyBanHang banHang = new QuanLyBanHang();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(banHang).setVisible(true);
-
-        //SANPHAM
-        QuanLySanPham sanPham = new QuanLySanPham();
+        TrangChu trangChu = new TrangChu();
         jGUIForms.removeAll();
-        jGUIForms.add(sanPham).setVisible(true);
-
-        //KHACHHANG
-//        QuanLyKhachHang khachHang = new QuanLyKhachHang();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(khachHang).setVisible(true);
+        jGUIForms.add(trangChu).setVisible(true);
     }
     
     public void dashBoard(){
@@ -71,15 +61,12 @@ public class Main extends javax.swing.JFrame {
         menu3 = new javax.swing.JPanel();
         lblSanPham = new javax.swing.JLabel();
         menu4 = new javax.swing.JPanel();
-        lblNhanSu = new javax.swing.JLabel();
-        menu5 = new javax.swing.JPanel();
-        lblKhachHang = new javax.swing.JLabel();
         menu6 = new javax.swing.JPanel();
         lblThongKe = new javax.swing.JLabel();
+        menu5 = new javax.swing.JPanel();
         jGUIForms = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1100, 690));
         setMinimumSize(new java.awt.Dimension(1100, 690));
 
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -198,59 +185,6 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        lblNhanSu.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblNhanSu.setForeground(new java.awt.Color(255, 255, 255));
-        lblNhanSu.setText("Nhân Sự");
-
-        javax.swing.GroupLayout menu4Layout = new javax.swing.GroupLayout(menu4);
-        menu4.setLayout(menu4Layout);
-        menu4Layout.setHorizontalGroup(
-            menu4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menu4Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(lblNhanSu)
-                .addContainerGap(33, Short.MAX_VALUE))
-        );
-        menu4Layout.setVerticalGroup(
-            menu4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menu4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblNhanSu)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel2.add(menu4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 110, -1));
-
-        menu5.setBackground(new java.awt.Color(13, 36, 51));
-        menu5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menu5MouseClicked(evt);
-            }
-        });
-
-        lblKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblKhachHang.setForeground(new java.awt.Color(255, 255, 255));
-        lblKhachHang.setText("Khách Hàng");
-
-        javax.swing.GroupLayout menu5Layout = new javax.swing.GroupLayout(menu5);
-        menu5.setLayout(menu5Layout);
-        menu5Layout.setHorizontalGroup(
-            menu5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menu5Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(lblKhachHang)
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-        menu5Layout.setVerticalGroup(
-            menu5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menu5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblKhachHang)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel2.add(menu5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 110, -1));
-
         menu6.setBackground(new java.awt.Color(13, 36, 51));
         menu6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -267,19 +201,54 @@ public class Main extends javax.swing.JFrame {
         menu6Layout.setHorizontalGroup(
             menu6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menu6Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(27, 27, 27)
                 .addComponent(lblThongKe)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         menu6Layout.setVerticalGroup(
             menu6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menu6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblThongKe)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menu6Layout.createSequentialGroup()
+                .addGap(0, 12, Short.MAX_VALUE)
+                .addComponent(lblThongKe))
         );
 
-        jPanel2.add(menu6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 110, -1));
+        javax.swing.GroupLayout menu4Layout = new javax.swing.GroupLayout(menu4);
+        menu4.setLayout(menu4Layout);
+        menu4Layout.setHorizontalGroup(
+            menu4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menu4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(menu6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        menu4Layout.setVerticalGroup(
+            menu4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menu4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(menu6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel2.add(menu4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 110, -1));
+
+        menu5.setBackground(new java.awt.Color(13, 36, 51));
+        menu5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menu5MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout menu5Layout = new javax.swing.GroupLayout(menu5);
+        menu5.setLayout(menu5Layout);
+        menu5Layout.setHorizontalGroup(
+            menu5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 110, Short.MAX_VALUE)
+        );
+        menu5Layout.setVerticalGroup(
+            menu5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(menu5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 110, -1));
 
         bg.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 110, 620));
 
@@ -318,15 +287,15 @@ public class Main extends javax.swing.JFrame {
         menu1.setBackground(ClickedColor);
         menu2.setBackground(DefaultColor);
         menu3.setBackground(DefaultColor);
-        menu4.setBackground(DefaultColor);
-        menu5.setBackground(DefaultColor);
+//        menu4.setBackground(DefaultColor);
+//        menu5.setBackground(DefaultColor);
         menu6.setBackground(DefaultColor);
         
-//        menuName.setText("| Trang Chủ");
-//        TrangChu trangChu = new TrangChu();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(trangChu).setVisible(true);
-//        
+        menuName.setText("| Trang Chủ");
+        TrangChu trangChu = new TrangChu();
+        jGUIForms.removeAll();
+        jGUIForms.add(trangChu).setVisible(true);
+        
     }//GEN-LAST:event_menu1MouseClicked
 
     private void menu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu2MouseClicked
@@ -361,6 +330,19 @@ public class Main extends javax.swing.JFrame {
         jGUIForms.add(sanPham).setVisible(true);
     }//GEN-LAST:event_menu3MouseClicked
 
+    private void menu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu6MouseClicked
+        // TODO add your handling code here:
+        menu1.setBackground(DefaultColor);
+        menu2.setBackground(DefaultColor);
+        menu3.setBackground(DefaultColor);
+        menu4.setBackground(DefaultColor);
+        menu5.setBackground(DefaultColor);
+        menu6.setBackground(ClickedColor);
+        
+        JOptionPane.showMessageDialog(this, "Thanks for using our programm!!~");
+        System.exit(0);
+    }//GEN-LAST:event_menu6MouseClicked
+
     private void menu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu4MouseClicked
         // TODO add your handling code here:
         menu1.setBackground(DefaultColor);
@@ -369,11 +351,12 @@ public class Main extends javax.swing.JFrame {
         menu4.setBackground(ClickedColor);
         menu5.setBackground(DefaultColor);
         menu6.setBackground(DefaultColor);
-        
+
         menuName.setText("| Nhân Sự");
-        QuanLyNhanSu nhanSu = new QuanLyNhanSu();
+
+        QuanLyNhanSu ns = new QuanLyNhanSu();
         jGUIForms.removeAll();
-        jGUIForms.add(nhanSu).setVisible(true);
+        jGUIForms.add(ns).setVisible(true);
     }//GEN-LAST:event_menu4MouseClicked
 
     private void menu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu5MouseClicked
@@ -384,30 +367,13 @@ public class Main extends javax.swing.JFrame {
         menu4.setBackground(DefaultColor);
         menu5.setBackground(ClickedColor);
         menu6.setBackground(DefaultColor);
-        
+
         menuName.setText("| Khách Hàng");
 
         QuanLyKhachHang khachHang = new QuanLyKhachHang();
         jGUIForms.removeAll();
         jGUIForms.add(khachHang).setVisible(true);
     }//GEN-LAST:event_menu5MouseClicked
-
-    private void menu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu6MouseClicked
-        // TODO add your handling code here:
-        menu1.setBackground(DefaultColor);
-        menu2.setBackground(DefaultColor);
-        menu3.setBackground(DefaultColor);
-        menu4.setBackground(DefaultColor);
-        menu5.setBackground(DefaultColor);
-        menu6.setBackground(ClickedColor);
-        
-        JOptionPane.showMessageDialog(this, "Thank you for using our programm, have a great deii ~óvo~");
-        System.exit(0);
-//        menuName.setText("| Thống Kê");
-//        ThongKe thongKe = new ThongKe();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(thongKe).setVisible(true);
-    }//GEN-LAST:event_menu6MouseClicked
 
     /**
      * @param args the command line arguments
@@ -424,7 +390,7 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new Staff_View().setVisible(true);
             }
         });
     }
@@ -435,8 +401,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblBanHang;
-    private javax.swing.JLabel lblKhachHang;
-    private javax.swing.JLabel lblNhanSu;
     private javax.swing.JLabel lblSanPham;
     private javax.swing.JLabel lblThongKe;
     private javax.swing.JLabel lblTrangChu;

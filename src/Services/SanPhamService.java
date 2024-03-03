@@ -9,11 +9,11 @@ import Models.KichCo;
 import Models.MauSac;
 import Models.SanPham;
 import Models.SanPhamChiTiet;
-import Repositories.DanhMucRepository;
+import Repositories.DanhMucRepo;
 import Repositories.KichCoRepo;
 import Repositories.MauSacRepo;
 import Repositories.SanPhamRepository;
-import ViewModels.SPCTViewModel;
+import ViewModels.SanPhamViewModel;
 import java.util.ArrayList;
 
 /**
@@ -22,12 +22,40 @@ import java.util.ArrayList;
  */
 public class SanPhamService {
     SanPhamRepository spRepo = new SanPhamRepository();
-    DanhMucRepository dmRepo = new DanhMucRepository();
+    DanhMucRepo dmRepo = new DanhMucRepo();
     MauSacRepo msRepo = new MauSacRepo();
     KichCoRepo szRepo = new KichCoRepo();
     
+    //HIDE
+    public void hidetTTMS(MauSac ms){
+        msRepo.hideTTMS(ms);
+    }
+    public void hideTTSz(KichCo sz){
+        szRepo.hideTTSz(sz);
+    }
+//    public Boolean unhideSP(MauSac ms){
+//        return msRepo.unhideTTMS(ms);
+//    }
+    //GETLIST HIDE
+    public ArrayList<MauSac> getListHideTTMS(){
+        return msRepo.getListHide();
+    }
+    public ArrayList<KichCo> getListHideTTSz(){
+        return szRepo.getList();
+    }
+    
+    public void hideSP(SanPham sp){
+        spRepo.hideSP(sp);
+    }
+    public Boolean unhideSP(SanPham sp){
+        return spRepo.unhideSP(sp);
+    }
+    //GETLIST UNHIDE
+    public ArrayList<SanPhamViewModel> getListHide(){
+        return spRepo.getListHideSP();
+    }
     //GETLIST
-    public ArrayList<SPCTViewModel> getListSanPham(){
+    public ArrayList<SanPhamViewModel> getListSanPham(){
         return spRepo.getListSanPham();
     }
     //GET_CBO DM
@@ -42,42 +70,101 @@ public class SanPhamService {
     public ArrayList<KichCo> getCboSz(){
         return szRepo.getList();
     }
-    
-    //GET_NAME BY ID COLOR
-    public MauSac getNameByID(String id){
-        return msRepo.getNameByID(id);
-    }
-    //GET_NAME BY ID SZ
-    public KichCo getNameByIDSz(String id){
-        return szRepo.getNameByID(id);
-    }
-    
     //GETLIST BY SEARCH
-    public ArrayList<SPCTViewModel> getListBySearch(Integer id){
-        return spRepo.getListBySearch(id);
+    public ArrayList<SanPhamViewModel> getListBySearch(String name){
+        return spRepo.getListBySearch(name);
     }
     
-    //GET_PRICE BY ID
-    public SanPham getPriceById(String id){
-        return spRepo.getPriceByID(id);
+    //GET_ID COLOR
+    public MauSac getIdByName(String name){
+        return msRepo.getIdByName(name);
+    }
+    //SZ
+    public KichCo getIdByNamee(String name){
+        return szRepo.getIdByName(name);
+    }
+    //TENDM
+    public DanhMuc getIdByNameee(String name){
+        return dmRepo.getIdByName(name);
     }
     
-    //ADD SP
+    //GETNAME
+    public SanPhamChiTiet getName(String name){
+        return spRepo.getName(name);
+    }
+
+    //ADD
     public String addSP(SanPham sp){
         Boolean check = spRepo.addSP(sp);
         if (check) {
-            return "Thêm SP mới thành công!";
+            return "Thêm mới sản phẩm thành công!";
         }else{
-            return "Thêm SP thất bại :(";
+            return "Thêm mới sản phẩm thất bại :(";
         }
     }
-    //ADD SPCT
-    public String addSPCT(SanPhamChiTiet spct){
-        Boolean check = spRepo.addSPCT(spct);
+    //CHECK ID
+    public Boolean checkID(String maSP){
+        return spRepo.checkId(maSP);
+    }
+    //UPDATE
+    public String updateSP(SanPham sp){
+        Boolean check = spRepo.updateSP(sp);
         if (check) {
-            return "Thêm SP mới thành công!";
+            return "Update thành công gòii~";
         }else{
-            return "Thêm SP thất bại :(";
+            return "Update thất bại!!";
         }
     }
+//    //DEL
+//    public String deleteSP(SanPham sp){
+//        Boolean check = spRepo.deleteSP(sp);
+//        if (check) {
+//            return "Xóa SP thành công!!~";
+//        }else{
+//            return "Xóa SP thất bại :((";
+//        }
+//    }
+
+    //ADD TT
+    public String addColor(MauSac ms){
+        Boolean check = msRepo.addColor(ms);
+        if (check) {
+            return "Thêm thuộc tính màu sắc mới thành công!";
+        }else{
+            return "Thêm thuộc tính màu sắc mới thất bại :(";
+        }
+    }
+    public String addSz(KichCo sz){
+        Boolean check = szRepo.addSz(sz);
+        if (check) {
+            return "Thêm thuộc tính kích cỡ mới thành công!";
+        }else{
+            return "Thêm thuộc tính kích cỡ mới thất bại :(";
+        }
+    }
+    //UPDATE
+    public String updateCl(MauSac ms){
+        Boolean check = msRepo.updateColor(ms);
+        if (check) {
+            return "Cập nhật thuộc tính màu sắc mới thành công!";
+        }else{
+            return "Cập nhật thuộc tính màu sắc mới thất bại :(";
+        }
+    }
+    public String updateSz(KichCo sz){
+        Boolean check = szRepo.updateSz(sz);
+        if (check) {
+            return "Cập nhật thuộc tính size mới thành công!";
+        }else{
+            return "Cập nhật thuộc tính size mới thất bại :(";
+        }
+    }
+    //LOAD_TT
+    public ArrayList<MauSac> loadDataColor(){
+        return msRepo.getList();
+    }
+    public ArrayList<KichCo> loadDataSz(){
+        return szRepo.getList();
+    }
+    
 }

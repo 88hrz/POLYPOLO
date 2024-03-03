@@ -55,6 +55,7 @@ public class Login extends javax.swing.JFrame {
         txtPasscode.setBackground(Color.white);
         
         return true;
+        
     }
     
     public void clearForm(){
@@ -230,10 +231,14 @@ public class Login extends javax.swing.JFrame {
             Boolean check = uService.checkLogin(userID, passCode);
 
             if (check) {
-                Main mainView = new Main();
+                Admin_View mainView = new Admin_View();
                 mainView.setVisible(true);
+//                QuanLyTaiKhoan tkView = new QuanLyTaiKhoan();
+//                tkView.setVisible(true);
+//                tkView.u = uService.checkI4(userID, passCode);
                 this.dispose();
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!");
                 clearForm();
             }

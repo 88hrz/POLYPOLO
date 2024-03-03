@@ -4,7 +4,6 @@
  */
 package Models;
 
-import java.util.Date;
 
 /**
  *
@@ -14,13 +13,21 @@ public class HoaDon {
     private Integer maHD, maNV;
     private String tenNV, tenKH, phuongThuc;
     private Double tongTien;
-    private Date ngayLap;
+    private String ngayLap;
+
+    public HoaDon(Double tongTien) {
+        this.tongTien = tongTien;
+    }
     private String trangThai;
 
     public HoaDon() {
     }
 
-    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, Double tongTien, Date ngayLap, String trangThai) {
+    public HoaDon(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, Double tongTien, String ngayLap, String trangThai) {
         this.maHD = maHD;
         this.maNV = maNV;
         this.tenNV = tenNV;
@@ -89,11 +96,11 @@ public class HoaDon {
         this.tongTien = tongTien;
     }
 
-    public Date getNgayLap() {
+    public String getNgayLap() {
         return ngayLap;
     }
 
-    public void setNgayLap(Date ngayLap) {
+    public void setNgayLap(String ngayLap) {
         this.ngayLap = ngayLap;
     }
     

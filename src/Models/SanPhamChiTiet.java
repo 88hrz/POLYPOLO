@@ -9,24 +9,42 @@ package Models;
  * @author X1
  */
 public class SanPhamChiTiet {
+
+    public SanPhamChiTiet(Integer maSP, String tenSP) {
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+    }
     private Integer maSP;
     private String tenSP;
-    private String maSize;
-    private String maMau;
+    private Integer maSize;
+    private Integer maMau;
     private String trangThai;
     private Integer soLuong;
+    
+    private Integer maDM;
 
     public SanPhamChiTiet() {
     }
 
-    public SanPhamChiTiet(Integer maSP, String tenSP, String maSize, String maMau, String trangThai, Integer soLuong) {
+    public Integer getMaDM() {
+        return maDM;
+    }
+
+    public void setMaDM(Integer maDM) {
+        this.maDM = maDM;
+    }
+
+    public SanPhamChiTiet(Integer maSP, String tenSP, Integer maSize, Integer maMau, String trangThai, Integer soLuong, Integer maDM) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.maSize = maSize;
         this.maMau = maMau;
         this.trangThai = trangThai;
         this.soLuong = soLuong;
+        this.maDM = maDM;
     }
+
+    
 
     public Integer getMaSP() {
         return maSP;
@@ -44,19 +62,19 @@ public class SanPhamChiTiet {
         this.tenSP = tenSP;
     }
 
-    public String getMaSize() {
+    public Integer getMaSize() {
         return maSize;
     }
 
-    public void setMaSize(String maSize) {
+    public void setMaSize(Integer maSize) {
         this.maSize = maSize;
     }
 
-    public String getMaMau() {
+    public Integer getMaMau() {
         return maMau;
     }
 
-    public void setMaMau(String maMau) {
+    public void setMaMau(Integer maMau) {
         this.maMau = maMau;
     }
 
@@ -75,6 +93,8 @@ public class SanPhamChiTiet {
     public void setSoLuong(Integer soLuong) {
         this.soLuong = soLuong;
     }
+
+    
     
     
 

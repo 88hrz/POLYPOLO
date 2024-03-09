@@ -30,6 +30,9 @@ public class SanPhamService {
     public ArrayList<SanPham> getListSP(){
         return spRepo.getListSP();
     }
+    public SanPhamViewModel getListById(Integer id){
+        return spRepo.getListByID(id);
+    }
     //HIDE
     public void hidetTTMS(MauSac ms){
         msRepo.hideTTMS(ms);
@@ -111,8 +114,8 @@ public class SanPhamService {
         return spRepo.getId(tenSP);
     }
     //CHECK ID
-    public Boolean checkID(String maSP){
-        return spRepo.checkId(maSP);
+    public Boolean checkName(String tenSP){
+        return spRepo.checkName(tenSP);
     }
     //UPDATE
     public String updateSP(SanPham sp){

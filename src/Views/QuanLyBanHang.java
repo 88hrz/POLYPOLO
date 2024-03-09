@@ -647,7 +647,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
     private void btnTaoHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTaoHDMouseClicked
         //ADD HOADON
         int result = JOptionPane.showConfirmDialog(this, "Bạn muốn tạo hóa đơn?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
-        
+
         if (validateHoaDon() && result == JOptionPane.YES_OPTION) {
             btnThanhToan.setEnabled(true);
             String kq = hdService.add(getModel());
@@ -655,7 +655,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
             //LOAD LIST CHX THANHTOANN
             loadTableHoaDonView(hdService.getListByTrangThai("Chưa thanh toán"));
             clearForm();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Đã hủy thao tác tạo hóa đơn!", "POLYPOLO thông báo", 0);
         }
     }//GEN-LAST:event_btnTaoHDMouseClicked
@@ -670,30 +670,65 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
         // CLICK SANPHAM -> GIOHANG
         DecimalFormat format = new DecimalFormat("#,###");
-        
-        String soL = JOptionPane.showInputDialog(this, "Nhập số lượng SP muốn mua: ");
-        int pos = tblSanPham.getSelectedRow();
-        HD_SanPhamViewModel sp = hdService.getListSanPham().get(pos);
-        if (!soL.isEmpty()) {
-            int posHD = tblHoaDon.getSelectedRow();
-            Integer maHD = Integer.valueOf(tblHoaDon.getValueAt(posHD, 0).toString());
-            Integer maSP = (Integer) tblSanPham.getValueAt(pos, 0);
-            String giaV = tblSanPham.getValueAt(pos, 5).toString();           
-            Double gia = Double.parseDouble(giaV);
-            
-            HoaDonChiTiet hdct = new HoaDonChiTiet(maHD, maSP, Integer.parseInt(soL), gia);
-            JOptionPane.showMessageDialog(this, hdService.addHDCT(hdct));
-            
-            hdService.updateSP(sp.getSoLuong()-Integer.parseInt(soL), maSP);
-            
-            loadTableGioHang(hdService.getListGioHangById(maHD));
-            loadTableSanPham(hdService.getListSanPham());
 
-            Double tongTien = hdService.getTotal(maHD).getTongTien();
-            String formattedTongTien = format.format(tongTien);
-            lblTongTien.setText(formattedTongTien);
-      //    lblTongTien.setText(String.valueOf(hdService.getTongTien(maHD).getTongTien()));
+        if (tblHoaDon.getSelectedRow() != -1) {
+            String soL = JOptionPane.showInputDialog(this, "Nhập số lượng SP muốn mua: ", "POLYPOLO xác nhận", 0);
+            if (soL != null && !soL.isEmpty()) {
+                int soLuongMua = Integer.parseInt(soL);
+                int pos = tblSanPham.getSelectedRow();
+                HD_SanPhamViewModel sp = hdService.getListSanPham().get(pos);
+
+                if (sp.getSoLuong() >= soLuongMua) {
+                    int posHD = tblHoaDon.getSelectedRow();
+                    Integer maHD = Integer.valueOf(tblHoaDon.getValueAt(posHD, 0).toString());
+                    Integer maSP = (Integer) tblSanPham.getValueAt(pos, 0);
+                    String giaV = tblSanPham.getValueAt(pos, 5).toString();
+                    Double gia = Double.parseDouble(giaV);
+
+                    HoaDonChiTiet hdct = new HoaDonChiTiet(maHD, maSP, soLuongMua, gia);
+                    JOptionPane.showMessageDialog(this, hdService.addHDCT(hdct));
+
+                    hdService.updateSP(sp.getSoLuong() - soLuongMua, maSP);
+
+                    loadTableGioHang(hdService.getListGioHangById(maHD));
+                    loadTableSanPham(hdService.getListSanPham());
+
+                    Double tongTien = hdService.getTotal(maHD).getTongTien();
+                    String formattedTongTien = format.format(tongTien);
+                    lblTongTien.setText(formattedTongTien);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Số lượng sản phẩm hiện tại không đủ!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Bạn chưa nhập số lượng!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Bạn cần chọn hoặc tạo hóa đơn mới trước khi thêm sản phẩm vào giỏ hàng!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
         }
+//        DecimalFormat format = new DecimalFormat("#,###");
+//        
+//        String soL = JOptionPane.showInputDialog(this, "Nhập số lượng SP muốn mua: ");
+//        int pos = tblSanPham.getSelectedRow();
+//        HD_SanPhamViewModel sp = hdService.getListSanPham().get(pos);
+//        if (!soL.isEmpty()) {
+//            int posHD = tblHoaDon.getSelectedRow();
+//            Integer maHD = Integer.valueOf(tblHoaDon.getValueAt(posHD, 0).toString());
+//            Integer maSP = (Integer) tblSanPham.getValueAt(pos, 0);
+//            String giaV = tblSanPham.getValueAt(pos, 5).toString();           
+//            Double gia = Double.parseDouble(giaV);
+//            
+//            HoaDonChiTiet hdct = new HoaDonChiTiet(maHD, maSP, Integer.parseInt(soL), gia);
+//            JOptionPane.showMessageDialog(this, hdService.addHDCT(hdct));
+//            
+//            hdService.updateSP(sp.getSoLuong()-Integer.parseInt(soL), maSP);
+//            
+//            loadTableGioHang(hdService.getListGioHangById(maHD));
+//            loadTableSanPham(hdService.getListSanPham());
+//
+//            Double tongTien = hdService.getTotal(maHD).getTongTien();
+//            String formattedTongTien = format.format(tongTien);
+//            lblTongTien.setText(formattedTongTien);
+//        }
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
     private void btnMoiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMoiMouseClicked
@@ -712,12 +747,16 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
 
     private void btnSearchHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchHDMouseClicked
         //SEARCH
-        if (cboTrangThai.getSelectedItem().equals("Đã thanh toán")) {
+        if (cboTrangThai.getSelectedItem().equals("Đã thanh toán")) {;
             loadTableHoaDonView(hdService.getListByTrangThai("Đã thanh toán"));
             btnThanhToan.setEnabled(false);
-        }else{
+            btnXoaGioHang.setEnabled(false);
+            btnXoaSanPham.setEnabled(false);
+        } else {
             loadTableHoaDonView(hdService.getListByTrangThai("Chưa thanh toán"));
             btnThanhToan.setEnabled(true);
+            btnXoaGioHang.setEnabled(true);
+            btnXoaSanPham.setEnabled(true);
         }
     }//GEN-LAST:event_btnSearchHDMouseClicked
 
@@ -726,7 +765,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         int pos = tblHoaDonChiTiet.getSelectedRow();
         int posHD = tblHoaDon.getSelectedRow();
         if (pos == -1) {
-            JOptionPane.showMessageDialog(this, "Hãy chọn sản phẩm từ giỏ hàng để xóa!", "POLY POLO thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Hãy chọn sản phẩm từ giỏ hàng để xóa!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
         }else{
             Integer maHDCT = Integer.valueOf(tblHoaDonChiTiet.getValueAt(pos, 0).toString());
             Integer maSPCT = Integer.valueOf(tblHoaDonChiTiet.getValueAt(pos, 1).toString());
@@ -737,13 +776,10 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
             SanPhamChiTiet spct = hdService.getById(maSPCT);
             spct.setSoLuong(spct.getSoLuong()+soL);
             
-            System.out.println(spct.getSoLuong());
-            
             hdService.updateSPTon(spct.getSoLuong(), maSPCT);
             
             loadTableGioHang(hdService.getListGioHangById(maHD));
             loadTableSanPham(hdService.getListSanPham());
-            
         }
     }//GEN-LAST:event_btnXoaSanPhamMouseClicked
 
@@ -784,7 +820,6 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Đã hủy thao tác xóa giỏ hàng!", "POLY POLO thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnXoaGioHangMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMoi;

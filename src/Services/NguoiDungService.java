@@ -13,12 +13,16 @@ import java.util.ArrayList;
  *
  * @author X1
  */
-public class UserService {
+public class NguoiDungService {
     UserRepository userRepo = new UserRepository();
     
     public Boolean checkLogin(String userID, String passCode){
         return userRepo.checkLogin(userID, passCode);
     }
+    public User getCurrentUser(String userID, String passCode){
+        return userRepo.getCurrentUser(userID, passCode);
+    }
+            
     //GETLIST
     public ArrayList<UserViewModel> getList(){
         return userRepo.getList();
@@ -28,9 +32,12 @@ public class UserService {
         return userRepo.getListBySearch(name);
     }
     //GETLIST USER
-    public ArrayList<User> getListUser(){
+    public User getListUser(){
         return userRepo.getListUser();
+    }public User getListByUserId(String userId){
+        return userRepo.getListByUserId(userId);
     }
+    
     //HIDE
     public void hideAccount(User u){
         userRepo.hideAccount(u);

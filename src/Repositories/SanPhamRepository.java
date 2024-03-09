@@ -72,6 +72,39 @@ public class SanPhamRepository {
     }
     
     //GETLIST
+    public SanPhamViewModel getListByID(Integer id){
+        String sql = "SELECT spct.MaSanPham, spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc, ms.TenMau, s.TenSize, sp.GiaNhap, sp.GiaBan, spct.TrangThai, spct.SoLuongTon FROM DanhMuc dm\n" +
+"                        INNER JOIN SanPham sp ON dm.MaDanhMuc = sp.MaDanhMuc\n" +
+"                        INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n" +
+"                        INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n" +
+"                        INNER JOIN Size s ON s.MaSize = spct.MaSize\n" +
+"                        WHERE sp.Deleted !=1 AND spct.MaSanPham = ?";
+        SanPhamViewModel sp = new SanPhamViewModel();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maSP = rs.getInt("MaSanPham");
+                Integer maSPCT = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String tenDM = rs.getString("TenDanhMuc");
+                String tenMau = rs.getString("TenMau");
+                String tenSize = rs.getString("TenSize");
+                Double giaNhap = rs.getDouble("GiaNhap");
+                Double giaBan = rs.getDouble("GiaBan");
+                String trangThai = rs.getString("TrangThai");
+                Integer soLuong = rs.getInt("SoLuongTon");
+                
+                sp = new SanPhamViewModel(maSP, maSPCT, tenSP, tenDM, tenMau, tenSize, giaNhap, giaBan, trangThai, soLuong);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sp;     
+    }
     public ArrayList<SanPhamViewModel> getListSanPham(){
         String sql = "SELECT spct.MaSanPham, spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc, ms.TenMau, s.TenSize, sp.GiaNhap, sp.GiaBan, spct.TrangThai, spct.SoLuongTon FROM DanhMuc dm\n" +
 "                        INNER JOIN SanPham sp ON dm.MaDanhMuc = sp.MaDanhMuc\n" +
@@ -280,21 +313,22 @@ public class SanPhamRepository {
         return sp;
     }
     //CHECK ID
-    public boolean checkId(String maSP) {
-        String sql ="SELECT COUNT(*) FROM SanPham WHERE MaSanPham =?";
-    try (Connection conn = dbConnection.getConnection();
-         PreparedStatement ps = conn.prepareCall(sql)) {
-        ps.setString(1, maSP);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
+    public boolean checkName(String tenSP) {
+        String sql = "SELECT COUNT(*) FROM SanPhamChiTiet WHERE Deleted!=1 AND TenSanPhamChiTiet = ?";
+        
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setString(1, tenSP);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
 
 //    //DELETE
 //    public Boolean deleteSP(SanPham sp){

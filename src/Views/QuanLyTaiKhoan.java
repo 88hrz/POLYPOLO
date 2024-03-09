@@ -5,7 +5,7 @@
 package Views;
 
 import Models.User;
-import Services.UserService;
+import Services.NguoiDungService;
 import Validator.Validate;
 import ViewModels.UserViewModel;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  * @author X1
  */
 public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
-    UserService uService = new  UserService();
+    NguoiDungService uService = new  NguoiDungService();
 
     /**
      * Creates new form QuanLyTaiKhoan
@@ -31,7 +31,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
     //    loadTableUser(uService.getListUser());
         loadTableTaiKhoan(uService.getList());
-//        loadMyInfo(u);
+        loadMyInfo(u);
     }
 
     public static UserViewModel u;

@@ -4,7 +4,8 @@
  */
 package Views;
 
-import Services.UserService;
+import Models.User;
+import Services.NguoiDungService;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -14,9 +15,8 @@ import javax.swing.JOptionPane;
  * @author X1
  */
 public class Login extends javax.swing.JFrame {
-    UserService uService = new UserService();
+    NguoiDungService uService = new NguoiDungService();
 
-    
     /**
      * Creates new form Login
      */
@@ -25,10 +25,10 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         txtID.requestFocus();
         setLocationRelativeTo(null);
+        
     }
     
     //VALIDATOR
-    
     public Boolean validateLogin() {
         if (txtID.getText().trim().equals("")
                 && txtPasscode.getText().trim().equals("")) {
@@ -82,6 +82,7 @@ public class Login extends javax.swing.JFrame {
         chkShowHide = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -128,6 +129,8 @@ public class Login extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/pass24.png"))); // NOI18N
 
+        jLabel5.setText("Chưa có tài khoản?");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -140,22 +143,25 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(26, 26, 26)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtPasscode)
-                                    .addComponent(txtID)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(chkShowHide)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(txtID)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(chkShowHide))
+                                        .addGap(0, 67, Short.MAX_VALUE)))))
                         .addGap(70, 70, 70))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(btnLogin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnExit)
-                        .addGap(61, 61, 61))))
+                        .addGap(56, 56, 56))))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(106, 106, 106)
                 .addComponent(jLabel1)
@@ -175,13 +181,15 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtPasscode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(chkShowHide)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin)
                     .addComponent(btnExit))
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/LOGO_polypolo.png"))); // NOI18N
@@ -191,7 +199,7 @@ public class Login extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -202,7 +210,7 @@ public class Login extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,13 +239,13 @@ public class Login extends javax.swing.JFrame {
             Boolean check = uService.checkLogin(userID, passCode);
 
             if (check) {
-                Admin_View mainView = new Admin_View();
-                mainView.setVisible(true);
-//                QuanLyTaiKhoan tkView = new QuanLyTaiKhoan();
-//                tkView.setVisible(true);
-//                tkView.u = uService.checkI4(userID, passCode);
-                this.dispose();
+                User u = new User();
+                u.setUserName(txtID.getText().trim());
+                u.setRole(uService.getListByUserId(userID).getRole());
 
+                Admin_View mainView = new Admin_View(u);
+                mainView.setVisible(true);
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!");
                 clearForm();
@@ -290,6 +298,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;

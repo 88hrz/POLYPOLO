@@ -6,7 +6,6 @@ package Repositories;
 
 import Models.User;
 import ViewModels.UserViewModel;
-import Views.QuanLyTaiKhoan;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +18,49 @@ import java.util.ArrayList;
 public class UserRepository {
     DbConnection dbConnection;
 
+    public User getCurrentUser(String userID, String passCode){
+        String sql = "SELECT * FROM NguoiDung nd WHERE nd.TenDangNhap = ? AND MatKhau = ?";
+        User u = new User();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, userID);
+            ps.setObject(2, passCode);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                String username = rs.getString("TenDangNhap");
+                String password = rs.getString("MatKhau");
+                String role = rs.getString("VaiTro");
+                
+                u = new User(null, username, password, role);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return u;
+    }
+    public User getListByUserId(String userID){
+        String sql = "SELECT * FROM NguoiDung nd WHERE nd.TenDangNhap = ? ";
+        User u = new User();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, userID);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                String username = rs.getString("TenDangNhap");
+                String password = rs.getString("MatKhau");
+                String role = rs.getString("VaiTro");
+                
+                u = new User(null, username, password, role);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return u;
+    }
     //CHECKLOGIN
     public Boolean checkLogin(String userID, String passCode){
         String sql = "SELECT * FROM NguoiDung WHERE TenDangNhap = ? AND MatKhau = ?";
@@ -39,7 +81,6 @@ public class UserRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         if (u == null) {
             return false;
         } else {
@@ -106,9 +147,10 @@ public class UserRepository {
         return ls;
     }
     //GETLIST USER
-    public ArrayList<User> getListUser(){
+    public User getListUser(){
         String sql = "SELECT * FROM NguoiDung WHERE NguoiDung.Deleted !=1";
-        ArrayList<User> ls = new  ArrayList<>();
+//        ArrayList<User> ls = new  ArrayList<>();
+        User u = new User();
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
@@ -119,13 +161,13 @@ public class UserRepository {
                 String passCode = rs.getString("MatKhau");
                 String role = rs.getString("VaiTro");
                 
-                User u = new User(id, userId, passCode, role);
-                ls.add(u);
+                u = new User(id, userId, passCode, role);
+            //    ls.add(u);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ls;
+        return u;
     }
     //SEARCH
     public ArrayList<UserViewModel> getListBySearch(String name){

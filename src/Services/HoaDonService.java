@@ -8,7 +8,6 @@ import Repositories.HoaDonRepository;
 import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
-import Models.HoaDonView;
 import Models.NhanSu;
 import Models.SanPhamChiTiet;
 import Repositories.NhanSuRepo;
@@ -30,7 +29,7 @@ public class HoaDonService {
     public HoaDon getTotal(Integer id) {
         return hdRepo.getTotal(id);
     }
-    //SEARCH
+    //SEARCH customer
     public ArrayList<HD_HoaDonViewModel> searchTel(String tel){
         return hdRepo.searchCustomer(tel);
     }
@@ -77,7 +76,7 @@ public class HoaDonService {
 //    public ArrayList<HoaDonViewModel> getListByID(Integer maHD){
 //        return hdRepo.getListByID(maHD);
 //    }
-    //GET TENNV
+    //GET tenv
     public ArrayList<NhanSu> getListTenNV(){
         return nsRepo.getListTenNV();
     }
@@ -86,15 +85,17 @@ public class HoaDonService {
     public ArrayList<HD_HoaDonViewModel> getListByTrangThai(String trangThai){
         return hdRepo.getListByTrangThai(trangThai);
     }
-    
-    
     //GETLIST VIEW MODEL
     public HD_HoaDonViewModel getListHDById(Integer id){
         return hdRepo.getListHDById(id);
     }
     //GETLIST SANPHAMVIEW
-    public ArrayList<HD_SanPhamViewModel> getListSanPham(){
+    public ArrayList<HD_SanPhamViewModel> getListSanPham() {
         return hdRepo.getListSanPham();
+    }
+    //GETLIST GH
+    public ArrayList<HD_GioHangViewModel> getListGioHangById(Integer id) {
+        return hdRepo.getListGioHangById(id);
     }
     //GETLIST SP_SEARCHBYNAME
     public ArrayList<HD_SanPhamViewModel> getListBySearchName(String name){
@@ -108,7 +109,6 @@ public class HoaDonService {
     public NhanSu getIdByName(String name){
         return nsRepo.getIdByName(name);
     }
-
     
    //GETLIST BY ID
     public HoaDon getListByID(Integer id){
@@ -139,10 +139,7 @@ public class HoaDonService {
         }
     }
     
-    //GETLIST GH
-    public ArrayList<HD_GioHangViewModel> getListGioHangById(Integer id){
-        return hdRepo.getListGioHangById(id);
-    }
+
 
    public String add(HoaDon hd){
         Boolean check = hdRepo.addHoaDon(hd);

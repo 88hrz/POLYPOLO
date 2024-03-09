@@ -15,6 +15,8 @@ import java.util.ArrayList;
  * @author X1
  */
 public class NguoiDungRepo {
+    
+    
     public ArrayList<NguoiDung> getListGV() {
         String sql = "select * from NguoiDung";
         ArrayList<NguoiDung> list = new ArrayList<>();
@@ -32,7 +34,7 @@ public class NguoiDungRepo {
     }
 
     public NguoiDung findID(String tenND) {
-        String sql = " select MaNguoiDung, TenDangNhap, MatKhau, VaiTro from NguoiDung "
+        String sql = "select MaNguoiDung, TenDangNhap, MatKhau, VaiTro from NguoiDung "
                 + "where VaiTro = ?";
         NguoiDung Km = new NguoiDung();
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

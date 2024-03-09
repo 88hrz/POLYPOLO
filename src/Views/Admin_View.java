@@ -4,6 +4,9 @@
  */
 package Views;
 
+import Models.User;
+import Services.NguoiDungService;
+import ViewModels.UserViewModel;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -14,26 +17,32 @@ import javax.swing.JOptionPane;
  */
 public class Admin_View extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
+    NguoiDungService uService = new NguoiDungService();
     /**
      * Creates new form Main
+     * @param u
      */
-            
-    public Admin_View() {
+    // ...
+
+    public Admin_View(User u){
         initComponents();
         setLocationRelativeTo(null);
         DefaultColor = new Color(13, 36, 51);
         ClickedColor = new Color(240, 151, 57);
         dashBoard();
         
+        lbl_UserID.setText(u.getUserName());
+        lbl_UserRole.setText(u.getRole());
+       
         menuName.setText("| Trang Chủ");
         
-        QuanLyBanHang banHang = new QuanLyBanHang();
-        jGUIForms.removeAll();
-        jGUIForms.add(banHang).setVisible(true);
-
-//        QuanLySanPhamdoroi sanPham = new QuanLySanPhamdoroi();
+//        QuanLyBanHang banHang = new QuanLyBanHang();
 //        jGUIForms.removeAll();
-//        jGUIForms.add(sanPham).setVisible(true);
+//        jGUIForms.add(banHang).setVisible(true);
+
+        QuanLySanPham sanPham = new QuanLySanPham();
+        jGUIForms.removeAll();
+        jGUIForms.add(sanPham).setVisible(true);
 
 //        QuanLyTaiKhoan taiKhoan = new QuanLyTaiKhoan();
 //        jGUIForms.removeAll();
@@ -43,8 +52,9 @@ public class Admin_View extends javax.swing.JFrame {
 //        jGUIForms.removeAll();
 //        jGUIForms.add(trangChu).setVisible(true);
     }
+
     
-    public void dashBoard(){
+    void dashBoard(){
         menu1.setBackground(DefaultColor);
         menu2.setBackground(DefaultColor);
         menu3.setBackground(DefaultColor);
@@ -52,7 +62,7 @@ public class Admin_View extends javax.swing.JFrame {
         menu5.setBackground(DefaultColor);
         menu6.setBackground(DefaultColor);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,6 +76,12 @@ public class Admin_View extends javax.swing.JFrame {
         ngang = new javax.swing.JPanel();
         menuName = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lbl_UserRole = new javax.swing.JLabel();
+        lbl_UserID = new javax.swing.JLabel();
+        txtUser_ID = new javax.swing.JTextField();
+        txtUse_Role = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         menu1 = new javax.swing.JPanel();
         lblTrangChu = new javax.swing.JLabel();
@@ -100,6 +116,34 @@ public class Admin_View extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("PolyPolo");
         ngang.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("User ID:");
+        ngang.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Vai trò:");
+        ngang.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 50, -1, -1));
+
+        lbl_UserRole.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lbl_UserRole.setForeground(new java.awt.Color(0, 0, 204));
+        lbl_UserRole.setText("i");
+        ngang.add(lbl_UserRole, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 50, 60, 20));
+
+        lbl_UserID.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lbl_UserID.setForeground(new java.awt.Color(0, 0, 204));
+        lbl_UserID.setText("i");
+        ngang.add(lbl_UserID, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 60, 20));
+
+        txtUser_ID.setBackground(new java.awt.Color(204, 204, 204));
+        txtUser_ID.setEnabled(false);
+        ngang.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 20, 110, 20));
+
+        txtUse_Role.setBackground(new java.awt.Color(204, 204, 204));
+        txtUse_Role.setEnabled(false);
+        ngang.add(txtUse_Role, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 90, 20));
 
         bg.add(ngang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 80));
 
@@ -472,7 +516,12 @@ public class Admin_View extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Admin_View().setVisible(true);
+//                new Admin_View().setVisible(true);
+                User user = new User();
+                user.setUserName("vk jk");
+                user.setRole("vjp");
+
+                new Admin_View(user).setVisible(true);
             }
         });
     }
@@ -481,6 +530,8 @@ public class Admin_View extends javax.swing.JFrame {
     private javax.swing.JPanel bg;
     private javax.swing.JDesktopPane jGUIForms;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblBanHang;
     private javax.swing.JLabel lblExit;
@@ -489,6 +540,8 @@ public class Admin_View extends javax.swing.JFrame {
     private javax.swing.JLabel lblSanPham;
     private javax.swing.JLabel lblTaiKhoan;
     private javax.swing.JLabel lblTrangChu;
+    private javax.swing.JLabel lbl_UserID;
+    private javax.swing.JLabel lbl_UserRole;
     private javax.swing.JPanel menu1;
     private javax.swing.JPanel menu2;
     private javax.swing.JPanel menu3;
@@ -498,5 +551,7 @@ public class Admin_View extends javax.swing.JFrame {
     private javax.swing.JPanel menu7;
     private javax.swing.JLabel menuName;
     private javax.swing.JPanel ngang;
+    private javax.swing.JTextField txtUse_Role;
+    private javax.swing.JTextField txtUser_ID;
     // End of variables declaration//GEN-END:variables
 }

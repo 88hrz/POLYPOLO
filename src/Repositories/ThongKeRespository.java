@@ -5,6 +5,7 @@
 package Repositories;
 
 import Models.HoaDon;
+import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_HoaDonViewModel;
 import java.sql.*;
 import java.util.ArrayList;
@@ -82,11 +83,11 @@ public class ThongKeRespository {
         }
         return lsHoaDon;
     }
-
+////Tong doanh thu theo ngày hom nay them dkien đã thanh toán
     public HD_HoaDonViewModel tongDoanhThuNgay() {
-        String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n" +
-                        "FROM HoaDon\n" +
-                        "WHERE NgayLap = CONVERT(date, GETDATE());";
+        String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n"
+                + "FROM HoaDon\n"
+                + "WHERE NgayLap = CONVERT(date, GETDATE()) AND TrangThai = N'Đã thanh toán';";
 
         HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -100,12 +101,12 @@ public class ThongKeRespository {
         }
         return hd;
     }
-
+////Tong doanh thu theo tháng này them dkien đã thanh toán
     public HD_HoaDonViewModel tongDoanhThuThang() {
-        String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n" +
-                        "FROM HoaDon\n" +
-                        "WHERE YEAR(NgayLap) = YEAR(GETDATE())\n" +
-                        "AND MONTH(NgayLap) = MONTH(GETDATE());";
+        String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n"
+                + "FROM HoaDon\n"
+                + "WHERE YEAR(NgayLap) = YEAR(GETDATE())\n"
+                + "AND MONTH(NgayLap) = MONTH(GETDATE()) AND TrangThai = N'Đã thanh toán';";
 
         HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
@@ -119,11 +120,11 @@ public class ThongKeRespository {
         }
         return hd;
     }
-
+////Tong doanh thu theo năm nay them dkien đã thanh toán
     public HD_HoaDonViewModel tongDoanhThuNam() {
         String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n"
                 + "FROM HoaDon\n"
-                + "WHERE YEAR(NgayLap) = YEAR(GETDATE());";
+                + "WHERE YEAR(NgayLap) = YEAR(GETDATE()) AND TrangThai = N'Đã thanh toán';";
 
         HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
@@ -138,17 +139,87 @@ public class ThongKeRespository {
         return hd;
     }
 
-    public HoaDon tongDaTT() {
-        String sql = "SELECT COUNT(*) AS TongSoDonHangDaThanhToan\n"
+    ////Đếm số hóa đơn đã hoàn thành
+    public HD_HoaDonViewModel tongDaTT() {
+        String sql = "SELECT COUNT(MaHoaDon) AS HoaDon\n"
                 + "FROM HoaDon\n"
                 + "WHERE TrangThai = N'Đã thanh toán';";
 
-        HoaDon hd = new HoaDon();
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                hd = new HoaDon("4");
+                hd = new HD_HoaDonViewModel(rs.getInt(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hd;
+    }
+///Đếm số hóa đơn vẫn treo chưa thanh toán
+    public HD_HoaDonViewModel tongHDTreo() {
+        String sql = "SELECT COUNT(MaHoaDon) AS HoaDon\n"
+                + "FROM HoaDon\n"
+                + "WHERE TrangThai = N'Chưa thanh toán';";
+
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                hd = new HD_HoaDonViewModel(rs.getInt(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hd;
+    }
+////Tính tổng tiền hóa đơn đã thanh toán
+    public HD_HoaDonViewModel tongTienThanh() {
+        String sql = "SELECT SUM(TongTien)\n"
+                + "FROM HoaDon\n"
+                + "WHERE TrangThai = N'Đã thanh toán';";
+
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+          
+            while (rs.next()) {
+                hd = new HD_HoaDonViewModel(rs.getDouble(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hd;
+    }
+////Tính tổng sản phẩm đã bán ra
+    public HD_GioHangViewModel tongSPBan() {
+        String sql = "SELECT SUM(SoLuong) AS TongSoLuongDaBan\n"
+                + "FROM HoaDonChiTiet;";
+
+        HD_GioHangViewModel hd = new HD_GioHangViewModel();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                hd = new HD_GioHangViewModel(rs.getInt(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hd;
+    }
+    public HD_HoaDonViewModel TonDonHang() {
+        String sql = "SELECT COUNT(MaHoaDon) AS HoaDon\n"
+                + "FROM HoaDon\n";
+
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                hd = new HD_HoaDonViewModel(rs.getInt(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,6 +227,8 @@ public class ThongKeRespository {
         return hd;
     }
 
+    
+    //
     public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Integer maHDD) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
                 + ", hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"

@@ -91,14 +91,18 @@ public class TrangChu extends javax.swing.JInternalFrame {
         }
     }
     public void ThongKe() {
-        lblTongDonHang.setText(String.valueOf(hdsv.getListHoaDon().size()));
+        lblTongDonHang.setText(String.valueOf(tksv.DonHang().getMaHD()));
+        lblSP.setText(String.valueOf(tksv.SPBan().getSoLuong()));
+        lblTreo1.setText(String.valueOf(tksv.Treo().getMaHD()));
+        lblHoaDonThanh1.setText(String.valueOf(tksv.TT().getMaHD()));
+        String tienHDThanh = formatter.format(tksv.TienThanh().getTongTien()) + "VND";
+        lblTienHoaDonThanh.setText(tienHDThanh);
         String dtNgay = formatter.format(tksv.tongNgay().getTongTien()) + "VND";
         lblTongDoanhThuNgay.setText(dtNgay);
         String dtThang = formatter.format(tksv.tongThang().getTongTien()) + "VND";
         lblTongDoanhThuThang.setText(dtThang);
         String dtNam = formatter.format(tksv.tongNam().getTongTien()) + " VND";
         lblTongDoanhThuNam.setText(dtNam);
-        lblThanhCong.setText(String.valueOf(hdsv.getListHoaDon().size()));
     }
 
     /**
@@ -116,19 +120,25 @@ public class TrangChu extends javax.swing.JInternalFrame {
         jTable2 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         lblTongDonHang = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        lblThanhCong = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lblSP = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         lblTongDoanhThuNgay = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         lblTongDoanhThuThang = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        lblHoaDonThanh1 = new javax.swing.JLabel();
+        lblTreo1 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         lblTongDoanhThuNam = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        lblTienHoaDonThanh = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
@@ -188,10 +198,6 @@ public class TrangChu extends javax.swing.JInternalFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Tổng đơn hàng");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Thành công: ");
-
         lblTongDonHang.setBackground(new java.awt.Color(255, 255, 255));
         lblTongDonHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTongDonHang.setForeground(new java.awt.Color(255, 255, 255));
@@ -202,9 +208,13 @@ public class TrangChu extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("đơn hàng");
 
-        lblThanhCong.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblThanhCong.setForeground(new java.awt.Color(255, 255, 255));
-        lblThanhCong.setText("0");
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Tổng sản phẩm đã bán: ");
+
+        lblSP.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblSP.setForeground(new java.awt.Color(255, 255, 255));
+        lblSP.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -214,12 +224,12 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblThanhCong)))
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblSP)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblTongDonHang)
@@ -238,9 +248,9 @@ public class TrangChu extends javax.swing.JInternalFrame {
                     .addComponent(lblTongDonHang))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(lblThanhCong))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addComponent(jLabel7)
+                    .addComponent(lblSP))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
@@ -292,6 +302,22 @@ public class TrangChu extends javax.swing.JInternalFrame {
         lblTongDoanhThuThang.setForeground(new java.awt.Color(255, 255, 255));
         lblTongDoanhThuThang.setText("0");
 
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("Hóa đơn thành công:");
+
+        lblHoaDonThanh1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblHoaDonThanh1.setForeground(new java.awt.Color(255, 255, 255));
+        lblHoaDonThanh1.setText("0");
+
+        lblTreo1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTreo1.setForeground(new java.awt.Color(255, 255, 255));
+        lblTreo1.setText("0");
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Hóa đơn treo:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -300,7 +326,16 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
-                    .addComponent(lblTongDoanhThuThang))
+                    .addComponent(lblTongDoanhThuThang)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel17)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTreo1))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel16)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(lblHoaDonThanh1))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -310,7 +345,15 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTongDoanhThuThang)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(lblHoaDonThanh1))
+                .addGap(2, 2, 2)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(lblTreo1))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 0, 255));
@@ -326,6 +369,14 @@ public class TrangChu extends javax.swing.JInternalFrame {
         lblTongDoanhThuNam.setForeground(new java.awt.Color(255, 255, 255));
         lblTongDoanhThuNam.setText("0");
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Tổng doanh thu:");
+
+        lblTienHoaDonThanh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTienHoaDonThanh.setForeground(new java.awt.Color(255, 255, 255));
+        lblTienHoaDonThanh.setText("0");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -334,7 +385,11 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTongDoanhThuNam)
-                    .addComponent(jLabel22))
+                    .addComponent(jLabel22)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTienHoaDonThanh)))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -344,7 +399,11 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTongDoanhThuNam)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(lblTienHoaDonThanh))
+                .addGap(28, 28, 28))
         );
 
         jLabel29.setText("Thời Gian:");
@@ -591,7 +650,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cboThang;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
@@ -600,7 +660,9 @@ public class TrangChu extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -616,11 +678,14 @@ public class TrangChu extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JLabel lblThanhCong;
+    private javax.swing.JLabel lblHoaDonThanh1;
+    private javax.swing.JLabel lblSP;
+    private javax.swing.JLabel lblTienHoaDonThanh;
     private javax.swing.JLabel lblTongDoanhThuNam;
     private javax.swing.JLabel lblTongDoanhThuNgay;
     private javax.swing.JLabel lblTongDoanhThuThang;
     private javax.swing.JLabel lblTongDonHang;
+    private javax.swing.JLabel lblTreo1;
     private javaswingdev.chart.PieChart pieChart1;
     private javax.swing.JTable tbDoanhThu;
     private javax.swing.JTable tblHoaDonChiTiet;

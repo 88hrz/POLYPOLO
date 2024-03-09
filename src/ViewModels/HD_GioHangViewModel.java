@@ -20,7 +20,14 @@ public class HD_GioHangViewModel {
 
     public HD_GioHangViewModel() {
     }
-
+    //
+    public HD_GioHangViewModel(Integer soLuong) {
+        this.soLuong = soLuong;
+    }
+    public Integer getSoLuong() {
+        return soLuong;
+    }
+    //
     public Integer getMaHDCT() {
         return maHDCT;
     }
@@ -80,10 +87,6 @@ public class HD_GioHangViewModel {
 
     public void setKichCo(String kichCo) {
         this.kichCo = kichCo;
-    }
-
-    public Integer getSoLuong() {
-        return soLuong;
     }
 
     public void setSoLuong(Integer soLuong) {

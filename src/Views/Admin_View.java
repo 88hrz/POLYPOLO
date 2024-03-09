@@ -6,7 +6,6 @@ package Views;
 
 import Models.User;
 import Services.NguoiDungService;
-import ViewModels.UserViewModel;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -17,7 +16,6 @@ import javax.swing.JOptionPane;
  */
 public class Admin_View extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
-    NguoiDungService uService = new NguoiDungService();
     /**
      * Creates new form Main
      * @param u

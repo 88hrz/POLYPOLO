@@ -28,10 +28,14 @@ public class HD_HoaDonViewModel {
 
     public HD_HoaDonViewModel() {
     }
-
+//
     public HD_HoaDonViewModel(Double tongTien) {
         this.tongTien = tongTien;
     }
+    public HD_HoaDonViewModel(Integer maHD) {
+        this.maHD = maHD;
+    }
+//    
 
 //    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, String trangThai, Double tongTien, String ngayLap, String tenNV) {
 //        this.maHD = maHD;

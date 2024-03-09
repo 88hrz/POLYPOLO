@@ -9,21 +9,7 @@ package Models;
  * @author X1
  */
 public class SanPham {
-    private Integer del;
-
-    public Integer getDel() {
-        return del;
-    }
-
-    public void setDel(Integer del) {
-        this.del = del;
-    }
-
-    public SanPham(Integer del) {
-        this.del = del;
-    }
     private Integer maSP;
-    private Integer maSPCT;
     private String tenSP;
     private Integer maDM;
     private String trangThai;
@@ -35,17 +21,17 @@ public class SanPham {
     public SanPham() {
     }
 
-    public Integer getMaSPCT() {
-        return maSPCT;
-    }
-
-    public void setMaSPCT(Integer maSPCT) {
-        this.maSPCT = maSPCT;
-    }
-
-    public SanPham(Integer maSP, Integer maSPCT, String tenSP, Integer maDM, String trangThai, Double giaNhap, Double giaBan, Integer maSz, Integer maMau, Integer soLuong) {
+    public SanPham(Integer maSP, Integer maDM, String trangThai, Double giaNhap, Double giaBan, Integer soLuong) {
         this.maSP = maSP;
-        this.maSPCT = maSPCT;
+        this.maDM = maDM;
+        this.trangThai = trangThai;
+        this.giaNhap = giaNhap;
+        this.giaBan = giaBan;
+        this.soLuong = soLuong;
+    }
+
+    public SanPham( Integer maSP, String tenSP, Integer maDM, String trangThai, Double giaNhap, Double giaBan, Integer maSz, Integer maMau, Integer soLuong) {
+        this.maSP = maSP;
         this.tenSP = tenSP;
         this.maDM = maDM;
         this.trangThai = trangThai;
@@ -56,10 +42,11 @@ public class SanPham {
         this.soLuong = soLuong;
     }
 
+    public SanPham(Integer maSP, String tenSP) {
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+    }
 
-    
-
-    
     public Integer getMaSP() {
         return maSP;
     }

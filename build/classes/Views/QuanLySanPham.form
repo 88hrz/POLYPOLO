@@ -145,7 +145,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="txtTSPCT" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtMSPCT" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtMSP" alignment="0" max="32767" attributes="0"/>
                                       <Component id="cboDanhMuc" alignment="0" pref="251" max="32767" attributes="0"/>
                                       <Component id="txtSoLuong" alignment="1" max="32767" attributes="0"/>
                                   </Group>
@@ -246,7 +246,7 @@
                                                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" attributes="0">
-                                                  <Component id="txtMSPCT" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtMSP" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                   <Component id="txtTSPCT" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
@@ -289,7 +289,10 @@
                     <Property name="text" type="java.lang.String" value="M&#xe3; S&#x1ea3;n Ph&#x1ea9;m:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtMSPCT">
+                <Component class="javax.swing.JTextField" name="txtMSP">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel8">
                   <Properties>

@@ -7,7 +7,7 @@ package Services;
 import Models.HoaDon;
 import Repositories.HoaDonRepository;
 import Repositories.ThongKeRespository;
-import ViewModels.HoaDonViewModel;
+import ViewModels.HD_HoaDonViewModel;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -16,35 +16,49 @@ import java.util.Date;
  * @author hmail
  */
 public class ThongKeService {
-    
     ThongKeRespository tkrp = new ThongKeRespository();
     HoaDonRepository hdrp = new HoaDonRepository();
     
-    public ArrayList<HoaDonViewModel> getListHoaDonView(Date ngayLap){
+    //PIE CHART
+    //LOAD CBO
+    public ArrayList<Integer> showYear() {
+        return tkrp.showYear();
+    }
+    public ArrayList<Integer> showMonth() {
+        return tkrp.showMonth();
+    }
+    
+    
+    
+    public ArrayList<HoaDon> getListHD(){
+        return hdrp.getList();
+    }
+    //LOAD
+    public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Date ngayLap){
         return tkrp.getListHoaDonView((java.sql.Date) ngayLap);
     }
-    public HoaDonViewModel tongNgay(){
+    public HD_HoaDonViewModel tongNgay(){
         return tkrp.tongDoanhThuNgay();
     }
-    public HoaDonViewModel tongThang(){
+    public HD_HoaDonViewModel tongThang(){
         return tkrp.tongDoanhThuThang();
     }
-    public HoaDonViewModel tongNam(){
+    public HD_HoaDonViewModel tongNam(){
         return tkrp.tongDoanhThuNam();
     }
     public HoaDon TT(){
         return tkrp.tongDaTT();
     }
-     public ArrayList<HoaDonViewModel> Tim(Integer ma){
+     public ArrayList<HD_HoaDonViewModel> Tim(Integer ma){
         return tkrp.getListHoaDonView(ma);
     }
-      public ArrayList<HoaDonViewModel> TheoNgay(String bt, String kt){
+      public ArrayList<HD_HoaDonViewModel> TheoNgay(String bt, String kt){
         return tkrp.getListHoaDonView(bt, kt);
     }
        public ArrayList<HoaDon> TTAA(){
         return hdrp.getList();
     }
-       public ArrayList<HoaDonViewModel> Tim(String ngay){
+       public ArrayList<HD_HoaDonViewModel> Tim(String ngay){
         return tkrp.Tim(ngay);
     }
 }

@@ -12,17 +12,17 @@ public class KhachHang {
     private Integer maKH;
     private String tenKH;
     private String gioiTinh;
-    private Integer soDT;
+    private String soDT;
     private String diaChi;
 
-    public KhachHang(Integer maKH, String tenKH, String gioiTinh, Integer soDT, String diaChi) {
+    public KhachHang(Integer maKH, String tenKH, String gioiTinh, String soDT, String diaChi) {
         this.maKH = maKH;
         this.tenKH = tenKH;
         this.gioiTinh = gioiTinh;
         this.soDT = soDT;
         this.diaChi = diaChi;
     }
-
+    
     public KhachHang() {
     }
 
@@ -50,11 +50,11 @@ public class KhachHang {
         this.gioiTinh = gioiTinh;
     }
 
-    public Integer getSoDT() {
+    public String getSoDT() {
         return soDT;
     }
 
-    public void setSoDT(Integer soDT) {
+    public void setSoDT(String soDT) {
         this.soDT = soDT;
     }
 

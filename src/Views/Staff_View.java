@@ -325,7 +325,7 @@ public class Staff_View extends javax.swing.JFrame {
         
         menuName.setText("| Sản Phẩm");
         
-        QuanLySanPham sanPham = new QuanLySanPham();
+        QuanLySanPhamdoroi sanPham = new QuanLySanPhamdoroi();
         jGUIForms.removeAll();
         jGUIForms.add(sanPham).setVisible(true);
     }//GEN-LAST:event_menu3MouseClicked

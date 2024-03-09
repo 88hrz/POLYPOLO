@@ -8,7 +8,7 @@ package ViewModels;
  *
  * @author X1
  */
-public class HoaDon_SPViewModel {
+public class HD_SanPhamViewModel {
     private Integer maSP;
     private String tenSP;
     private String tenDM;
@@ -18,10 +18,10 @@ public class HoaDon_SPViewModel {
     private Integer soLuong;
     private String trangThai;
 
-    public HoaDon_SPViewModel() {
+    public HD_SanPhamViewModel() {
     }
 
-    public HoaDon_SPViewModel(Integer maSP, String tenSP, String tenDM, String maSac, String kichCo, Double donGia, Integer soLuong, String trangThai) {
+    public HD_SanPhamViewModel(Integer maSP, String tenSP, String tenDM, String maSac, String kichCo, Double donGia, Integer soLuong, String trangThai) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.tenDM = tenDM;

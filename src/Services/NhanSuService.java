@@ -19,14 +19,20 @@ public class NhanSuService {
     NhanSuRepo spr = new NhanSuRepo();
     NguoiDungRepo kmr = new NguoiDungRepo();
     
+    //GETLIST BY ID
+    public NhanSuViewModel getListById(Integer id){
+        return spr.getListById(id);
+    }
     
-    public ArrayList<NhanSuViewModel> getList(){
+    public ArrayList<NhanSuViewModel> getList() {
         return spr.getList();
     }
-      public ArrayList<NguoiDung> getListGV(){
+
+    public ArrayList<NguoiDung> getListGV() {
         return kmr.getListGV();
     }
-          public ArrayList<NhanSuViewModel> SearchByName(String name){
+
+    public ArrayList<NhanSuViewModel> SearchByName(String name) {
         return spr.searchByName(name);
     }
     

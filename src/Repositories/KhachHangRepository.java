@@ -17,7 +17,8 @@ import java.sql.*;
 public class KhachHangRepository {
 
     DbConnection dbConnection;
-
+    
+    //GETLIST
     public ArrayList<KhachHangViewModel> getList() {
         String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh, KhachHang.SoDienThoai, KhachHang.DiaChi FROM KhachHang \n"
                 + "          INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon \n"
@@ -31,7 +32,7 @@ public class KhachHangRepository {
                 String tenKh = rs.getString("TenKhachHang");
                 Integer maHD = rs.getInt("MaHoaDon");
                 String gioiTinh = rs.getString("GioiTinh");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String diaChi = rs.getString("DiaChi");
 
                 KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD);
@@ -43,7 +44,7 @@ public class KhachHangRepository {
         return ls;
     }
 
-    ///Bang 2
+    ///TABLE HOADON
     public ArrayList<KhachHangViewBang2> getList_Bang2(Integer MaHD) {
         String sql = " select HoaDon.MaHoaDon, SanPhamChiTiet.TenSanPhamChiTiet, HoaDon.TenKhachHang, SoLuong, DonGia\n"
                 + "			   from HoaDonChiTiet \n"
@@ -84,7 +85,7 @@ public class KhachHangRepository {
                 String tenKh = rs.getString("TenKhachHang");
                 Integer maHD = rs.getInt("MaHoaDon");
                 String gioiTinh = rs.getString("GioiTinh");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String diaChi = rs.getString("DiaChi");
 
                 KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD);
@@ -104,7 +105,7 @@ public class KhachHangRepository {
 
             ps.setString(1, kh.getTenKH());
             ps.setString(2, kh.getGioiTinh());
-            ps.setString(3, kh.getSoDT().toString());
+            ps.setString(3, kh.getSoDT());
             ps.setString(4, kh.getDiaChi());
 
             int result = ps.executeUpdate();
@@ -126,7 +127,7 @@ public class KhachHangRepository {
 
             ps.setString(1, kh.getTenKH());
             ps.setString(2, kh.getGioiTinh());
-            ps.setString(3, kh.getSoDT().toString());
+            ps.setString(3, kh.getSoDT());
             ps.setString(4, kh.getDiaChi());
             ps.setString(5, kh.getMaKH().toString());
             int result = ps.executeUpdate();
@@ -187,7 +188,7 @@ public class KhachHangRepository {
                 String tenKh = rs.getString("TenKhachHang");
                 Integer maHD = rs.getInt("MaHoaDon");
                 String gioiTinh = rs.getString("GioiTinh");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String diaChi = rs.getString("DiaChi");
 
                 KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD);

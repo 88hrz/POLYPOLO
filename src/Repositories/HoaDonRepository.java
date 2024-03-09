@@ -4,15 +4,14 @@
  */
 package Repositories;
 
-import ViewModels.GioHangViewModel;
+import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
 import Models.HoaDonView;
-import ViewModels.HoaDonViewModel;
-import ViewModels.HoaDon_SPViewModel;
+import ViewModels.HD_HoaDonViewModel;
+import ViewModels.HD_SanPhamViewModel;
 import java.sql.*;
 import java.util.ArrayList;
-
 /**
  *
  * @author X1
@@ -20,12 +19,15 @@ import java.util.ArrayList;
 public class HoaDonRepository {
     DbConnection dbConnection;
     
-    //DEL
-    public Boolean delete(int maHD) {
-        String sql = " Delete HoaDonChiTiet where MaHoaDon = ?";
+    
+    //EMPTY BASKET
+    public Boolean deleteProduct(int maHD) {
+        String sql = "delete HoaDonChiTiet where MaHoaDonChiTiet = ?";
 
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, maHD);
+        
 
             int check = ps.executeUpdate();
             if (check > 0) {
@@ -36,16 +38,66 @@ public class HoaDonRepository {
         }
         return false;
     }
-    //GET POS DSHD
-    public HoaDonViewModel getPosHD(Integer maHD) {
-        for (HoaDonViewModel hdvm : getListHoaDonView()) {
-            if (hdvm.getMaHD().equals(maHD)) { 
-                return hdvm;
+    public Boolean emptyBasket(int mahd){
+        String sql = "UPDATE HoaDon SET TongTien = 0 WHERE MaHoaDon = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, mahd);
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
+        return false;
     }
-    //GETLIST
+    
+    //GET POS DSHD
+//    public HD_HoaDonViewModel getPosHD(Integer maHD) {
+//        for (HD_HoaDonViewModel hdvm : getListHoaDon()) {
+//            if (hdvm.getMaHD().equals(maHD)) { 
+//                return hdvm;
+//            }
+//        }
+//        return null;
+//    }
+    
+    //SEARCH CUSTOMER
+    public ArrayList<HD_HoaDonViewModel> searchCustomer(String tel){
+        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.NgayLap, hd.TrangThai, hd.TongTien FROM HoaDon hd\n" +
+                        "LEFT JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n" +
+                        "LEFT JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien\n" +
+                        "WHERE hd.Deleted !=1 AND kh.SoDienThoai = ?";
+        ArrayList<HD_HoaDonViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, tel);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maHD = rs.getInt("MaHoaDon");
+                String tenNV = rs.getString("TenNhanVien");
+                String tenKH = rs.getString("TenKhachHang");
+                String soDT = rs.getString("SoDienThoai");
+                String pTTT = rs.getString("PhuongThucThanhToan");
+                String ngayLap = rs.getString("NgayLap");
+                String trangThai = rs.getString("TrangThai");
+                Double tongT = rs.getDouble("TongTien");
+                
+                HD_HoaDonViewModel hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, pTTT, trangThai, tongT, ngayLap, tenNV);
+                ls.add(hd); 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    //GET ALL
     public ArrayList<HoaDon> getList() {
         String sql = "SELECT * FROM HoaDon WHERE Deleted !=1";
         ArrayList<HoaDon> lsTrangThai = new ArrayList<>();
@@ -68,78 +120,58 @@ public class HoaDonRepository {
         }
         return lsTrangThai;
     }
-    public ArrayList<HoaDonView> getListHD(){
-        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.NgayLap FROM HoaDon hd\n" +
-                    "INNER JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n" +
-                    "WHERE hd.Deleted !=1";
-        ArrayList<HoaDonView> ls = new ArrayList<>();
+    
+    //GET LIST HOADON
+    public ArrayList<HD_HoaDonViewModel> getListHoaDon(){
+        String sql = "select hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.TongTien, hd.NgayLap, hd.TrangThai from HoaDon hd\n" +
+"                    left JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n" +
+"                    left JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien\n";
+        ArrayList<HD_HoaDonViewModel> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
-                Integer maHD = rs.getInt("MaHoaDon");
-                String tenNV = rs.getString("TenNhanVien");
-                String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
-                String pTTT = rs.getString("PhuongThucThanhToan");
-                String ngayLap = rs.getString("NgayLap");
-                
-                HoaDonView hd = new HoaDonView(tenNV, tenKH, ngayLap, pTTT, maHD, soDT);
-                ls.add(hd); 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ls;
-    }
-    public ArrayList<HoaDonView> getListHDBySearch(String name){
-        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.NgayLap FROM HoaDon hd\n" +
-                    "INNER JOIN HoaDonChiTiet hdct ON hdct.MaHoaDon = hd.MaHoaDon\n" +
-                    "INNER JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n" +
-                    "WHERE kh.Deleted !=1 AND  kh.TenKhachHang LIKE '%"+name+"%'";
-        ArrayList<HoaDonView> ls = new ArrayList<>();
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
-                Integer maHD = rs.getInt("MaHoaDon");
-                String tenNV = rs.getString("TenNhanVien");
-                String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
-                String pTTT = rs.getString("PhuongThucThanhToan");
-                String ngayLap = rs.getString("NgayLap");
-                
-                HoaDonView hd = new HoaDonView(tenNV, tenKH, ngayLap, pTTT, maHD, soDT);
-                ls.add(hd); 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ls;
-    }
-    //GET LIST HOADONVIEW
-    public ArrayList<HoaDonViewModel> getListHoaDonView() {
-        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.TongTien, hd.NgayLap FROM HoaDon hd\n" +
-                    "INNER JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n" +
-                    "INNER JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien\n" +
-                    "WHERE kh.Deleted !=1";
-        ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
-
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maHD = rs.getInt("MaHoaDon");
                 String tenNV = rs.getString("TenNhanVien");
                 String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
                 String ngayLap = rs.getString("NgayLap");
+                String trangT = rs.getString("TrangThai");
                 
+                HD_HoaDonViewModel hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, trangT, tongTien, ngayLap, tenNV);
+                ls.add(hd); 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }  
+    ////GETLIST BY TRANGTHAI
+    public ArrayList<HD_HoaDonViewModel> getListByTrangThai(String trangThai) {
+        String sql = "select hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.TongTien, hd.NgayLap, hd.TrangThai from HoaDon hd\n" +
+                    "left JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n" +
+                    "left JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien\n" +
+                    "where TrangThai = ?";
+        ArrayList<HD_HoaDonViewModel> lsHoaDon = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setString(1, trangThai);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maHD = rs.getInt("MaHoaDon");
+                String tenNV = rs.getString("TenNhanVien");
+                String tenKH = rs.getString("TenKhachHang");
+                String soDT = rs.getString("SoDienThoai");
+                String phuongThuc = rs.getString("PhuongThucThanhToan");
+                Double tongTien = rs.getDouble("TongTien");
+                String ngayLap = rs.getString("NgayLap");
+                String trangT = rs.getString("TrangThai");
                 
-                HoaDonViewModel hd = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
+                HD_HoaDonViewModel hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, trangT, tongTien, ngayLap, tenNV);
                 lsHoaDon.add(hd);
             }
         } catch (Exception e) {
@@ -147,14 +179,15 @@ public class HoaDonRepository {
         }
         return lsHoaDon;
     }
-    //FILTER
-    public HoaDonViewModel getListHDById(Integer id) {
+
+    //LOAD DATA TO FORM ẠAAAAAAA
+    public HD_HoaDonViewModel getListHDById(Integer id) {
         String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.NgayLap FROM HoaDon hd\n"
-                + "INNER JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n"
-                + "INNER JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien\n"
-                + "WHERE kh.Deleted !=1 AND hd.MaHoaDon = ?";
+                + "LEFT JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n"
+                + "LEFT JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien\n"
+                + "WHERE hd.MaHoaDon = ?";
         //    ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
-        HoaDonViewModel hd = new HoaDonViewModel();
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, id);
@@ -164,11 +197,11 @@ public class HoaDonRepository {
                 Integer maHD = rs.getInt("MaHoaDon");
                 String tenNV = rs.getString("TenNhanVien");
                 String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 String ngayLap = rs.getString("NgayLap");
 
-                hd = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, ngayLap, tenNV);
+                hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, ngayLap, tenNV);
                 //            lsHoaDon.add(hd);
             }
         } catch (Exception e) {
@@ -177,37 +210,13 @@ public class HoaDonRepository {
         //    return lsHoaDon;
         return hd;
     }
-    //GETLIST BY TRANGTHAI
-    public ArrayList<HoaDon> getListByTrangThai(String trangThai) {
-        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.TongTien, hd.NgayLap FROM HoaDon hd\n" +
-                    "INNER JOIN KhachHang kh ON kh.MaHoaDon = hd.MaHoaDon\n" +
-                    "INNER JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien\n" +
-                    "WHERE kh.Deleted !=1  AND hd.TrangThai LIKE N'"+trangThai+"%'";
-        ArrayList<HoaDon> lsTrangThai = new ArrayList<>();
-
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Integer maHD = rs.getInt("MaHoaDon");
-                String tenNV = rs.getString("TenNhanVien");
-                String tenKH = rs.getString("TenKhachHang");
-                String phuongThuc = rs.getString("PhuongThucThanhToan");
-                String ngayLap = rs.getString("NgayLap");
-                Double tongTien = rs.getDouble("TongTien");
-
-                HoaDon hd = new HoaDon(maHD, null, tenNV, tenKH, phuongThuc, tongTien, ngayLap, trangThai);
-                lsTrangThai.add(hd);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return lsTrangThai;
-    }
-    //GET TỔNG
-    public HoaDon getTongTien(Integer id){
-        String sql = "SELECT SUM(hdct.DonGia * hdct.SoLuong) as 'Tổng' FROM HoaDonChiTiet hdct \n" +
-                            "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon\n" +
-                            "WHERE hd.Deleted !=1 AND hd.MaHoaDon = ?;";
+    
+    //UPDATE LBL 
+    public HoaDon getTotal(Integer id){
+        String sql = "SELECT SUM(hdct.DonGia*hdct.SoLuong) as 'Total' FROM HoaDonChiTiet hdct\n" +
+                    "LEFT JOIN HoaDon hd\n" +
+                    "ON hd.MaHoaDon = hdct.MaHoaDon\n" +
+                    "WHERE hd.Deleted !=1 AND hd.MaHoaDon = ?";
         HoaDon hd = null;
         
         try (Connection conn = dbConnection.getConnection();
@@ -223,18 +232,71 @@ public class HoaDonRepository {
         }
         return hd;
     }
+    //////////////////SANPHAM
     //GETLIST SANPHAM
-    public ArrayList<HoaDon_SPViewModel> getListSanPham() {
-        String sql = "SELECT spct.MaSanPham, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n"
+    public ArrayList<HD_SanPhamViewModel> getListSanPham() {
+        String sql = "SELECT spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n"
                 + ", ms.TenMau, s.TenSize\n"
                 + ", sp.GiaBan, spct.SoLuongTon, spct.TrangThai FROM SanPham sp\n"
                 + "INNER JOIN DanhMuc dm ON dm.MaDanhMuc = sp.MaDanhMuc\n"
                 + "INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n"
                 + "INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n"
                 + "INNER JOIN Size s ON s.MaSize = spct.MaSize";
-        ArrayList<HoaDon_SPViewModel> lsSanPham = new ArrayList<>();
+        ArrayList<HD_SanPhamViewModel> lsSanPham = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maSPCT = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String tenDM = rs.getString("TenDanhMuc");
+                String tenMau = rs.getString("TenMau");
+                String kichCo = rs.getString("TenSize");
+                Double donGia = rs.getDouble("GiaBan");
+                Integer soLuong = rs.getInt("SoLuongTon");
+                String trangThai = rs.getString("TrangThai");
+
+                HD_SanPhamViewModel sanPhamView = new HD_SanPhamViewModel(maSPCT, tenSP, tenDM, tenMau, kichCo, donGia, soLuong, trangThai);
+                lsSanPham.add(sanPhamView);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lsSanPham;
+    }
+    public Boolean updateSP(int soL, int id) {
+        String sql = " UPDATE SanPhamChiTiet SET SoLuongTon = ?"
+                + "WHERE MaSanPhamChiTiet =?";
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, soL);
+            ps.setObject(2, id);
+
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    //GETLIST SP BY Ì
+    public ArrayList<HD_SanPhamViewModel> getListById(Integer id){
+        String sql ="SELECT spct.MaSanPham, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n" +
+"                , ms.TenMau, s.TenSize\n" +
+"                , sp.GiaBan, spct.SoLuongTon, spct.TrangThai FROM SanPham sp\n" +
+"                INNER JOIN DanhMuc dm ON dm.MaDanhMuc = sp.MaDanhMuc\n" +
+"                INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n" +
+"                INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n" +
+"                INNER JOIN Size s ON s.MaSize = spct.MaSize \n" +
+"                WHERE spct.MaSanPhamChiTiet = ?";
+        ArrayList<HD_SanPhamViewModel> lsSanPham = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, id);
+            
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maSPCT = rs.getInt("MaSanPham");
@@ -246,7 +308,7 @@ public class HoaDonRepository {
                 Integer soLuong = rs.getInt("SoLuongTon");
                 String trangThai = rs.getString("TrangThai");
 
-                HoaDon_SPViewModel sanPhamView = new HoaDon_SPViewModel(maSPCT, tenSP, tenDM, tenMau, kichCo, donGia, soLuong, trangThai);
+                HD_SanPhamViewModel sanPhamView = new HD_SanPhamViewModel(maSPCT, tenSP, tenDM, tenMau, kichCo, donGia, soLuong, trangThai);
                 lsSanPham.add(sanPhamView);
             }
         } catch (Exception e) {
@@ -255,7 +317,7 @@ public class HoaDonRepository {
         return lsSanPham;
     }
     //GETLIST SP BY SEARCH
-    public ArrayList<HoaDon_SPViewModel> getListSearchByName(String name) {
+    public ArrayList<HD_SanPhamViewModel> getListSearchByName(String name) {
         String sql = "SELECT spct.MaSanPham, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n"
                 + ", ms.TenMau, s.TenSize\n"
                 + ", sp.GiaBan, spct.SoLuongTon, spct.TrangThai FROM SanPham sp\n"
@@ -264,7 +326,7 @@ public class HoaDonRepository {
                 + "INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n"
                 + "INNER JOIN Size s ON s.MaSize = spct.MaSize "
                 + "WHERE spct.TenSanPhamChiTiet LIKE N'%"+name+"%'";
-        ArrayList<HoaDon_SPViewModel> lsSanPham = new ArrayList<>();
+        ArrayList<HD_SanPhamViewModel> lsSanPham = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             
@@ -279,7 +341,7 @@ public class HoaDonRepository {
                 Integer soLuong = rs.getInt("SoLuongTon");
                 String trangThai = rs.getString("TrangThai");
 
-                HoaDon_SPViewModel sanPhamView = new HoaDon_SPViewModel(maSPCT, tenSP, tenDM, tenMau, kichCo, donGia, soLuong, trangThai);
+                HD_SanPhamViewModel sanPhamView = new HD_SanPhamViewModel(maSPCT, tenSP, tenDM, tenMau, kichCo, donGia, soLuong, trangThai);
                 lsSanPham.add(sanPhamView);
             }
         } catch (Exception e) {
@@ -309,11 +371,13 @@ public class HoaDonRepository {
         return false;
     }
 
-    public Boolean ThanhToa(HoaDon hd) {
-        String sql = "Update HoaDon set TrangThai = N'Đã thanh toán' where MaHoaDon = ?";
+    public Boolean thanhToan(HoaDon hd) {
+        String sql = "UPDATE HoaDon SET TrangThai = N'Đã thanh toán' WHERE MaHoaDon = ?";
 
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, hd.getMaHD());
+            
             int check = ps.executeUpdate();
             if (check > 0) {
                 return true;
@@ -343,29 +407,9 @@ public class HoaDonRepository {
         }
         return false;
     }
-
-    //UPDATE SP
-    public Boolean updateSP(int soL, int id) {
-        String sql = " UPDATE SanPhamChiTiet SET SoLuongTon = ?"
-                + "WHERE MaSanPham =?";
-
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
-            ps.setObject(1, soL);
-            ps.setObject(2, id);
-
-            int check = ps.executeUpdate();
-            if (check > 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     //GETLIST HDCT
-    public ArrayList<GioHangViewModel> getListGioHang(Integer id) {
-        String sql = "SELECT spct.MaSanPham, spct.TenSanPhamChiTiet\n"
+    public ArrayList<HD_GioHangViewModel> getListGioHangById(Integer id) {
+        String sql = "SELECT hdct.MaHoaDonChiTiet, spct.MaSanPham, spct.TenSanPhamChiTiet\n"
                 + ", ms.TenMau, s.TenSize, hdct.SoLuong, hdct.DonGia, hd.TongTien FROM DanhMuc dm\n"
                 + "INNER JOIN SanPham sp ON dm.MaDanhMuc = sp.MaDanhMuc\n"
                 + "INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n"
@@ -374,12 +418,13 @@ public class HoaDonRepository {
                 + "INNER JOIN HoaDonChiTiet hdct ON hdct.MaSanPhamChiTiet = spct.MaSanPhamChiTiet\n"
                 + "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon\n"
                 + "WHERE hd.MaHoaDon = ?";
-        ArrayList<GioHangViewModel> ls = new ArrayList<>();
+        ArrayList<HD_GioHangViewModel> ls = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                Integer maHDCT = rs.getInt("MaHoaDonChiTiet");
                 Integer maSP = rs.getInt("MaSanPham");
                 String tenSP = rs.getString("TenSanPhamChiTiet");
                 String tenMau = rs.getString("TenMau");
@@ -388,58 +433,15 @@ public class HoaDonRepository {
                 Double donG = rs.getDouble("DonGia");
                 Double tengT = rs.getDouble("TongTien");
 
-                GioHangViewModel gH = new GioHangViewModel(maSP, tenSP, tenMau, tenSz, soL, donG, tengT);
-                ls.add(gH);
+                HD_GioHangViewModel gh = new HD_GioHangViewModel(maHDCT, maSP, tenSP, tenMau, tenSz, soL, donG, tengT);
+                ls.add(gh);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ls;
     }
-    //LINH
-    public ArrayList<HoaDonViewModel> getListHoaDonView2(Integer ID) {
-        String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
-                + ", hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
-                + "INNER JOIN KhachHang kh ON kh.MaHoaDon = hdct.MaHoaDon\n"
-                + "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where  hdct.MaHoaDonChiTiet =" + ID;
-        ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
 
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Integer maHD = rs.getInt("MaHoaDonChiTiet");
-                String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
-                String phuongThuc = rs.getString("PhuongThucThanhToan");
-                Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
-                String tenNV = rs.getString("TenNhanVien");
-
-                HoaDonViewModel hoaDon = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
-                lsHoaDon.add(hoaDon);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return lsHoaDon;
-    }
-
-    //DELETE
-    public Boolean deleteSingle(Integer id, Integer CT) {
-        String sql = "DELETE FROM HoaDonChiTiet WHERE MaHoaDonChiTiet = ? and MaHoaDon = ?";
-
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
-            ps.setObject(1, id);
-            ps.setObject(2, CT);
-            int check = ps.executeUpdate();
-            if (check > 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
     //GETLIST BY ID HOADON_ent
     public HoaDon getListByID(Integer id) {
         String sql = "SELECT * FROM HoaDon WHERE MaHoaDon = ?";
@@ -467,16 +469,15 @@ public class HoaDonRepository {
     //ADD HOADON
     public Boolean addHoaDon(HoaDon hoaDon) {
         String sql = "INSERT INTO HoaDon (MaNhanVien, TenKhachHang, TenNhanVien, TongTien, NgayLap, PhuongThucThanhToan, TrangThai,Deleted)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, N'Chưa thanh toán',0);";
+                + "VALUES (?, ?, ?, 0, ?, ?, N'Chưa thanh toán',0);";
 
         try (Connection conn = dbConnection.getConnection(); 
                 PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, hoaDon.getMaNV());
             ps.setObject(2, hoaDon.getTenKH());
             ps.setObject(3, hoaDon.getTenNV());
-            ps.setObject(4, hoaDon.getTongTien());
-            ps.setObject(5, hoaDon.getNgayLap().toString());
-            ps.setObject(6, hoaDon.getPhuongThuc());
+            ps.setObject(4, hoaDon.getNgayLap());
+            ps.setObject(5, hoaDon.getPhuongThuc());
 
             int check = ps.executeUpdate();
             if (check > 0) {
@@ -487,5 +488,10 @@ public class HoaDonRepository {
         }
         return false;
     }
-
+//    public static void main(String[] args) {
+//        HoaDonRepository hdr = new HoaDonRepository();
+//        for (HD_HoaDonViewModel hd : hdr.getListHoaDonView()) {
+//            System.out.println(hd.getMaHD());
+//        }
+//    }
 }

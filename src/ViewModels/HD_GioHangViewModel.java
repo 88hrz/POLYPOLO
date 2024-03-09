@@ -8,7 +8,8 @@ package ViewModels;
  *
  * @author X1
  */
-public class GioHangViewModel {
+public class HD_GioHangViewModel {
+    private Integer maHDCT;
     private Integer maSP;
     private String tenSP;
     private String mauSac;
@@ -17,10 +18,29 @@ public class GioHangViewModel {
     private Double donGia;
     private Double thanhTien;
 
-    public GioHangViewModel() {
+    public HD_GioHangViewModel() {
     }
 
-    public GioHangViewModel(Integer maSP, String tenSP, String mauSac, String kichCo, Integer soLuong, Double donGia, Double thanhTien) {
+    public Integer getMaHDCT() {
+        return maHDCT;
+    }
+
+    public void setMaHDCT(Integer maHDCT) {
+        this.maHDCT = maHDCT;
+    }
+
+    public HD_GioHangViewModel(Integer maHDCT, Integer maSP, String tenSP, String mauSac, String kichCo, Integer soLuong, Double donGia, Double thanhTien) {
+        this.maHDCT = maHDCT;
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+        this.mauSac = mauSac;
+        this.kichCo = kichCo;
+        this.soLuong = soLuong;
+        this.donGia = donGia;
+        this.thanhTien = thanhTien;
+    }
+
+    public HD_GioHangViewModel(Integer maSP, String tenSP, String mauSac, String kichCo, Integer soLuong, Double donGia, Double thanhTien) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.mauSac = mauSac;

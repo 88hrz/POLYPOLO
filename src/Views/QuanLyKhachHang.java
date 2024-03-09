@@ -21,7 +21,6 @@ import javax.swing.table.DefaultTableModel;
  * @author X1
  */
 public class QuanLyKhachHang extends javax.swing.JInternalFrame {
-
     KhachHangService khService = new KhachHangService();
     HoaDonService hds = new HoaDonService();
 
@@ -55,7 +54,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         }
     }
 
-    ///Bang 2
+    //LOAD2
     void loadTable2(ArrayList<KhachHangViewBang2> ls) {
         DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
         model.setRowCount(0);
@@ -75,11 +74,10 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     public KhachHang getModel() {
         Integer maKH = Integer.valueOf(txtMaKH.getText());
         String tenKh = txtTenKH.getText();
-        Integer soDT = Integer.valueOf(txtSDT.getText());
+        String soDT =txtSDT.getText();
         String gioi = rdoNam.isSelected() ? "Nam" : "Nữ";
         String dia = txtDiaChi.getText();
 
-        Integer maHd = Integer.parseInt(cboMaHD.getSelectedItem().toString());
         KhachHang kh = new KhachHang(maKH, tenKh, gioi, soDT, dia);
         return kh;
     }
@@ -444,7 +442,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         } else {
             rdoNu.setSelected(true);
         }
-        txtSDT.setText(kh.getSoDT().toString());
+        txtSDT.setText(kh.getSoDT());
         txtDiaChi.setText(kh.getDiaChi());
         cboMaHD.setSelectedItem(kh.getMaHD());
 
@@ -453,7 +451,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
     private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
-        //CLEAR
+        // CLEAR
         clearForm();
     }//GEN-LAST:event_btnClearMouseClicked
 
@@ -480,13 +478,13 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
         // TODO add your handling code here:
-        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn ẩn sản phẩm không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
+        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn ẩn khách hàng không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             khService.XoaKH(getModel());
-            JOptionPane.showMessageDialog(this, "Ẩn sản phẩm thành công!", "POLYPOLO thông báo", 0);
+            JOptionPane.showMessageDialog(this, "Ẩn khách hàng thành công!", "POLYPOLO thông báo", 0);
             loadTableKH(khService.getList());
         } else {
-            JOptionPane.showMessageDialog(this, "Đã hủy thao tác ẩn sản phẩm!", "POLYPOLO thông báo", 0);
+            JOptionPane.showMessageDialog(this, "Đã hủy thao tác ẩn khách hàng!", "POLYPOLO thông báo", 0);
         }
     }//GEN-LAST:event_btnXoaMouseClicked
 

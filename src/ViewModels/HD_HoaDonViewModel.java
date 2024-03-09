@@ -9,10 +9,10 @@ package ViewModels;
  *
  * @author X1
  */
-public class HoaDonViewModel {
+public class HD_HoaDonViewModel {
     private Integer maHD;
     private String tenKH;
-    private Integer soDT;
+    private String soDT;
     private String phuongThuc, trangThai;
     private Double tongTien;
     private String ngayLap;
@@ -26,14 +26,33 @@ public class HoaDonViewModel {
         this.trangThai = trangThai;
     }
 
-    public HoaDonViewModel() {
+    public HD_HoaDonViewModel() {
     }
 
-    public HoaDonViewModel(Double tongTien) {
+    public HD_HoaDonViewModel(Double tongTien) {
         this.tongTien = tongTien;
     }
 
-    public HoaDonViewModel(Integer maHD, String tenKH, Integer soDT, String phuongThuc, String trangThai, Double tongTien, String ngayLap, String tenNV) {
+//    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, String trangThai, Double tongTien, String ngayLap, String tenNV) {
+//        this.maHD = maHD;
+//        this.tenKH = tenKH;
+//        this.soDT = soDT;
+//        this.phuongThuc = phuongThuc;
+//        this.trangThai = trangThai;
+//        this.tongTien = tongTien;
+//        this.ngayLap = ngayLap;
+//        this.tenNV = tenNV;
+//    }
+    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, String ngayLap, String tenNV) {
+        this.maHD = maHD;
+        this.tenKH = tenKH;
+        this.soDT = soDT;
+        this.phuongThuc = phuongThuc;
+        this.ngayLap = ngayLap;
+        this.tenNV = tenNV;
+    }
+
+    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, String trangThai, Double tongTien, String ngayLap, String tenNV) {
         this.maHD = maHD;
         this.tenKH = tenKH;
         this.soDT = soDT;
@@ -43,16 +62,8 @@ public class HoaDonViewModel {
         this.ngayLap = ngayLap;
         this.tenNV = tenNV;
     }
-    public HoaDonViewModel(Integer maHD, String tenKH, Integer soDT, String phuongThuc, String ngayLap, String tenNV) {
-        this.maHD = maHD;
-        this.tenKH = tenKH;
-        this.soDT = soDT;
-        this.phuongThuc = phuongThuc;
-        this.ngayLap = ngayLap;
-        this.tenNV = tenNV;
-    }
 
-    public HoaDonViewModel(Integer maHD, String tenKH, Integer soDT, String phuongThuc, Double tongTien, String ngayLap, String tenNV) {
+    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, Double tongTien, String ngayLap, String tenNV) {
         this.maHD = maHD;
         this.tenKH = tenKH;
         this.soDT = soDT;
@@ -78,11 +89,11 @@ public class HoaDonViewModel {
         this.tenKH = tenKH;
     }
 
-    public Integer getSoDT() {
+    public String getSoDT() {
         return soDT;
     }
 
-    public void setSoDT(Integer soDT) {
+    public void setSoDT(String soDT) {
         this.soDT = soDT;
     }
 

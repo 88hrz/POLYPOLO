@@ -5,7 +5,7 @@
 package Repositories;
 
 import Models.HoaDon;
-import ViewModels.HoaDonViewModel;
+import ViewModels.HD_HoaDonViewModel;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -17,25 +17,64 @@ public class ThongKeRespository {
 
     DbConnection dbConnection;
 
-    public ArrayList<HoaDonViewModel> getListHoaDonView(Date ngay) {
+    //LOAD PIE_CHART
+    public ArrayList<Integer> showYear() {
+        String sql = "SELECT YEAR(NgayLap) AS NamLap FROM HoaDon WHERE HoaDon.Deleted!=1 GROUP BY YEAR(NgayLap);";
+        ArrayList<Integer> years = new ArrayList<>();
+                
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer namLap = rs.getInt("NamLap");
+                years.add(namLap);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return years;
+    }
+    public ArrayList<Integer> showMonth() {
+        String sql = "SELECT MONTH(NgayLap) AS ThangLap FROM HoaDon WHERE HoaDon.Deleted!=1 GROUP BY MONTH(NgayLap);";
+        ArrayList<Integer> months = new ArrayList<>();
+                
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer namLap = rs.getInt("ThangLap");
+                months.add(namLap);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return months;
+    }
+    
+    
+    
+    //
+    public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Date ngay) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai ,\n"
                 + "					 hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
                 + "                INNER JOIN KhachHang kh ON kh.MaHoaDon = hdct.MaHoaDon\n"
                 + "                INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where NgayLap = ?";
-        ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
+        ArrayList<HD_HoaDonViewModel> lsHoaDon = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maHD = rs.getInt("MaHoaDonChiTiet");
                 String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
                 String ngayLap = rs.getString("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
-                HoaDonViewModel hoaDon = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
+                HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
                 lsHoaDon.add(hoaDon);
             }
         } catch (Exception e) {
@@ -44,17 +83,17 @@ public class ThongKeRespository {
         return lsHoaDon;
     }
 
-    public HoaDonViewModel tongDoanhThuNgay() {
+    public HD_HoaDonViewModel tongDoanhThuNgay() {
         String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n" +
                         "FROM HoaDon\n" +
                         "WHERE NgayLap = CONVERT(date, GETDATE());";
 
-        HoaDonViewModel hd = new HoaDonViewModel();
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                hd = new HoaDonViewModel(rs.getDouble(1));
+                hd = new HD_HoaDonViewModel(rs.getDouble(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,18 +101,18 @@ public class ThongKeRespository {
         return hd;
     }
 
-    public HoaDonViewModel tongDoanhThuThang() {
+    public HD_HoaDonViewModel tongDoanhThuThang() {
         String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n" +
                         "FROM HoaDon\n" +
                         "WHERE YEAR(NgayLap) = YEAR(GETDATE())\n" +
                         "AND MONTH(NgayLap) = MONTH(GETDATE());";
 
-        HoaDonViewModel hd = new HoaDonViewModel();
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                hd = new HoaDonViewModel(rs.getDouble(1));
+                hd = new HD_HoaDonViewModel(rs.getDouble(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,17 +120,17 @@ public class ThongKeRespository {
         return hd;
     }
 
-    public HoaDonViewModel tongDoanhThuNam() {
+    public HD_HoaDonViewModel tongDoanhThuNam() {
         String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n"
                 + "FROM HoaDon\n"
                 + "WHERE YEAR(NgayLap) = YEAR(GETDATE());";
 
-        HoaDonViewModel hd = new HoaDonViewModel();
+        HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                hd = new HoaDonViewModel(rs.getDouble(1));
+                hd = new HD_HoaDonViewModel(rs.getDouble(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,25 +156,25 @@ public class ThongKeRespository {
         return hd;
     }
 
-    public ArrayList<HoaDonViewModel> getListHoaDonView(Integer maHDD) {
+    public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Integer maHDD) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
                 + ", hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
                 + "INNER JOIN KhachHang kh ON kh.MaHoaDon = hdct.MaHoaDon\n"
                 + "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where hdct.MaHoaDon = " + maHDD;
-        ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
+        ArrayList<HD_HoaDonViewModel> lsHoaDon = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maHD = rs.getInt("MaHoaDonChiTiet");
                 String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
                 String ngayLap = rs.getString("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
-                HoaDonViewModel hoaDon = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
+                HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
                 lsHoaDon.add(hoaDon);
             }
         } catch (Exception e) {
@@ -144,25 +183,25 @@ public class ThongKeRespository {
         return lsHoaDon;
     }
 
-    public ArrayList<HoaDonViewModel> getListHoaDonView(String bd, String kt) {
+    public ArrayList<HD_HoaDonViewModel> getListHoaDonView(String bd, String kt) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
                 + ", hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
                 + "INNER JOIN KhachHang kh ON kh.MaHoaDon = hdct.MaHoaDon\n"
                 + "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where hd.NgayLap BETWEEN '" + bd + "' and '" + kt + "'";
-        ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
+        ArrayList<HD_HoaDonViewModel> lsHoaDon = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maHD = rs.getInt("MaHoaDonChiTiet");
                 String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
                 String ngayLap = rs.getString("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
-                HoaDonViewModel hoaDon = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
+                HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
                 lsHoaDon.add(hoaDon);
             }
         } catch (Exception e) {
@@ -171,25 +210,25 @@ public class ThongKeRespository {
         return lsHoaDon;
     }
 
-    public ArrayList<HoaDonViewModel> Tim(String Ngay) {
+    public ArrayList<HD_HoaDonViewModel> Tim(String Ngay) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
                 + ", hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
                 + "INNER JOIN KhachHang kh ON kh.MaHoaDon = hdct.MaHoaDon\n"
                 + "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where hd.NgayLap = ?";
-        ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
+        ArrayList<HD_HoaDonViewModel> lsHoaDon = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maHD = rs.getInt("MaHoaDonChiTiet");
                 String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
                 String ngayLap = rs.getString("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
-                HoaDonViewModel hoaDon = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
+                HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
                 lsHoaDon.add(hoaDon);
             }
         } catch (Exception e) {
@@ -198,25 +237,25 @@ public class ThongKeRespository {
         return lsHoaDon;
     }
 
-    public ArrayList<HoaDonViewModel> Loc(int ngay) {
+    public ArrayList<HD_HoaDonViewModel> Loc(int ngay) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
                 + "                , hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
                 + "               INNER JOIN KhachHang kh ON kh.MaHoaDon = hdct.MaHoaDon\n"
                 + "                 INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where NgayLap = " + ngay;
-        ArrayList<HoaDonViewModel> lsHoaDon = new ArrayList<>();
+        ArrayList<HD_HoaDonViewModel> lsHoaDon = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maHD = rs.getInt("MaHoaDonChiTiet");
                 String tenKH = rs.getString("TenKhachHang");
-                Integer soDT = rs.getInt("SoDienThoai");
+                String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
                 String ngayLap = rs.getString("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
-                HoaDonViewModel hoaDon = new HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
+                HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
                 lsHoaDon.add(hoaDon);
             }
         } catch (Exception e) {

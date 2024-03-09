@@ -35,25 +35,25 @@ public class KhachHangService {
     public String addNew(KhachHang kh){
         boolean check = kHRepo.addNew(kh);
         if (check) {
-            return "Thêm thành công!";
+            return "Thêm khách hàng thành công!";
         }else{
-            return "Thêm thất bại :(";
+            return "Thêm khách hàng thất bại :(";
         }
     }
     public String update(KhachHang kh){
         boolean check = kHRepo.update(kh);
         if (check) {
-            return "Cập nhật thành công!";
+            return "Cập nhật khách hàng thành công!";
         }else{
-            return "Cập nhật thất bại :(";
+            return "Cập nhật khách hàng thất bại :(";
         }
     }
     public String XoaKH(KhachHang kh){
         boolean check = kHRepo.XoaKH(kh);
         if (check) {
-            return "Xóa thành công!";
+            return "Xóa khách hàng thành công!";
         }else{
-            return "Xóa thất bại :(";
+            return "Xóa khách hàng thất bại :(";
         }
     }
     

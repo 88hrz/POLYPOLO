@@ -12,7 +12,7 @@ public class KhachHangViewModel {
     private Integer maKH;
     private String tenKH;
     private String gioiTinh;
-    private Integer soDT;
+    private String soDT;
     private String diaChi;
     private Integer maHD;
 
@@ -27,7 +27,7 @@ public class KhachHangViewModel {
         this.maHD = maHD;
     }
 
-    public KhachHangViewModel(Integer maKH, String tenKH, String gioiTinh, Integer soDT, String diaChi, Integer maHD) {
+    public KhachHangViewModel(Integer maKH, String tenKH, String gioiTinh, String soDT, String diaChi, Integer maHD) {
         this.maKH = maKH;
         this.tenKH = tenKH;
         this.gioiTinh = gioiTinh;
@@ -35,8 +35,6 @@ public class KhachHangViewModel {
         this.diaChi = diaChi;
         this.maHD = maHD;
     }
-
-    
 
     public Integer getMaKH() {
         return maKH;
@@ -62,11 +60,11 @@ public class KhachHangViewModel {
         this.gioiTinh = gioiTinh;
     }
 
-    public Integer getSoDT() {
+    public String getSoDT() {
         return soDT;
     }
 
-    public void setSoDT(Integer soDT) {
+    public void setSoDT(String soDT) {
         this.soDT = soDT;
     }
 

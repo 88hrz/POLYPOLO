@@ -11,14 +11,63 @@ package Models;
  */
 public class HoaDon {
     private Integer maHD, maNV;
-    private String tenNV, tenKH, phuongThuc;
+    private String tenNV, tenKH, phuongThuc, soDT;
     private Double tongTien;
     private String ngayLap;
+    private String trangThai;
+
+    public HoaDon(Integer maNV, String tenNV, String tenKH, String phuongThuc, String ngayLap) {
+        this.maNV = maNV;
+        this.tenNV = tenNV;
+        this.tenKH = tenKH;
+        this.phuongThuc = phuongThuc;
+        this.ngayLap = ngayLap;
+    }
+
+    public HoaDon(Integer maNV, String tenKH, String phuongThuc, String ngayLap) {
+        this.maNV = maNV;
+        this.tenKH = tenKH;
+        this.phuongThuc = phuongThuc;
+        this.ngayLap = ngayLap;
+    }
+    //
+
+    public HoaDon(String tenNV, String tenKH, String phuongThuc, String ngayLap) {
+        this.tenNV = tenNV;
+        this.tenKH = tenKH;
+        this.phuongThuc = phuongThuc;
+        this.ngayLap = ngayLap;
+    }
+
+    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, String soDT, Double tongTien, String ngayLap, String trangThai) {
+        this.maHD = maHD;
+        this.maNV = maNV;
+        this.tenNV = tenNV;
+        this.tenKH = tenKH;
+        this.phuongThuc = phuongThuc;
+        this.soDT = soDT;
+        this.tongTien = tongTien;
+        this.ngayLap = ngayLap;
+        this.trangThai = trangThai;
+    }
+
+
+    public HoaDon(String soDT, String tenKH) {
+        this.soDT = soDT;
+        this.tenKH = tenKH;
+    }
+
+    public String getSoDT() {
+        return soDT;
+    }
+
+    public void setSoDT(String soDT) {
+        this.soDT = soDT;
+    }
 
     public HoaDon(Double tongTien) {
         this.tongTien = tongTien;
     }
-    private String trangThai;
 
     public HoaDon() {
     }

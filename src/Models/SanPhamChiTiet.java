@@ -10,16 +10,24 @@ package Models;
  */
 public class SanPhamChiTiet {
 
-    public SanPhamChiTiet(Integer maSP, String tenSP) {
-        this.maSP = maSP;
-        this.tenSP = tenSP;
-    }
     private Integer maSP;
     private String tenSP;
     private Integer maSize;
     private Integer maMau;
     private String trangThai;
     private Integer soLuong;
+
+    public SanPhamChiTiet(Integer maSP, String tenSP, Integer soLuong) {
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+        this.soLuong = soLuong;
+    }
+
+    public SanPhamChiTiet(Integer maSP, String tenSP) {
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+    }
+
     
     private Integer maDM;
 

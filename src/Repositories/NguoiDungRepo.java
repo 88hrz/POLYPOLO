@@ -15,12 +15,12 @@ import java.util.ArrayList;
  * @author X1
  */
 public class NguoiDungRepo {
-            public ArrayList<NguoiDung> getListGV(){
+    public ArrayList<NguoiDung> getListGV() {
         String sql = "select * from NguoiDung";
         ArrayList<NguoiDung> list = new ArrayList<>();
-        try(Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 NguoiDung km = new NguoiDung(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4));
                 list.add(km);
@@ -30,14 +30,15 @@ public class NguoiDungRepo {
         }
         return list;
     }
-    public NguoiDung findID(String tenND){
+
+    public NguoiDung findID(String tenND) {
         String sql = " select MaNguoiDung, TenDangNhap, MatKhau, VaiTro from NguoiDung "
                 + "where VaiTro = ?";
         NguoiDung Km = new NguoiDung();
-        try(Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tenND);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 NguoiDung km = new NguoiDung(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4));
                 Km = km;

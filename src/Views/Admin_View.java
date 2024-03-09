@@ -27,11 +27,11 @@ public class Admin_View extends javax.swing.JFrame {
         
         menuName.setText("| Trang Chủ");
         
-//        QuanLyBanHang banHang = new QuanLyBanHang();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(banHang).setVisible(true);
+        QuanLyBanHang banHang = new QuanLyBanHang();
+        jGUIForms.removeAll();
+        jGUIForms.add(banHang).setVisible(true);
 
-//        QuanLySanPham sanPham = new QuanLySanPham();
+//        QuanLySanPhamdoroi sanPham = new QuanLySanPhamdoroi();
 //        jGUIForms.removeAll();
 //        jGUIForms.add(sanPham).setVisible(true);
 
@@ -39,9 +39,9 @@ public class Admin_View extends javax.swing.JFrame {
 //        jGUIForms.removeAll();
 //        jGUIForms.add(taiKhoan).setVisible(true);
 
-        TrangChu trangChu = new TrangChu();
-        jGUIForms.removeAll();
-        jGUIForms.add(trangChu).setVisible(true);
+//        TrangChu trangChu = new TrangChu();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(trangChu).setVisible(true);
     }
     
     public void dashBoard(){

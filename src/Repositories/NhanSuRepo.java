@@ -6,6 +6,7 @@ package Repositories;
 
 import Models.NhanSu;
 import ViewModels.NhanSuViewModel;
+import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +17,58 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class NhanSuRepo {
-
+    DbConnection dbConnection;
+    
+    //GETBYID
+    public NhanSu getIdByName(String name){
+        String sql = "SELECT MaNhanVien, TenNhanVien FROM NhanVien\n" +
+                    "WHERE Deleted!=1 AND TenNhanVien = ?";
+        NhanSu ns = new NhanSu();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps =conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maNV = rs.getInt("MaNhanVien");
+                String tenNv = rs.getString("TenNhanVien");
+                
+                ns = new NhanSu(tenNv, maNV);  
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ns;
+    }
+    public NhanSuViewModel getListById(Integer id){
+        String sql = "SELECT nv.MaNhanVien, nv.TenNhanVien\n" +
+                        ", nd.TenDangNhap, nv.GioiTinh, nd.VaiTro\n" +
+                        ", nv.SoDienThoai, nv.DiaChi FROM NhanVien nv\n" +
+                        "INNER JOIN NguoiDung nd ON nv.MaNguoiDung = nd.MaNguoiDung\n" +
+                        "WHERE nv.Deleted !=1 AND nv.MaNhanVien = " +id+"";
+        NhanSuViewModel ns = new NhanSuViewModel();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maNV = rs.getInt("MaNhanVien");
+                String tenNV = rs.getString("TenNhanVien");
+                String tenND = rs.getString("TenDangNhap");
+                String gioiTinh = rs.getString("GioiTinh");
+                String vaiTro = rs.getString("VaiTro");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                
+                ns = new NhanSuViewModel(maNV, tenNV, tenND, gioiTinh, soDT, diaChi, vaiTro);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ns;
+    }
+    
     public ArrayList<NhanSuViewModel> getList() {
         String sql = "select MaNhanVien,TenNhanVien,TenDangNhap,GioiTinh,SoDienThoai,DiaChi,VaiTro from NhanVien "
                          + "inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung";
@@ -115,11 +167,16 @@ public class NhanSuRepo {
         return false;
     }
 
-    public ArrayList<NhanSuViewModel> searchByName(String TenNhanVien) {
-        String sql = "select MaNhanVien,TenNhanVien,TenDangNhap,GioiTinh,SoDienThoai,DiaChi,VaiTro from NhanVien "
-                + "inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung Where TenNhanVien like '%" + TenNhanVien + "%'";
+    public ArrayList<NhanSuViewModel> searchByName(String name) {
+        String sql = "SELECT nv.MaNhanVien, nv.TenNhanVien\n"
+                + ", nd.TenDangNhap, nv.GioiTinh, nd.VaiTro\n"
+                + ", nv.SoDienThoai, nv.DiaChi FROM NhanVien nv\n"
+                + "INNER JOIN NguoiDung nd ON nv.MaNguoiDung = nd.MaNguoiDung\n"
+                + "WHERE nv.Deleted !=1 AND nv.TenNhanVien LIKE N'%" + name + "%'";
         ArrayList<NhanSuViewModel> list = new ArrayList<>();
-        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
+        
+        try (Connection conn = DbConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 NhanSuViewModel spvm = new NhanSuViewModel(

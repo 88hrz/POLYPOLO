@@ -10,26 +10,39 @@ package Models;
  * @author X1
  */
 public class HoaDonView {
-    private String tenNv, tenKH, ngayLap, pTTT;
-    private Integer maHD, soDT;
+    private String tenNv, tenKH, ngayLap, pTTT, soDT,trangThai;
+    private Integer maHD ;
 
-    public HoaDonView(String tenNv, String tenKH, String ngayLap, String pTTT, Integer maHD, Integer soDT) {
+    public HoaDonView(String tenNv, String tenKH, String ngayLap, String pTTT, String soDT, String trangThai, Integer maHD) {
         this.tenNv = tenNv;
         this.tenKH = tenKH;
         this.ngayLap = ngayLap;
         this.pTTT = pTTT;
-        this.maHD = maHD;
         this.soDT = soDT;
+        this.trangThai = trangThai;
+        this.maHD = maHD;
     }
 
-    public Integer getSoDT() {
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    
+
+    public HoaDonView() {
+    }
+
+    public String getSoDT() {
         return soDT;
     }
 
-    public void setSoDT(Integer soDT) {
+    public void setSoDT(String soDT) {
         this.soDT = soDT;
     }
-
 
     public String getTenNv() {
         return tenNv;

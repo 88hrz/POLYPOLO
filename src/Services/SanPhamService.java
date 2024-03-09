@@ -26,6 +26,10 @@ public class SanPhamService {
     MauSacRepo msRepo = new MauSacRepo();
     KichCoRepo szRepo = new KichCoRepo();
     
+    //GETLIST SP
+    public ArrayList<SanPham> getListSP(){
+        return spRepo.getListSP();
+    }
     //HIDE
     public void hidetTTMS(MauSac ms){
         msRepo.hideTTMS(ms);
@@ -101,6 +105,10 @@ public class SanPhamService {
         }else{
             return "Thêm mới sản phẩm thất bại :(";
         }
+    }
+    //GET ID
+    public SanPham getId(String tenSP){
+        return spRepo.getId(tenSP);
     }
     //CHECK ID
     public Boolean checkID(String maSP){

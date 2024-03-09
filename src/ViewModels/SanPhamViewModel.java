@@ -9,7 +9,7 @@ package ViewModels;
  * @author X1
  */
 public class SanPhamViewModel {
-    private Integer maSP;
+    private Integer maSP,maSPCT;
     private String tenSP;
     private String tenDM;
     private String mauSac;
@@ -18,23 +18,8 @@ public class SanPhamViewModel {
     private Double giaBan;
     private String trangThai;
     private Integer soLuong;
-    private Integer del;
 
-    public Integer getDel() {
-        return del;
-    }
-
-    public void setDel(Integer del) {
-        this.del = del;
-    }
-    
-
-
-    public SanPhamViewModel() {
-    }
-
-    public SanPhamViewModel(Integer maSP, String tenSP, String tenDM, String mauSac, String kichCo, Double giaNhap, Double giaBan, String trangThai, Integer soLuong) {
-        this.maSP = maSP;
+    public SanPhamViewModel(String tenSP, String tenDM, String mauSac, String kichCo, Double giaNhap, Double giaBan, String trangThai, Integer soLuong) {
         this.tenSP = tenSP;
         this.tenDM = tenDM;
         this.mauSac = mauSac;
@@ -44,6 +29,34 @@ public class SanPhamViewModel {
         this.trangThai = trangThai;
         this.soLuong = soLuong;
     }
+
+    public Integer getMaSPCT() {
+        return maSPCT;
+    }
+
+    public void setMaSPCT(Integer maSPCT) {
+        this.maSPCT = maSPCT;
+    }
+    
+
+
+    public SanPhamViewModel() {
+    }
+
+    public SanPhamViewModel(Integer maSP, Integer maSPCT, String tenSP, String tenDM, String mauSac, String kichCo, Double giaNhap, Double giaBan, String trangThai, Integer soLuong) {
+        this.maSP = maSP;
+        this.maSPCT = maSPCT;
+        this.tenSP = tenSP;
+        this.tenDM = tenDM;
+        this.mauSac = mauSac;
+        this.kichCo = kichCo;
+        this.giaNhap = giaNhap;
+        this.giaBan = giaBan;
+        this.trangThai = trangThai;
+        this.soLuong = soLuong;
+    }
+
+    
     
     public Integer getMaSP() {
         return maSP;

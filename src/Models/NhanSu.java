@@ -14,9 +14,22 @@ public class NhanSu {
     private String ngaySinh;
     private String soDienThoai;
     private String diaChi;
-    private Integer maNguoiDung;
+    private Integer maNguoiDung, maNhanVien;
 
     public NhanSu() {
+    }
+
+    public NhanSu(String tenNhanVien, Integer maNhanVien) {
+        this.tenNhanVien = tenNhanVien;
+        this.maNhanVien = maNhanVien;
+    }
+
+    public Integer getMaNhanVien() {
+        return maNhanVien;
+    }
+
+    public void setMaNhanVien(Integer maNhanVien) {
+        this.maNhanVien = maNhanVien;
     }
 
     public NhanSu( String tenNhanVien, String gioiTinh, String ngaySinh, String soDienThoai, String diaChi, Integer maNguoiDung) {

@@ -5,7 +5,6 @@
 package Views;
 
 import Models.User;
-import Services.NguoiDungService;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -38,13 +37,13 @@ public class Admin_View extends javax.swing.JFrame {
 //        jGUIForms.removeAll();
 //        jGUIForms.add(banHang).setVisible(true);
 
-        QuanLySanPham sanPham = new QuanLySanPham();
-        jGUIForms.removeAll();
-        jGUIForms.add(sanPham).setVisible(true);
-
-//        QuanLyTaiKhoan taiKhoan = new QuanLyTaiKhoan();
+//        QuanLySanPham sanPham = new QuanLySanPham();
 //        jGUIForms.removeAll();
-//        jGUIForms.add(taiKhoan).setVisible(true);
+//        jGUIForms.add(sanPham).setVisible(true);
+
+        QuanLyTaiKhoan taiKhoan = new QuanLyTaiKhoan();
+        jGUIForms.removeAll();
+        jGUIForms.add(taiKhoan).setVisible(true);
 
 //        TrangChu trangChu = new TrangChu();
 //        jGUIForms.removeAll();

@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class DbConnection {
     public static final String HOSTNAME = "SPICY-PISCEE\\SQLEXPRESS";
     public static final String PORT = "1433";
-    public static final String DBNAME = "POLYPOLO";
+    public static final String DBNAME = "POLYPOLO_DEMO";
     public static final String USERNAME = "sa";
     public static final String PASSWORD = "123456";
     

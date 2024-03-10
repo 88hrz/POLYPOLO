@@ -4,7 +4,7 @@
  */
 package Services;
 
-import Models.NguoiDung;
+import Models.User;
 import Models.NhanSu;
 import Repositories.NhanSuRepo;
 import ViewModels.NhanSuViewModel;
@@ -28,7 +28,7 @@ public class NhanSuService {
         return spr.getList();
     }
 
-    public ArrayList<NguoiDung> getListGV() {
+    public ArrayList<User> getListGV() {
         return kmr.getListGV();
     }
 
@@ -36,7 +36,7 @@ public class NhanSuService {
         return spr.searchByName(name);
     }
     
-    public NguoiDung getByID(String tenGV){
+    public User getByID(String tenGV){
         return kmr.findID(tenGV);
     }
     

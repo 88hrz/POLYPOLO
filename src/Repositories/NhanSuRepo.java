@@ -115,6 +115,28 @@ public class NhanSuRepo {
         }
         return list;
     }
+    public NhanSu getAll() {
+        String sql = "SELECT * FROM NhanVien WHERE Deleted !=1;";
+        NhanSu ns = new NhanSu();
+        
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+               String tenNV = rs.getString("TenNhanVien");
+               String gioiTinh = rs.getString("GioiTinh");
+               String soDT = rs.getString("SoDienThoai");
+               String ngaySinh = rs.getString("NgaySinh");
+               String diaChi = rs.getString("DiaChi");
+               Integer maNguoiDung = rs.getInt("MaNguoiDung");
+               
+                ns = new NhanSu(tenNV, gioiTinh, ngaySinh, soDT, diaChi, maNguoiDung);
+               
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ns;
+    }
 
     public Boolean AddNew(NhanSu sp) {
         String sql = " INSERT INTO NhanVien(MaNguoiDung,TenNhanVien,GioiTinh,SoDienThoai,DiaChi) VALUES(?,?,?,?,?) ";

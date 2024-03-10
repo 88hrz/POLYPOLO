@@ -126,7 +126,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
         if (sp.getTrangThai().equalsIgnoreCase("Còn hàng")) {
             rdoConHang.setSelected(true);
         }else{
-            rdoHetHang.setSelected(false);
+            rdoHetHang.setSelected(true);
         }
         cboMauSac.setSelectedItem(sp.getMauSac());
         cboKichCo.setSelectedItem(sp.getKichCo());
@@ -648,7 +648,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(cboLocDM, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cboLocDM, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel20)
                         .addGap(18, 18, 18)

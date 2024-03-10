@@ -4,7 +4,13 @@
  */
 package Validator;
 
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.util.Date;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -13,7 +19,28 @@ import javax.swing.JTextField;
  * @author X1
  */
 public class Validate {
-    
+
+    public Boolean isRadioButtonSelected(ButtonGroup buttonGroup, StringBuilder stb, String msg) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                return true;
+            }
+        }
+        stb.append(msg).append("\n");
+        return false;
+    }
+
+    public Boolean isDateSelected(JDateChooser calendar, StringBuilder stb, String msg) {
+        Date date = calendar.getDate();
+        if (date == null) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("\n");
+            return false;
+        }
+        return true;
+    }
+
     public Boolean isEmpty(JTextField txt, StringBuilder stb, String msg) {
         if (txt.getText().trim().isEmpty()) {
             txt.setBackground(Color.YELLOW);

@@ -7,7 +7,6 @@ package Repositories;
 import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
-import Models.HoaDonView;
 import ViewModels.HD_HoaDonViewModel;
 import ViewModels.HD_SanPhamViewModel;
 import java.sql.*;

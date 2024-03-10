@@ -4,7 +4,10 @@
  */
 package Services;
 
+import Models.NhanSu;
+import Models.TaiKhoan;
 import Models.User;
+import Repositories.NhanSuRepo;
 import Repositories.UserRepository;
 import ViewModels.UserViewModel;
 import java.util.ArrayList;
@@ -15,17 +18,26 @@ import java.util.ArrayList;
  */
 public class NguoiDungService {
     UserRepository userRepo = new UserRepository();
+    NhanSuRepo nsRepo = new NhanSuRepo();
     
     public Boolean checkLogin(String userID, String passCode){
         return userRepo.checkLogin(userID, passCode);
-    }
-    public User getCurrentUser(String userID, String passCode){
-        return userRepo.getCurrentUser(userID, passCode);
     }
             
     //GETLIST
     public ArrayList<UserViewModel> getList(){
         return userRepo.getList();
+    }
+    
+    public NhanSu getAlLNs() {
+        return nsRepo.getAll();
+    }
+    
+    public ArrayList<NhanSu> getAll(){
+        return userRepo.getAll();
+    }
+    public UserViewModel getListById(Integer id){
+        return userRepo.getListById(id);
     }
     //GETLIST BY SEARCH
     public ArrayList<UserViewModel> getListBySearch(String name){
@@ -43,19 +55,16 @@ public class NguoiDungService {
         userRepo.hideAccount(u);
     }
     
-    //CHECK I4
-    public UserViewModel checkI4(String userID, String passCode){
-        return userRepo.checkI4(userID, passCode);
-    }
+    
     
     //CHECK ID
-    public Boolean checkId(String id){
-        return userRepo.checkId(id);
+    public Boolean checkName(String name){
+        return userRepo.checkName(name);
     }
     
     //ADD
-    public String addAccount(User u){
-        Boolean check = userRepo.addAccount(u);
+    public String addAccount(TaiKhoan tk){
+        Boolean check = userRepo.addAccount(tk);
         if (check) {
             return "Thêm tài khoản mới thành công ~uwu~";
         }else{
@@ -63,8 +72,8 @@ public class NguoiDungService {
         }
     }
     //UPDATE
-    public String updateAccount(User u){
-        Boolean check = userRepo.updateAccount(u);
+    public String updateAccount(TaiKhoan tk){
+        Boolean check = userRepo.updateAccount(tk);
         if (check) {
             return "Sửa thông tin tài khoản thành công ~uwu~";
         }else{

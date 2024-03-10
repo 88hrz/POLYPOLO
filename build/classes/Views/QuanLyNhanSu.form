@@ -365,7 +365,7 @@
                       <Table columnCount="7" rowCount="4">
                         <Column editable="true" title="M&#xe3; Nh&#xe2;n Vi&#xea;n" type="java.lang.Object"/>
                         <Column editable="true" title="T&#xea;n Nh&#xe2;n Vi&#xea;n" type="java.lang.Object"/>
-                        <Column editable="true" title="T&#xea;n Ng&#x1b0;&#x1edd;i D&#xf9;ng" type="java.lang.Object"/>
+                        <Column editable="true" title="T&#xe0;i Kho&#x1ea3;n" type="java.lang.Object"/>
                         <Column editable="true" title="Gi&#x1edb;i T&#xed;nh" type="java.lang.Object"/>
                         <Column editable="true" title="Vai Tr&#xf2;" type="java.lang.Object"/>
                         <Column editable="true" title="S&#x110;T" type="java.lang.Object"/>

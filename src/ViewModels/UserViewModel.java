@@ -4,26 +4,79 @@
  */
 package ViewModels;
 
+import java.util.Date;
+
 /**
  *
  * @author X1
  */
 public class UserViewModel {
-    private Integer id, soDT;
-    private String tenDN, tenNV, gioiTinh, vaiTro, diaChi, matKhau;
+    private Integer id;
+    private String tenDN;
+    private String tenNV;
+    private String matKhau;
+    private String soDT;
+    private String vaiTro;
+    private String diaC;
+    private String gioiT;
+    private Date ngayS;
 
     public UserViewModel() {
     }
 
-    public UserViewModel(Integer id, Integer soDT, String tenDN, String tenNV, String gioiTinh, String vaiTro, String diaChi, String matKhau) {
+    public UserViewModel(Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro) {
         this.id = id;
-        this.soDT = soDT;
         this.tenDN = tenDN;
         this.tenNV = tenNV;
-        this.gioiTinh = gioiTinh;
-        this.vaiTro = vaiTro;
-        this.diaChi = diaChi;
         this.matKhau = matKhau;
+        this.soDT = soDT;
+        this.vaiTro = vaiTro;
+    }
+
+    public UserViewModel(Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro, String diaC, String gioiT, Date ngayS) {
+        this.id = id;
+        this.tenDN = tenDN;
+        this.tenNV = tenNV;
+        this.matKhau = matKhau;
+        this.soDT = soDT;
+        this.vaiTro = vaiTro;
+        this.diaC = diaC;
+        this.gioiT = gioiT;
+        this.ngayS = ngayS;
+    }
+
+
+//    public UserViewModel(Integer id, String tenDN, String tenNV, String vaiTro, String matKhau, String soDT) {
+//        this.id = id;
+//        this.tenDN = tenDN;
+//        this.tenNV = tenNV;
+//        this.vaiTro = vaiTro;
+//        this.matKhau = matKhau;
+//        this.soDT = soDT;
+//    }
+
+    public String getGioiT() {
+        return gioiT;
+    }
+
+    public Date getNgayS() {
+        return ngayS;
+    }
+
+    public void setNgayS(Date ngayS) {
+        this.ngayS = ngayS;
+    }
+
+    public void setGioiT(String gioiT) {
+        this.gioiT = gioiT;
+    }
+
+    public String getDiaC() {
+        return diaC;
+    }
+
+    public void setDiaC(String diaC) {
+        this.diaC = diaC;
     }
 
     public Integer getId() {
@@ -32,14 +85,6 @@ public class UserViewModel {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getSoDT() {
-        return soDT;
-    }
-
-    public void setSoDT(Integer soDT) {
-        this.soDT = soDT;
     }
 
     public String getTenDN() {
@@ -58,28 +103,12 @@ public class UserViewModel {
         this.tenNV = tenNV;
     }
 
-    public String getGioiTinh() {
-        return gioiTinh;
-    }
-
-    public void setGioiTinh(String gioiTinh) {
-        this.gioiTinh = gioiTinh;
-    }
-
     public String getVaiTro() {
         return vaiTro;
     }
 
     public void setVaiTro(String vaiTro) {
         this.vaiTro = vaiTro;
-    }
-
-    public String getDiaChi() {
-        return diaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
     }
 
     public String getMatKhau() {
@@ -89,6 +118,13 @@ public class UserViewModel {
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
     }
-    
-    
+
+    public String getSoDT() {
+        return soDT;
+    }
+
+    public void setSoDT(String soDT) {
+        this.soDT = soDT;
+    }
+
 }

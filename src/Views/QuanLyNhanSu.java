@@ -6,7 +6,7 @@ package Views;
 
 import Models.DanhMuc;
 import Models.NhanSu;
-import Models.NguoiDung;
+import Models.User;
 import Services.NhanSuService;
 import Validator.Validate;
 import ViewModels.NhanSuViewModel;
@@ -35,12 +35,12 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         fillToTable(nss.getList());
         
     }
-     public void loadCboBox(ArrayList<NguoiDung> ls){
+     public void loadCboBox(ArrayList<User> ls){
         DefaultComboBoxModel cbomodel = (DefaultComboBoxModel) cboVaiTro.getModel();
         HashSet<String> vaiTroSet = new HashSet<>();
         
-         for (NguoiDung nd : ls) {
-             String vaiTro = nd.getVaitro();
+         for (User nd : ls) {
+             String vaiTro = nd.getRole();
              if (!vaiTroSet.contains(vaiTro)) {
                  cbomodel.addElement(vaiTro);
                  vaiTroSet.add(vaiTro);
@@ -86,7 +86,7 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         lh.setTenNhanVien(txtTenNV.getText());
         lh.setSoDienThoai(txtSDT.getText());
         lh.setDiaChi(txtDiaChi.getText());
-        lh.setMaNguoiDung(nss.getByID((String) cboVaiTro.getSelectedItem()).getMaND());
+        lh.setMaNguoiDung(nss.getByID((String) cboVaiTro.getSelectedItem()).getUserID());
         
         if (rdoNam.isSelected()) {
             lh.setGioiTinh("Nam");
@@ -222,7 +222,7 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã Nhân Viên", "Tên Nhân Viên", "Tên Người Dùng", "Giới Tính", "Vai Trò", "SĐT", "Địa Chỉ"
+                "Mã Nhân Viên", "Tên Nhân Viên", "Tài Khoản", "Giới Tính", "Vai Trò", "SĐT", "Địa Chỉ"
             }
         ));
         tblNhanSu.addMouseListener(new java.awt.event.MouseAdapter() {

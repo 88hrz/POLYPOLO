@@ -50,7 +50,6 @@ public class SanPhamService {
     public ArrayList<KichCo> getListHideTTSz(){
         return szRepo.getList();
     }
-    
     public void hideSP(SanPham sp){
         spRepo.hideSP(sp);
     }
@@ -64,6 +63,9 @@ public class SanPhamService {
     //GETLIST
     public ArrayList<SanPhamViewModel> getListSanPham(){
         return spRepo.getListSanPham();
+    }
+    public ArrayList<SanPhamViewModel> getListByDanhMuc(String danhMuc){
+        return spRepo.getListByDanhMuc(danhMuc);
     }
     //GET_CBO DM
     public ArrayList<DanhMuc> getCboDM(){
@@ -81,7 +83,6 @@ public class SanPhamService {
     public ArrayList<SanPhamViewModel> getListBySearch(String name){
         return spRepo.getListBySearch(name);
     }
-    
     //GET_ID COLOR
     public MauSac getIdByName(String name){
         return msRepo.getIdByName(name);

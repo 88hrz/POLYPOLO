@@ -4,16 +4,19 @@
  */
 package Services;
 
+import Models.DanhMuc;
 import Repositories.HoaDonRepository;
 import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
 import Models.NhanSu;
 import Models.SanPhamChiTiet;
+import Repositories.DanhMucRepo;
 import Repositories.NhanSuRepo;
 import Repositories.SanPhamRepository;
 import ViewModels.HD_HoaDonViewModel;
 import ViewModels.HD_SanPhamViewModel;
+import ViewModels.SanPhamViewModel;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +27,7 @@ public class HoaDonService {
     HoaDonRepository hdRepo = new HoaDonRepository();
     NhanSuRepo nsRepo = new NhanSuRepo();
     SanPhamRepository spRepo = new SanPhamRepository();
+    DanhMucRepo dmRepo = new DanhMucRepo();
     
     //GET TOTAL
     public HoaDon getTotal(Integer id) {
@@ -56,12 +60,13 @@ public class HoaDonService {
     public ArrayList<HD_HoaDonViewModel> getListHoaDon(){
         return hdRepo.getListHoaDon();
     }
-    
-    
-//    //GET POS HD
-//    public HD_HoaDonViewModel getPosHD(Integer id){
-//        return hdRepo.getPosHD(id);
-//    }
+    //GETCBO_DM
+    public ArrayList<DanhMuc> getListDM(){
+        return dmRepo.getList();
+    }
+    public ArrayList<HD_SanPhamViewModel> getListByDanhMuc(String dm) {
+        return hdRepo.getListByDanhMuc(dm);
+    }
     //GET LIST
     public ArrayList<HoaDon> getList(){
         return hdRepo.getList();
@@ -73,14 +78,10 @@ public class HoaDonService {
     public SanPhamChiTiet getById(Integer id){
         return spRepo.getListById(id);
     }
-//    public ArrayList<HoaDonViewModel> getListByID(Integer maHD){
-//        return hdRepo.getListByID(maHD);
-//    }
     //GET tenv
     public ArrayList<NhanSu> getListTenNV(){
         return nsRepo.getListTenNV();
-    }
-    
+    } 
     //GETLIST VIEW MODEL
     public ArrayList<HD_HoaDonViewModel> getListByTrangThai(String trangThai){
         return hdRepo.getListByTrangThai(trangThai);
@@ -104,12 +105,10 @@ public class HoaDonService {
     public ArrayList<HD_SanPhamViewModel> getListById(Integer id){
         return hdRepo.getListById(id);
     }
-    
     //GETNAME
     public NhanSu getIdByName(String name){
         return nsRepo.getIdByName(name);
     }
-    
    //GETLIST BY ID
     public HoaDon getListByID(Integer id){
         return hdRepo.getListByID(id);

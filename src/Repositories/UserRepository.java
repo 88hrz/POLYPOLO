@@ -85,8 +85,8 @@ public class UserRepository {
                 String  tenDN = rs.getString("TenDangNhap");
                 String mk = rs.getString("MatKhau");
                 String hoTen = rs.getString("TenNhanVien");
-                String vaiTro = rs.getString("SoDienThoai");
-                String soDT = rs.getString("VaiTro");
+                String vaiTro = rs.getString("VaiTro");
+                String soDT = rs.getString("SoDienThoai");
                 
                 UserViewModel u = new UserViewModel(maND, tenDN, hoTen, mk, soDT, vaiTro);
                 ls.add(u);
@@ -113,13 +113,13 @@ public class UserRepository {
                 String  tenDN = rs.getString("TenDangNhap");
                 String mk = rs.getString("MatKhau");
                 String hoTen = rs.getString("TenNhanVien");
-                String vaiTro = rs.getString("SoDienThoai");
-                String soDT = rs.getString("GioiTinh");
+                String vaiTro = rs.getString("VaiTro");
+                String soDT = rs.getString("SoDienThoai");
                 String diaC = rs.getString("DiaChi");
                 Date ngayS = rs.getDate("NgaySinh");
-                String vaiT = rs.getString("VaiTro");
+                String gioiT = rs.getString("GioiTinh");
    
-                u = new UserViewModel(maND, tenDN, hoTen, mk, soDT, vaiTro, diaC, vaiT, ngayS);
+                u = new UserViewModel(maND, tenDN, hoTen, mk, soDT, vaiTro, diaC, gioiT, ngayS);
             }
         } catch (Exception e) {
             e.printStackTrace();

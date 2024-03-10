@@ -72,6 +72,40 @@ public class SanPhamRepository {
     }
     
     //GETLIST
+    public ArrayList<SanPhamViewModel> getListByDanhMuc(String danhMuc){
+        String sql = "SELECT spct.MaSanPham, spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc, ms.TenMau, s.TenSize, sp.GiaNhap, sp.GiaBan, spct.TrangThai, spct.SoLuongTon FROM DanhMuc dm\n" +
+"                       INNER JOIN SanPham sp ON dm.MaDanhMuc = sp.MaDanhMuc\n" +
+"                       INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n" +
+"                        INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n" +
+"                        INNER JOIN Size s ON s.MaSize = spct.MaSize\n" +
+"                       WHERE sp.Deleted !=1 AND dm.TenDanhMuc = ?";
+        ArrayList<SanPhamViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, danhMuc);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maSP = rs.getInt("MaSanPham");
+                Integer maSPCT = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String tenDM = rs.getString("TenDanhMuc");
+                String tenMau = rs.getString("TenMau");
+                String tenSize = rs.getString("TenSize");
+                Double giaNhap = rs.getDouble("GiaNhap");
+                Double giaBan = rs.getDouble("GiaBan");
+                String trangThai = rs.getString("TrangThai");
+                Integer soLuong = rs.getInt("SoLuongTon");
+                
+                SanPhamViewModel sp = new SanPhamViewModel(maSP, maSPCT, tenSP, tenDM, tenMau, tenSize, giaNhap, giaBan, trangThai, soLuong);
+                ls.add(sp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;     
+    }
     public SanPhamViewModel getListByID(Integer id){
         String sql = "SELECT spct.MaSanPham, spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc, ms.TenMau, s.TenSize, sp.GiaNhap, sp.GiaBan, spct.TrangThai, spct.SoLuongTon FROM DanhMuc dm\n" +
 "                        INNER JOIN SanPham sp ON dm.MaDanhMuc = sp.MaDanhMuc\n" +

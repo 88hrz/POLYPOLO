@@ -232,15 +232,48 @@ public class HoaDonRepository {
         return hd;
     }
     //////////////////SANPHAM
-    //GETLIST SANPHAM
+    public ArrayList<HD_SanPhamViewModel> getListByDanhMuc(String dm) {
+        String sql = "SELECT spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n" +
+"                , ms.TenMau, s.TenSize\n" +
+"                , sp.GiaBan, spct.SoLuongTon, spct.TrangThai FROM SanPham sp\n" +
+"                INNER JOIN DanhMuc dm ON dm.MaDanhMuc = sp.MaDanhMuc\n" +
+"                INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n" +
+"                INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n" +
+"                INNER JOIN Size s ON s.MaSize = spct.MaSize\n" +
+"		 WHERE sp.Deleted!=1 AND dm.TenDanhMuc = ?";
+        ArrayList<HD_SanPhamViewModel> lsSanPham = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, dm);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maSPCT = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String tenDM = rs.getString("TenDanhMuc");
+                String tenMau = rs.getString("TenMau");
+                String kichCo = rs.getString("TenSize");
+                Double donGia = rs.getDouble("GiaBan");
+                Integer soLuong = rs.getInt("SoLuongTon");
+                String trangThai = rs.getString("TrangThai");
+
+                HD_SanPhamViewModel sanPhamView = new HD_SanPhamViewModel(maSPCT, tenSP, tenDM, tenMau, kichCo, donGia, soLuong, trangThai);
+                lsSanPham.add(sanPhamView);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lsSanPham;
+    }
     public ArrayList<HD_SanPhamViewModel> getListSanPham() {
-        String sql = "SELECT spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n"
-                + ", ms.TenMau, s.TenSize\n"
-                + ", sp.GiaBan, spct.SoLuongTon, spct.TrangThai FROM SanPham sp\n"
-                + "INNER JOIN DanhMuc dm ON dm.MaDanhMuc = sp.MaDanhMuc\n"
-                + "INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n"
-                + "INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n"
-                + "INNER JOIN Size s ON s.MaSize = spct.MaSize";
+        String sql = "SELECT spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n" +
+"                , ms.TenMau, s.TenSize\n" +
+"                , sp.GiaBan, spct.SoLuongTon, spct.TrangThai FROM SanPham sp\n" +
+"                INNER JOIN DanhMuc dm ON dm.MaDanhMuc = sp.MaDanhMuc\n" +
+"                INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n" +
+"                INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n" +
+"                INNER JOIN Size s ON s.MaSize = spct.MaSize\n" +
+"				WHERE sp.Deleted!=1";
         ArrayList<HD_SanPhamViewModel> lsSanPham = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {

@@ -68,27 +68,20 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
         
         txtMaNguoiDung.setText(u.getId().toString());
         txtHoTen.setText(uService.getListById(id).getTenNV());
-        
-        //???
         txtSDT.setText(u.getVaiTro());
         System.out.println(u.getSoDT());
-        //??
-
         txtDiaChi.setText(u.getDiaC());
-        //??
-        if (u.getSoDT().equalsIgnoreCase("nam")) {
+        if (u.getGioiT().equalsIgnoreCase("nam")) {
             rdoNam.setSelected(true);
         } else {
             rdoNu.setSelected(true);
         }
         dcsNgaySinh.setDate(u.getNgayS());
-        //?
-        if (u.getGioiT().equalsIgnoreCase("admin")) {
+        if (u.getVaiTro().equalsIgnoreCase("admin")) {
             rdoVaiTroQuanLy.setSelected(true);
         } else {
             rdoVaiTroNhanVien.setSelected(true);
         }
-
         txtTenDangNhap.setText(u.getTenDN());
         txtMatKhau.setText(u.getMatKhau());
     }
@@ -98,7 +91,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
         for (UserViewModel u : ls) {
             model.addRow(new Object[]{
                 u.getId(), u.getTenDN(), u.getMatKhau(), u.getTenNV()
-                    , u.getVaiTro(), u.getSoDT()
+                    , u.getSoDT(), u.getVaiTro()
             });
         }
     }

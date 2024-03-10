@@ -10,6 +10,7 @@ package Models;
  */
 public class ThuocTinh {
     private Integer maThuocTinh;
+    private String tenThuocTinh;
     private String tenMau;
 
     public String getTenMau() {
@@ -25,7 +26,7 @@ public class ThuocTinh {
         this.tenMau = tenMau;
         this.tenThuocTinh = tenThuocTinh;
     }
-    private String tenThuocTinh;
+
 
     public ThuocTinh() {
     }

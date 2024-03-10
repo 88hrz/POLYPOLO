@@ -17,7 +17,7 @@ public class DanhMucRepo {
     
     //GET LIST
     public ArrayList<DanhMuc> getList(){
-        String sql = "SELECT * FROM DanhMuc";
+        String sql = "SELECT * FROM DanhMuc WHERE Deleted !=1";
         ArrayList<DanhMuc> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();

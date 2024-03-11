@@ -54,7 +54,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
             cbomodel.addElement(month);
         }
     }
- 
+    
+    
     public void loadData(ArrayList<HD_HoaDonViewModel> listHD) {
         DefaultTableModel model = (DefaultTableModel) tbDoanhThu.getModel();
         model.setRowCount(0);
@@ -104,6 +105,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
         String dtNam = formatter.format(tksv.tongNam().getTongTien()) + " VND";
         lblTongDoanhThuNam.setText(dtNam);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -552,6 +555,12 @@ public class TrangChu extends javax.swing.JInternalFrame {
             }
         });
 
+        cboThang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cboThangMouseClicked(evt);
+            }
+        });
+
         jLabel5.setText("Tháng:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -643,6 +652,16 @@ public class TrangChu extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_cboNamMouseClicked
 
+    private void cboThangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboThangMouseClicked
+        // CBO THANG
+//        if (cboThang.getSelectedIndex()>=0) {
+//            int year = Integer.valueOf(cboNam.getSelectedItem().toString());
+//            Month 
+//        }
+    }//GEN-LAST:event_cboThangMouseClicked
+    private void showData(int year, int month){
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTimNgay;

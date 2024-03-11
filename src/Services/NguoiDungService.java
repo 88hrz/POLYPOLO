@@ -44,7 +44,7 @@ public class NguoiDungService {
         return userRepo.getListBySearch(name);
     }
     //GETLIST USER
-    public User getListUser(){
+    public ArrayList<User> getListUser(){
         return userRepo.getListUser();
     }public User getListByUserId(String userId){
         return userRepo.getListByUserId(userId);

@@ -4,6 +4,8 @@
  */
 package Models;
 
+import java.sql.Date;
+
 
 /**
  *
@@ -13,10 +15,10 @@ public class HoaDon {
     private Integer maHD, maNV;
     private String tenNV, tenKH, phuongThuc, soDT;
     private Double tongTien;
-    private String ngayLap;
+    private Date ngayLap;
     private String trangThai;
 
-    public HoaDon(Integer maNV, String tenNV, String tenKH, String phuongThuc, String ngayLap) {
+    public HoaDon(Integer maNV, String tenNV, String tenKH, String phuongThuc, Date ngayLap) {
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.tenKH = tenKH;
@@ -24,7 +26,7 @@ public class HoaDon {
         this.ngayLap = ngayLap;
     }
 
-    public HoaDon(Integer maNV, String tenKH, String phuongThuc, String ngayLap) {
+    public HoaDon(Integer maNV, String tenKH, String phuongThuc, Date ngayLap) {
         this.maNV = maNV;
         this.tenKH = tenKH;
         this.phuongThuc = phuongThuc;
@@ -32,14 +34,14 @@ public class HoaDon {
     }
     //
 
-    public HoaDon(String tenNV, String tenKH, String phuongThuc, String ngayLap) {
+    public HoaDon(String tenNV, String tenKH, String phuongThuc, Date ngayLap) {
         this.tenNV = tenNV;
         this.tenKH = tenKH;
         this.phuongThuc = phuongThuc;
         this.ngayLap = ngayLap;
     }
 
-    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, String soDT, Double tongTien, String ngayLap, String trangThai) {
+    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, String soDT, Double tongTien, Date ngayLap, String trangThai) {
         this.maHD = maHD;
         this.maNV = maNV;
         this.tenNV = tenNV;
@@ -76,7 +78,7 @@ public class HoaDon {
         this.trangThai = trangThai;
     }
 
-    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, Double tongTien, String ngayLap, String trangThai) {
+    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, Double tongTien, Date ngayLap, String trangThai) {
         this.maHD = maHD;
         this.maNV = maNV;
         this.tenNV = tenNV;
@@ -145,11 +147,11 @@ public class HoaDon {
         this.tongTien = tongTien;
     }
 
-    public String getNgayLap() {
+    public Date getNgayLap() {
         return ngayLap;
     }
 
-    public void setNgayLap(String ngayLap) {
+    public void setNgayLap(Date ngayLap) {
         this.ngayLap = ngayLap;
     }
     

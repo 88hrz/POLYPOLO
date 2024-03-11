@@ -17,12 +17,10 @@ import java.sql.*;
 public class KhachHangRepository {
 
     DbConnection dbConnection;
-    
+
     //GETLIST
     public ArrayList<KhachHangViewModel> getList() {
-        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh, KhachHang.SoDienThoai, KhachHang.DiaChi FROM KhachHang \n"
-                + "          INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon \n"
-                + "            WHERE KhachHang.Deleted != 1";
+        String sql = "select MaKhachHang, MaHoaDon, TenKhachHang, GioiTinh, SoDienThoai, DiaChi from KhachHang WHERE Deleted != 1;";
         ArrayList<KhachHangViewModel> ls = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
@@ -72,7 +70,7 @@ public class KhachHangRepository {
     }
 
     ////Tìm theo tên khách hàng
-     public ArrayList<KhachHangViewModel> getListSearch(String id) {
+    public ArrayList<KhachHangViewModel> getListSearch(String id) {
         String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang \n"
                 + "INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.TenKhachHang LIKE '%" + id + "%'";
         ArrayList<KhachHangViewModel> ls = new ArrayList<>();
@@ -172,6 +170,7 @@ public class KhachHangRepository {
         }
         return false;
     }
+
     /////Danh sach da an
     public ArrayList<KhachHangViewModel> DanhSachAn() {
         String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh, KhachHang.SoDienThoai, KhachHang.DiaChi FROM KhachHang \n"
@@ -197,6 +196,7 @@ public class KhachHangRepository {
         }
         return ls;
     }
+
     ////Bo an
     public Boolean boAn(KhachHang kh) {
         String sql = "UPDATE KhachHang SET Deleted = 0 WHERE MaKhachHang = ?";
@@ -212,6 +212,7 @@ public class KhachHangRepository {
         }
         return false;
     }
+
     ///
     public KhachHangViewModel getListt(Integer id) {
         String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang \n"

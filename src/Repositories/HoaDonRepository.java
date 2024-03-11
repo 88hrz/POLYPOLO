@@ -53,17 +53,6 @@ public class HoaDonRepository {
         }
         return false;
     }
-    
-    //GET POS DSHD
-//    public HD_HoaDonViewModel getPosHD(Integer maHD) {
-//        for (HD_HoaDonViewModel hdvm : getListHoaDon()) {
-//            if (hdvm.getMaHD().equals(maHD)) { 
-//                return hdvm;
-//            }
-//        }
-//        return null;
-//    }
-    
     //SEARCH CUSTOMER
     public ArrayList<HD_HoaDonViewModel> searchCustomer(String tel){
         String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.NgayLap, hd.TrangThai, hd.TongTien FROM HoaDon hd\n" +
@@ -83,7 +72,7 @@ public class HoaDonRepository {
                 String tenKH = rs.getString("TenKhachHang");
                 String soDT = rs.getString("SoDienThoai");
                 String pTTT = rs.getString("PhuongThucThanhToan");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String trangThai = rs.getString("TrangThai");
                 Double tongT = rs.getDouble("TongTien");
                 
@@ -108,7 +97,7 @@ public class HoaDonRepository {
                 String tenNV = rs.getString("TenNhanVien");
                 String tenKH = rs.getString("TenKhachHang");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 Double tongTien = rs.getDouble("TongTien");
                 String trangThai = rs.getString("TrangThai");
                 HoaDon hoaDon = new HoaDon(maHD, null, tenNV, tenKH, phuongThuc, tongTien, ngayLap, trangThai);
@@ -137,7 +126,7 @@ public class HoaDonRepository {
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String trangT = rs.getString("TrangThai");
                 
                 HD_HoaDonViewModel hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, trangT, tongTien, ngayLap, tenNV);
@@ -167,7 +156,7 @@ public class HoaDonRepository {
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String trangT = rs.getString("TrangThai");
                 
                 HD_HoaDonViewModel hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, trangT, tongTien, ngayLap, tenNV);
@@ -198,7 +187,7 @@ public class HoaDonRepository {
                 String tenKH = rs.getString("TenKhachHang");
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
 
                 hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, ngayLap, tenNV);
                 //            lsHoaDon.add(hd);
@@ -487,7 +476,7 @@ public class HoaDonRepository {
                 String tenKH = rs.getString("TenKhachHang");
                 String tenNV = rs.getString("TenNhanVien");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String trangThai = rs.getString("TrangThai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
 

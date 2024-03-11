@@ -72,7 +72,7 @@ public class ThongKeRespository {
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
                 HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
@@ -244,7 +244,7 @@ public class ThongKeRespository {
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
                 HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
@@ -271,7 +271,7 @@ public class ThongKeRespository {
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
                 HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
@@ -298,7 +298,7 @@ public class ThongKeRespository {
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
                 HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);
@@ -325,7 +325,7 @@ public class ThongKeRespository {
                 String soDT = rs.getString("SoDienThoai");
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 Double tongTien = rs.getDouble("TongTien");
-                String ngayLap = rs.getString("NgayLap");
+                Date ngayLap = rs.getDate("NgayLap");
                 String tenNV = rs.getString("TenNhanVien");
 
                 HD_HoaDonViewModel hoaDon = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, tongTien, ngayLap, tenNV);

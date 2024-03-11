@@ -423,7 +423,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         KhachHangViewModel kh = khService.getLisstt(id);
         txtMaKH.setText(id.toString());
         txtTenKH.setText(kh.getTenKH());
-        
+            System.out.println(kh.getTenKH());
         if (kh.getGioiTinh().equals("Nam")) {
             rdoNam.setSelected(true);
         } else  {

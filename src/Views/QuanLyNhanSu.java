@@ -10,6 +10,7 @@ import Models.User;
 import Services.NhanSuService;
 import Validator.Validate;
 import ViewModels.NhanSuViewModel;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
@@ -429,6 +430,15 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         String kq = nss.delete(maNV);
         JOptionPane.showMessageDialog(this, kq);
         fillToTable(nss.getList());
+        txtMaNV.setText(null);
+        txtTenNV.setText(null);
+        txtDiaChi.setText(null);
+        txtSDT.setText(null);
+        rdoNam.setSelected(true);
+        rdoNu.setSelected(false);
+        txtTenNV.setBackground(Color.WHITE);
+        txtSDT.setBackground(Color.WHITE);
+        txtDiaChi.setBackground(Color.WHITE);
     }//GEN-LAST:event_btnXoaMouseClicked
 
     private void btnSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuaMouseClicked

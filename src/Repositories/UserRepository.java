@@ -72,16 +72,16 @@ public class UserRepository {
     
     //GETLIST
     public ArrayList<UserViewModel> getList(){
-        String sql = "SELECT nd.MaNguoiDung, nd.TenDangNhap, nd.MatKhau\n" +
-            ", nv.TenNhanVien, nv.SoDienThoai, nd.VaiTro FROM NguoiDung nd INNER JOIN NhanVien nv ON nd.MaNguoiDung = nv.MaNguoiDung\n" +
-            "WHERE nv.Deleted!=1 AND nd.Deleted!=1";
+        String sql = "SELECT nv.MaNhanVien, nd.TenDangNhap, nd.MatKhau\n" +
+"            , nv.TenNhanVien, nv.SoDienThoai, nd.VaiTro FROM NguoiDung nd INNER JOIN NhanVien nv ON nd.MaNguoiDung = nv.MaNguoiDung\n" +
+"            WHERE nv.Deleted!=1 AND nd.Deleted!=1";
         ArrayList<UserViewModel> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {                
-                Integer maND = rs.getInt("MaNguoiDung");
+                Integer maND = rs.getInt("MaNhanVien");
                 String  tenDN = rs.getString("TenDangNhap");
                 String mk = rs.getString("MatKhau");
                 String hoTen = rs.getString("TenNhanVien");
@@ -128,10 +128,9 @@ public class UserRepository {
     }
     
     //GETLIST USER
-    public User getListUser(){
+    public ArrayList<User> getListUser(){
         String sql = "SELECT * FROM NguoiDung WHERE NguoiDung.Deleted !=1";
-//        ArrayList<User> ls = new  ArrayList<>();
-        User u = new User();
+        ArrayList<User> ls = new  ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
@@ -142,13 +141,13 @@ public class UserRepository {
                 String passCode = rs.getString("MatKhau");
                 String role = rs.getString("VaiTro");
                 
-                u = new User(id, userId, passCode, role);
-            //    ls.add(u);
+                User u = new User(id, userId, passCode, role);
+                ls.add(u);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return u;
+        return ls;
     }
     public ArrayList<NhanSu> getAll() {
         String sql = "SELECT * FROM NhanVien WHERE Deleted !=1";
@@ -226,6 +225,7 @@ public class UserRepository {
         }
         return false;
     }
+    
     
     //ADD ACCOUNT
     public Boolean addAccount(TaiKhoan tk){

@@ -29,7 +29,7 @@ public class Admin_View extends javax.swing.JFrame {
         dashBoard();
         
         lbl_UserID.setText(u.getUserName());
-        lbl_UserRole.setText(u.getRole());
+//        lbl_UserRole.setText(u.getRole());
        
         menuName.setText("| Trang Chủ");
         
@@ -74,11 +74,8 @@ public class Admin_View extends javax.swing.JFrame {
         menuName = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        lbl_UserRole = new javax.swing.JLabel();
         lbl_UserID = new javax.swing.JLabel();
         txtUser_ID = new javax.swing.JTextField();
-        txtUse_Role = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         menu1 = new javax.swing.JPanel();
         lblTrangChu = new javax.swing.JLabel();
@@ -119,28 +116,13 @@ public class Admin_View extends javax.swing.JFrame {
         jLabel2.setText("User ID:");
         ngang.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Vai trò:");
-        ngang.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 50, -1, -1));
-
-        lbl_UserRole.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lbl_UserRole.setForeground(new java.awt.Color(0, 0, 204));
-        lbl_UserRole.setText("i");
-        ngang.add(lbl_UserRole, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 50, 60, 20));
-
         lbl_UserID.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lbl_UserID.setForeground(new java.awt.Color(0, 0, 204));
         lbl_UserID.setText("i");
         ngang.add(lbl_UserID, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 60, 20));
 
         txtUser_ID.setBackground(new java.awt.Color(204, 204, 204));
         txtUser_ID.setEnabled(false);
         ngang.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 20, 110, 20));
-
-        txtUse_Role.setBackground(new java.awt.Color(204, 204, 204));
-        txtUse_Role.setEnabled(false);
-        ngang.add(txtUse_Role, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 90, 20));
 
         bg.add(ngang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 80));
 
@@ -528,7 +510,6 @@ public class Admin_View extends javax.swing.JFrame {
     private javax.swing.JDesktopPane jGUIForms;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblBanHang;
     private javax.swing.JLabel lblExit;
@@ -538,7 +519,6 @@ public class Admin_View extends javax.swing.JFrame {
     private javax.swing.JLabel lblTaiKhoan;
     private javax.swing.JLabel lblTrangChu;
     private javax.swing.JLabel lbl_UserID;
-    private javax.swing.JLabel lbl_UserRole;
     private javax.swing.JPanel menu1;
     private javax.swing.JPanel menu2;
     private javax.swing.JPanel menu3;
@@ -548,7 +528,6 @@ public class Admin_View extends javax.swing.JFrame {
     private javax.swing.JPanel menu7;
     private javax.swing.JLabel menuName;
     private javax.swing.JPanel ngang;
-    private javax.swing.JTextField txtUse_Role;
     private javax.swing.JTextField txtUser_ID;
     // End of variables declaration//GEN-END:variables
 }

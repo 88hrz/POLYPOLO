@@ -4,6 +4,8 @@
  */
 package ViewModels;
 
+import java.util.Date;
+
 
 /**
  *
@@ -15,7 +17,7 @@ public class HD_HoaDonViewModel {
     private String soDT;
     private String phuongThuc, trangThai;
     private Double tongTien;
-    private String ngayLap;
+    private Date ngayLap;
     private String tenNV;
 
     public String getTrangThai() {
@@ -47,7 +49,7 @@ public class HD_HoaDonViewModel {
 //        this.ngayLap = ngayLap;
 //        this.tenNV = tenNV;
 //    }
-    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, String ngayLap, String tenNV) {
+    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, Date ngayLap, String tenNV) {
         this.maHD = maHD;
         this.tenKH = tenKH;
         this.soDT = soDT;
@@ -56,7 +58,7 @@ public class HD_HoaDonViewModel {
         this.tenNV = tenNV;
     }
 
-    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, String trangThai, Double tongTien, String ngayLap, String tenNV) {
+    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, String trangThai, Double tongTien, Date ngayLap, String tenNV) {
         this.maHD = maHD;
         this.tenKH = tenKH;
         this.soDT = soDT;
@@ -67,7 +69,7 @@ public class HD_HoaDonViewModel {
         this.tenNV = tenNV;
     }
 
-    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, Double tongTien, String ngayLap, String tenNV) {
+    public HD_HoaDonViewModel(Integer maHD, String tenKH, String soDT, String phuongThuc, Double tongTien, Date ngayLap, String tenNV) {
         this.maHD = maHD;
         this.tenKH = tenKH;
         this.soDT = soDT;
@@ -117,11 +119,11 @@ public class HD_HoaDonViewModel {
         this.tongTien = tongTien;
     }
 
-    public String getNgayLap() {
+    public Date getNgayLap() {
         return ngayLap;
     }
 
-    public void setNgayLap(String ngayLap) {
+    public void setNgayLap(Date ngayLap) {
         this.ngayLap = ngayLap;
     }
 

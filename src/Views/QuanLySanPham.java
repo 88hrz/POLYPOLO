@@ -227,18 +227,35 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
         DanhMuc dm = new DanhMuc(maDM, tenDM, trangThai);
         return dm;   
     }
-    public MauSac getModelAddColor(){
+    public MauSac getModelUpdateCl(){
         MauSac ms = new MauSac();
         
+        ms.setMaMau(Integer.valueOf(txtMaTT.getText()));
         ms.setTenMau(txtTenTT.getText().trim());
         return ms;
     }
-    public KichCo getModelAddSz(){
+    public MauSac getModelAddColor(){
+        MauSac ms = new MauSac();
+
+        ms.setTenMau(txtTenTT.getText().trim());
+        return ms;
+    }
+    public KichCo getModelUpdateSz(){
         KichCo sz = new KichCo();
         
+        sz.setMaSize(Integer.valueOf(txtMaTT.getText()));
         sz.setTenSize(txtTenTT.getText().trim());
         return sz;
     }
+    public KichCo getModelAddSz(){
+        KichCo sz = new KichCo();
+
+        sz.setTenSize(txtTenTT.getText().trim());
+        return sz;
+    }
+    
+    
+    
     public MauSac getModelMs() {
         int pos = tblThuocTinh.getSelectedRow();
         Integer maM = (Integer) tblThuocTinh.getValueAt(pos, 0);
@@ -983,6 +1000,11 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
                 btnSuaTTMouseClicked(evt);
             }
         });
+        btnSuaTT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaTTActionPerformed(evt);
+            }
+        });
 
         btnClearTT.setText("MỚI");
         btnClearTT.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1031,16 +1053,15 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
                                 .addComponent(rdoTTMS)
                                 .addGap(62, 62, 62)
                                 .addComponent(rdoTTKC))
-                            .addComponent(txtMaTT, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(251, Short.MAX_VALUE))
+                            .addComponent(txtMaTT, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel12Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addComponent(btnSuaTT)
                         .addGap(49, 49, 49)
                         .addComponent(btnClearTT)
                         .addGap(54, 54, 54)
-                        .addComponent(btnHideTT)
-                        .addGap(52, 441, Short.MAX_VALUE))))
+                        .addComponent(btnHideTT)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1283,6 +1304,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
 
     private void btnClearTTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearTTMouseClicked
         //CLEAR SEARCH
+        txtMaTT.setText("");
         txtTenTT.setText("");
         txtTenTT.setBackground(Color.white);
         clearTableThuocTinh();
@@ -1325,10 +1347,10 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
         int result = JOptionPane.showConfirmDialog(this, "Bạn muốn cập nhật thuộc tính?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION && validateThuocTinh()) {
             if (rdoTTMS.isSelected()) {
-                JOptionPane.showMessageDialog(this, spService.updateCl(getModelAddColor()));
+                JOptionPane.showMessageDialog(this, spService.updateCl(getModelUpdateCl()));
                 loadTableByThuocTinhMauSac(spService.loadDataColor());
             }else if(rdoTTKC.isSelected()){
-                JOptionPane.showMessageDialog(this, spService.updateSz(getModelAddSz()));
+                JOptionPane.showMessageDialog(this, spService.updateSz(getModelUpdateSz()));
                 loadTableByThuocTinhSz(spService.loadDataSz());
             }
         }else{
@@ -1559,6 +1581,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // SEARCH DM
         String name = txtSearchDM.getText();
+        txtSearchDM.setText("");
         ArrayList<DanhMuc> ls = spService.getListDMByName(name);
         loadTableDanhMuc(ls);
     }//GEN-LAST:event_jButton1MouseClicked
@@ -1566,6 +1589,10 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
     private void rdoDMConHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDMConHangActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoDMConHangActionPerformed
+
+    private void btnSuaTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaTTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSuaTTActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

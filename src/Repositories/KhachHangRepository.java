@@ -71,14 +71,13 @@ public class KhachHangRepository {
         return list;
     }
 
-    ///
-    public ArrayList<KhachHangViewModel> getListSearch(String id) {
+    ////Tìm theo tên khách hàng
+     public ArrayList<KhachHangViewModel> getListSearch(String id) {
         String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang \n"
-                + "INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.MaKhachHang = ?";
+                + "INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.TenKhachHang LIKE '%" + id + "%'";
         ArrayList<KhachHangViewModel> ls = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
-            ps.setObject(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maKH = rs.getInt("MaKhachHang");
@@ -99,7 +98,7 @@ public class KhachHangRepository {
 
     public boolean addNew(KhachHang kh) {
 
-        String sql = "INSERT INTO KhachHang ( TenKhachHang, GioiTinh, SoDienThoai, DiaChi) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO KhachHang ( TenKhachHang, GioiTinh, SoDienThoai, DiaChi,Deleted) VALUES (?, ?, ?, ?, 0)";
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -109,7 +108,6 @@ public class KhachHangRepository {
             ps.setString(4, kh.getDiaChi());
 
             int result = ps.executeUpdate();
-
             if (result > 0) {
                 return true;
             }
@@ -213,5 +211,30 @@ public class KhachHangRepository {
             e.printStackTrace();
         }
         return false;
+    }
+    ///
+    public KhachHangViewModel getListt(Integer id) {
+        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang \n"
+                + "INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.MaKhachHang = ?";
+        KhachHangViewModel kh = new KhachHangViewModel();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maKH = rs.getInt("MaKhachHang");
+                String tenKh = rs.getString("TenKhachHang");
+                Integer maHD = rs.getInt("MaHoaDon");
+                String gioiTinh = rs.getString("GioiTinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+
+                kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return kh;
     }
 }

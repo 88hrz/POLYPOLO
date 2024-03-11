@@ -16,6 +16,48 @@ public class DanhMucRepo {
     DbConnection dbConnection;
     
     //GET LIST
+    public DanhMuc getListById(Integer id){
+        String sql = "SELECT * FROM DanhMuc WHERE Deleted!=1 AND MaDanhMuc = ?";
+        DanhMuc dm = new DanhMuc();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maDM = rs.getInt("MaDanhMuc");
+                String tenDM = rs.getString("TenDanhMuc");
+                String trangThai = rs.getString("TrangThai");
+                
+                dm = new DanhMuc(maDM, tenDM, trangThai);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dm;
+    }
+    public ArrayList<DanhMuc> getListDMByName(String name){
+        String sql = "SELECT * FROM DanhMuc WHERE Deleted!=1 AND TenDanhMuc LIKE '%"+name+"%'";
+        ArrayList<DanhMuc> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maDM = rs.getInt("MaDanhMuc");
+                String tenDM = rs.getString("TenDanhMuc");
+                String trangThai = rs.getString("TrangThai");
+                
+                DanhMuc dm = new DanhMuc(maDM, tenDM, trangThai);
+                ls.add(dm); 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
     public ArrayList<DanhMuc> getList(){
         String sql = "SELECT * FROM DanhMuc WHERE Deleted !=1";
         ArrayList<DanhMuc> ls = new ArrayList<>();
@@ -36,7 +78,6 @@ public class DanhMucRepo {
         }
         return ls;
     }
-    
     //GET_ID
     public DanhMuc getIdByName(String name){
         String sql = "SELECT MaDanhMuc, TenDanhMuc FROM DanhMuc WHERE TenDanhMuc = ?";
@@ -57,5 +98,60 @@ public class DanhMucRepo {
             e.printStackTrace();
         }
         return dm;
+    }
+    //CRUD
+    public Boolean addDanhMuc(DanhMuc dm){
+        String sql = "INSERT INTO DanhMuc(TenDanhMuc, TrangThai,Deleted) VALUES\n" +
+"					 (?, ?,0)";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, dm.getTenDM());
+            ps.setObject(2, dm.getTrangThai());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Boolean updateDanhMuc(DanhMuc dm){
+        String sql = "UPDATE DanhMuc\n" +
+                     "SET TenDanhMuc = ?, TrangThai = ? WHERE MaDanhMuc = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, dm.getTenDM());
+            ps.setObject(2, dm.getTrangThai());
+            ps.setObject(3, dm.getMaDM());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Boolean anDanhMuc(DanhMuc dm){
+        String sql = "UPDATE DanhMuc\n" +
+                    "SET Deleted = 1 WHERE MaDanhMuc = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, dm.getMaDM());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

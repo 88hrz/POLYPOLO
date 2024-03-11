@@ -26,6 +26,9 @@ public class KhachHangService {
     public ArrayList<KhachHangViewModel> getListSearch(String id){
         return kHRepo.getListSearch(id);
     }
+    public KhachHangViewModel getLisstt(Integer id){
+        return kHRepo.getListt(id);
+    }
     public ArrayList<KhachHangViewModel> danhSchAn(){
         return kHRepo.DanhSachAn();
     }

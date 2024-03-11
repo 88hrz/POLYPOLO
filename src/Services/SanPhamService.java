@@ -127,22 +127,59 @@ public class SanPhamService {
             return "Update thất bại!!";
         }
     }
-//    //DEL
-//    public String deleteSP(SanPham sp){
-//        Boolean check = spRepo.deleteSP(sp);
-//        if (check) {
-//            return "Xóa SP thành công!!~";
-//        }else{
-//            return "Xóa SP thất bại :((";
-//        }
-//    }
-
-    //ADD TT
-    public String addColor(MauSac ms){
+    //DANHMUC
+    public ArrayList<DanhMuc> getList(){
+        return dmRepo.getList();
+    }
+    public DanhMuc getListDMById(Integer id){
+        return dmRepo.getListById(id);
+    }
+    public ArrayList<DanhMuc> getListDMByName(String name){
+        return dmRepo.getListDMByName(name);
+    }
+    public String addDanhMuc(DanhMuc dm){
+        Boolean check = dmRepo.addDanhMuc(dm);
+        if (check) {
+            return "Thêm danh mục mới thành công!";
+        }else{
+            return "Thêm danh mục mới thất bại :(";
+        }
+    }
+    public String updateDanhMuc(DanhMuc dm){
+        Boolean check = dmRepo.updateDanhMuc(dm);
+        if (check) {
+            return "Cập nhật danh mục thành công!";
+        }else{
+            return "Cập nhật danh mục thất bại :(";
+        }
+    }
+    public String anDanhMuc(DanhMuc dm){
+        Boolean check = dmRepo.anDanhMuc(dm);
+        if (check) {
+            return "Xóa danh mục thành công!";
+        }else{
+            return "Xóa danh mục thất bại :(";
+        }
+    }
+    
+    //THUOC TINH
+    public ArrayList<MauSac> loadDataColor() {
+        return msRepo.getList();
+    }
+    public ArrayList<KichCo> loadDataSz() {
+        return szRepo.getList();
+    }
+    public ArrayList<MauSac> getListMS(){
+        return msRepo.getList();
+    }
+    public ArrayList<KichCo> getListSz(){
+        return szRepo.getList();
+    }
+    public String addColor(MauSac ms) {
         Boolean check = msRepo.addColor(ms);
         if (check) {
             return "Thêm thuộc tính màu sắc mới thành công!";
-        }else{
+        } else {
             return "Thêm thuộc tính màu sắc mới thất bại :(";
         }
     }
@@ -154,7 +191,6 @@ public class SanPhamService {
             return "Thêm thuộc tính kích cỡ mới thất bại :(";
         }
     }
-    //UPDATE
     public String updateCl(MauSac ms){
         Boolean check = msRepo.updateColor(ms);
         if (check) {
@@ -170,13 +206,6 @@ public class SanPhamService {
         }else{
             return "Cập nhật thuộc tính size mới thất bại :(";
         }
-    }
-    //LOAD_TT
-    public ArrayList<MauSac> loadDataColor(){
-        return msRepo.getList();
-    }
-    public ArrayList<KichCo> loadDataSz(){
-        return szRepo.getList();
     }
     
 }

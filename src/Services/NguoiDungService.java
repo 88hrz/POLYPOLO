@@ -20,6 +20,15 @@ public class NguoiDungService {
     UserRepository userRepo = new UserRepository();
     NhanSuRepo nsRepo = new NhanSuRepo();
     
+    public String update(User u){
+        Boolean kq = userRepo.update(u);
+        if ( kq == true) {
+            return "Sửa thành công";
+        } else {
+            return "Sửa thất bai";
+        }
+    }
+    
     public Boolean checkLogin(String userID, String passCode){
         return userRepo.checkLogin(userID, passCode);
     }

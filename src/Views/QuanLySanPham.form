@@ -893,7 +893,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnAnDM">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="&#x1ea8;N"/>
+                    <Property name="text" type="java.lang.String" value="X&#xd3;A"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnAnDMMouseClicked"/>
@@ -1209,7 +1209,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnHideTT">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="&#x1ea8;N"/>
+                    <Property name="text" type="java.lang.String" value="X&#xd3;A"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnHideTTMouseClicked"/>

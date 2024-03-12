@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class NhanSuRepo {
     DbConnection dbConnection;
     
-    //GETBYID
+ //GETBYID
     public NhanSu getIdByName(String name){
         String sql = "SELECT MaNhanVien, TenNhanVien FROM NhanVien\n" +
                     "WHERE Deleted!=1 AND TenNhanVien = ?";
@@ -139,7 +139,7 @@ public class NhanSuRepo {
     }
 
     public Boolean AddNew(NhanSu sp) {
-        String sql = " INSERT INTO NhanVien(MaNguoiDung,TenNhanVien,GioiTinh,SoDienThoai,DiaChi) VALUES(?,?,?,?,?) ";
+        String sql = " INSERT INTO NhanVien(MaNguoiDung,TenNhanVien,GioiTinh,SoDienThoai,DiaChi,Deleted) VALUES(?,?,?,?,?,0) ";
         
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, sp.getMaNguoiDung());
@@ -174,13 +174,12 @@ public class NhanSuRepo {
     }
 
     public Boolean updateNew(NhanSu ns){
-        String sql = "update NhanVien set TenNhanVien = ?, GioiTinh = ?,SoDienThoai = ?,DiaChi = ? where MaNhanVien = ? ";
+        String sql = "update NhanVien set GioiTinh = ?,SoDienThoai = ?,DiaChi = ? where TenNhanVien = ? ";
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setObject(1, ns.getTenNhanVien());
-            ps.setObject(2, ns.getGioiTinh());
-            ps.setObject(3, ns.getSoDienThoai());
-            ps.setObject(4, ns.getDiaChi());
-            ps.setObject(5, ns.getMaNguoiDung());
+            ps.setObject(1, ns.getGioiTinh());
+            ps.setObject(2, ns.getSoDienThoai());
+            ps.setObject(3, ns.getDiaChi());
+            ps.setObject(4, ns.getTenNhanVien());
             int kq = ps.executeUpdate();
                 return kq > 0;
         } catch (Exception e) {

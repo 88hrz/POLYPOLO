@@ -83,7 +83,7 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
     public NhanSu getModel(){
         NhanSu lh = new NhanSu();
         
-        lh.setMaNguoiDung(Integer.parseInt(txtMaNV.getText()));
+        lh.setMaNguoiDung(Integer.valueOf(nss.getListGV().get(nss.getListGV().size()-1).getUserID()));
         lh.setTenNhanVien(txtTenNV.getText());
         lh.setSoDienThoai(txtSDT.getText());
         lh.setDiaChi(txtDiaChi.getText());

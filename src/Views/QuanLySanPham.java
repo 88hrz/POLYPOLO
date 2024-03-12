@@ -814,7 +814,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
 
         jLabel26.setText("Mã Danh Mục:");
 
-        btnAnDM.setText("ẨN");
+        btnAnDM.setText("XÓA");
         btnAnDM.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnAnDMMouseClicked(evt);
@@ -1015,7 +1015,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
 
         jLabel24.setText("Mã Thuộc Tính:");
 
-        btnHideTT.setText("ẨN");
+        btnHideTT.setText("XÓA");
         btnHideTT.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnHideTTMouseClicked(evt);

@@ -77,6 +77,20 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
             return true;
         }
     }
+    
+    ////Validate tim kiem
+    public Boolean validateTimKiem(){
+        StringBuilder stb = new StringBuilder();
+        Validate v = new Validate();
+        
+        v.isEmpty(txtSearchKH, stb, "Vui lòng nhập tên cần tìm");
+        if (stb.length()>0) {
+            JOptionPane.showMessageDialog(this, stb);
+            return false;
+        }else{
+            return true;
+        }
+    }
     //GETMODEL
     public KhachHang getModel() {
         Integer maKH =  Integer.valueOf(khService.getList().get(khService.getList().size()-1).getMaKH());
@@ -89,6 +103,19 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
         return kh;
     }
+    ///Click hiện lêns THEM PHAN NAY
+    public void setModel(KhachHangViewModel kh){
+        txtMaKH.setText(String.valueOf(kh.getMaKH()));
+        txtTenKH.setText(kh.getTenKH());
+            System.out.println(kh.getTenKH());
+        if (kh.getGioiTinh().equals("Nam")) {
+            rdoNam.setSelected(true);
+        } else  {
+            rdoNu.setSelected(true);
+        }
+        txtSDT.setText(kh.getSoDT());
+        txtDiaChi.setText(kh.getDiaChi());
+    }
 
     //CLEAR FORM
     void clearForm() {
@@ -97,6 +124,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         txtSDT.setText("");
         txtDiaChi.setText("");
         rdoNam.setSelected(true);
+        txtSearchKH.setText("");
     }
 
     /**
@@ -121,8 +149,6 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         btnSua = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
-        btnDanhSachAn = new javax.swing.JButton();
-        btnBoAn = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
@@ -180,24 +206,10 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
             }
         });
 
-        btnXoa.setText("ẨN");
+        btnXoa.setText("Xóa");
         btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnXoaMouseClicked(evt);
-            }
-        });
-
-        btnDanhSachAn.setText("HIỂN THỊ DANH SÁCH ẨN");
-        btnDanhSachAn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDanhSachAnMouseClicked(evt);
-            }
-        });
-
-        btnBoAn.setText("BỎ ẨN");
-        btnBoAn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnBoAnMouseClicked(evt);
             }
         });
 
@@ -206,22 +218,14 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(btnBoAn, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnDanhSachAn))
+                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -233,11 +237,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
                     .addComponent(btnSua)
                     .addComponent(btnClear)
                     .addComponent(btnXoa))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDanhSachAn)
-                    .addComponent(btnBoAn))
-                .addContainerGap())
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP)), "Danh sách Khách Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 3, 14))); // NOI18N
@@ -259,6 +259,9 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(tblKhachHang);
+        if (tblKhachHang.getColumnModel().getColumnCount() > 0) {
+            tblKhachHang.getColumnModel().getColumn(2).setHeaderValue("Mã Hóa Đơn");
+        }
 
         jLabel1.setText("Tìm kiếm theo tên:");
 
@@ -387,11 +390,11 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
                         .addComponent(rdoNam)
                         .addComponent(rdoNu))
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(17, 17, 17)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -417,21 +420,23 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
         // CLICK
         int pos = tblKhachHang.getSelectedRow();
-        if (pos!=-1) {
-        Integer id = (Integer) tblKhachHang.getValueAt(pos, 0);
-
-        KhachHangViewModel kh = khService.getLisstt(id);
-        txtMaKH.setText(id.toString());
-        txtTenKH.setText(kh.getTenKH());
-            System.out.println(kh.getTenKH());
-        if (kh.getGioiTinh().equals("Nam")) {
-            rdoNam.setSelected(true);
-        } else  {
-            rdoNu.setSelected(true);
-        }
-        txtSDT.setText(kh.getSoDT());
-        txtDiaChi.setText(kh.getDiaChi());
-        }
+        KhachHangViewModel kh = khService.getList().get(pos);
+        setModel(kh);
+//        if (pos!=-1) {
+//        Integer id = (Integer) tblKhachHang.getValueAt(pos, 0);
+//
+//         kh = khService.getLisstt(id);
+//        txtMaKH.setText(id.toString());
+//        txtTenKH.setText(kh.getTenKH());
+//            System.out.println(kh.getTenKH());
+//        if (kh.getGioiTinh().equals("Nam")) {
+//            rdoNam.setSelected(true);
+//        } else  {
+//            rdoNu.setSelected(true);
+//        }
+//        txtSDT.setText(kh.getSoDT());
+//        txtDiaChi.setText(kh.getDiaChi());
+//        }
         Integer maHD = Integer.valueOf(tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 2).toString());
         loadTable2(khService.getList_Bang2(maHD));
     }//GEN-LAST:event_tblKhachHangMouseClicked
@@ -445,9 +450,10 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     private void btnSearchKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchKHMouseClicked
         // SEARCH
         ///Tìm đc rồi ạ
+        if(validateTimKiem()){
         String id = txtSearchKH.getText();
         ArrayList<KhachHangViewModel> ls = khService.getListSearch(id);
-        loadTableKH(ls);
+        loadTableKH(ls);}
     }//GEN-LAST:event_btnSearchKHMouseClicked
 
     private void btnThemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMouseClicked
@@ -470,13 +476,13 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
         // TODO add your handling code here:
-        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn ẩn khách hàng không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
+        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn xóa khách hàng không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             khService.XoaKH(getModel());
-            JOptionPane.showMessageDialog(this, "Ẩn khách hàng thành công!", "POLYPOLO thông báo", 0);
+            JOptionPane.showMessageDialog(this, "Xóa khách hàng thành công!", "POLYPOLO thông báo", 0);
             loadTableKH(khService.getList());
         } else {
-            JOptionPane.showMessageDialog(this, "Đã hủy thao tác ẩn khách hàng!", "POLYPOLO thông báo", 0);
+            JOptionPane.showMessageDialog(this, "Đã hủy thao tác xóa khách hàng!", "POLYPOLO thông báo", 0);
         }
     }//GEN-LAST:event_btnXoaMouseClicked
 
@@ -484,36 +490,9 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
-    private void btnDanhSachAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDanhSachAnMouseClicked
-        // TODO add your handling code here:
-        loadTableKH(khService.danhSchAn());
-    }//GEN-LAST:event_btnDanhSachAnMouseClicked
-
-    private void btnBoAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBoAnMouseClicked
-        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn bỏ ẩn khách hàng không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
-            int selectedRow = tblKhachHang.getSelectedRow();
-            if (selectedRow != -1) {
-                Integer maSP = Integer.valueOf(tblKhachHang.getModel().getValueAt(selectedRow, 0).toString());
-                KhachHang kh = new KhachHang();
-                kh.setMaKH(maSP);
-                if (khService.boAN(kh)) {
-                    JOptionPane.showMessageDialog(this, "Bỏ ẩn khách hàng thành công!", "POLYPOLO thông báo", 0);
-                    loadTableKH(khService.getList());
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng từ bảng!", "POLYPOLO thông báo", 0);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Đã hủy thao tác ẩn khách hàng!", "POLYPOLO thông báo", 0);
-        }
-    }//GEN-LAST:event_btnBoAnMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBoAn;
     private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnDanhSachAn;
     private javax.swing.JButton btnSearchKH;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;

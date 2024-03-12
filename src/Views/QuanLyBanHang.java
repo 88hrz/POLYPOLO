@@ -249,7 +249,6 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         btnTaoHD = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
         btnThanhToan = new javax.swing.JButton();
-        btnXuatHD = new javax.swing.JButton();
         lblTongTien = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         cboTenNV = new javax.swing.JComboBox<>();
@@ -413,8 +412,6 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
             }
         });
 
-        btnXuatHD.setText("IN HÓA ĐƠN");
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -423,9 +420,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                 .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(btnTaoHD)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnXuatHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnThanhToan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnThanhToan)
                 .addGap(18, 18, 18)
                 .addComponent(btnMoi)
                 .addGap(25, 25, 25))
@@ -438,9 +433,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                     .addComponent(btnTaoHD)
                     .addComponent(btnMoi)
                     .addComponent(btnThanhToan))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnXuatHD)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lblTongTien.setText("0");
@@ -526,7 +519,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dcsNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -638,10 +631,10 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(40, 40, 40))
         );
 
         pack();
@@ -843,7 +836,6 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnTaoHD;
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnXoaSanPham;
-    private javax.swing.JButton btnXuatHD;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboDanhMuc;
     private javax.swing.JComboBox<String> cboPhuongThuc;

@@ -117,15 +117,16 @@ public class KhachHangRepository {
 
     public boolean update(KhachHang kh) {
 
-        String sql = "update KhachHang set TenKhachHang = ? , GioiTinh = ? , SoDienThoai = ?, DiaChi = ?where MaKhachHang =? ";
+        String sql = "update KhachHang set TenKhachHang = ? , GioiTinh = ? , SoDienThoai = ?, "
+                + "DiaChi = ? where MaKhachHang = ?";
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, kh.getTenKH());
-            ps.setString(2, kh.getGioiTinh());
-            ps.setString(3, kh.getSoDT());
-            ps.setString(4, kh.getDiaChi());
-            ps.setString(5, kh.getMaKH().toString());
+            ps.setObject(1, kh.getTenKH());
+            ps.setObject(2, kh.getGioiTinh());
+            ps.setObject(3, kh.getSoDT());
+            ps.setObject(4, kh.getDiaChi());
+            ps.setInt(5, kh.getMaKH());
             int result = ps.executeUpdate();
 
             if (result > 0) {
@@ -173,9 +174,7 @@ public class KhachHangRepository {
 
     /////Danh sach da an
     public ArrayList<KhachHangViewModel> DanhSachAn() {
-        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh, KhachHang.SoDienThoai, KhachHang.DiaChi FROM KhachHang \n"
-                + "          INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon \n"
-                + "            WHERE KhachHang.Deleted = 1";
+        String sql = "Select MaKhachHang, TenKhachHang, MaHoaDon, GioiTinh, SoDienThoai, DiaChi from KhachHang where Deleted = 1";
         ArrayList<KhachHangViewModel> ls = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {

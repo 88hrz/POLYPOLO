@@ -7,6 +7,7 @@ package Repositories;
 import Models.NhanSu;
 import Models.TaiKhoan;
 import Models.User;
+import ViewModels.TaiKhoanViewModel;
 import ViewModels.UserViewModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +23,41 @@ import java.util.Date;
 public class UserRepository {
     DbConnection dbConnection;
 
+    public Boolean update(User u) {
+        String sql = "UPDATE [dbo].[NguoiDung]\n"
+                + "   SET [MatKhau] = ?\n"
+                + "WHERE TenDangNhap = ?";
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, u.getPassCode());
+            ps.setObject(2, u.getUserID());
+
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public String getTenDN(String tenDN) {
+        String sql = "Select NguoiDung.TenDangNhap from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung where TenDangNhap = '" + tenDN + "'";
+        TaiKhoanViewModel tkvm = new TaiKhoanViewModel();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tkvm.setTenDN(rs.getString("TenDangNhap"));
+                return tkvm.getTenDN();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Loi";
+    }
+    
     public User getListByUserId(String userID){
         String sql = "SELECT * FROM NguoiDung nd WHERE nd.TenDangNhap = ? ";
         User u = new User();

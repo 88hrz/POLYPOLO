@@ -15,8 +15,8 @@ import Repositories.DanhMucRepo;
 import Repositories.NhanSuRepo;
 import Repositories.SanPhamRepository;
 import ViewModels.HD_HoaDonViewModel;
+import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
-import ViewModels.SanPhamViewModel;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +29,13 @@ public class HoaDonService {
     SanPhamRepository spRepo = new SanPhamRepository();
     DanhMucRepo dmRepo = new DanhMucRepo();
     
+    //PRINT INVOICE
+    public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
+        return hdRepo.getListKHById(id);
+    }
+    public ArrayList<HD_GioHangViewModel> printInvoiceById(Integer id) {
+        return hdRepo.printInvoiceById(id);
+    }
     //GET TOTAL
     public HoaDon getTotal(Integer id) {
         return hdRepo.getTotal(id);
@@ -47,14 +54,7 @@ public class HoaDonService {
             return "Xóa sản phẩm thất bại :(";
         }
     }
-    public Boolean emptyBasket(int mahd){
-        return hdRepo.emptyBasket(mahd);
-//        if (check) {
-//            return "Xóa giỏ hàng thành công!";
-//        }else{
-//            return "Giỏ hàng đã trống!";
-//        }
-    }
+
     
     //GET LIST HOADON
     public ArrayList<HD_HoaDonViewModel> getListHoaDon(){

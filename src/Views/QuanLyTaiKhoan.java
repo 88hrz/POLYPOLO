@@ -102,7 +102,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
     //GETMODEL
     public TaiKhoan getModelTaiKhoan(){
         Integer userId = Integer.valueOf(uService.getAll().get(uService.getAll().size()-1).getMaNguoiDung());
-    //    Integer userId = Integer.valueOf(uService.getListUser().get(uService.getListUser().size()-1).getUserID());
+    //  Integer userId = Integer.valueOf(uService.getListUser().get(uService.getListUser().size()-1).getUserID());
         String hoTen = txtHoTen.getText().trim();
         String soDT = txtSDT.getText().trim();
         String diaChi = txtDiaChi.getText().trim();
@@ -713,7 +713,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        PaneQL_TK.addTab(".", QLTK_m);
+        PaneQL_TK.addTab("Quản Lý Tài Khoản", QLTK_m);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

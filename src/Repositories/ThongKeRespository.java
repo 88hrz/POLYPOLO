@@ -4,9 +4,9 @@
  */
 package Repositories;
 
-import Models.HoaDon;
 import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_HoaDonViewModel;
+import ViewModels.ThongKeViewDoanhThu;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -36,16 +36,16 @@ public class ThongKeRespository {
 
         return years;
     }
-    public ArrayList<Integer> showMonth() {
-        String sql = "SELECT MONTH(NgayLap) AS ThangLap FROM HoaDon WHERE HoaDon.Deleted!=1 GROUP BY MONTH(NgayLap);";
+    public ArrayList<Integer> showMonth(int year) {
+        String sql = "SELECT DISTINCT MONTH(NgayLap) AS ThangLap FROM HoaDon WHERE YEAR(NgayLap) = ? ORDER BY ThangLap;";
         ArrayList<Integer> months = new ArrayList<>();
-                
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)) {
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setInt(1, year);  // Set the year parameter
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
-                Integer namLap = rs.getInt("ThangLap");
-                months.add(namLap);
+            while (rs.next()) {
+                Integer thangLap = rs.getInt("ThangLap");
+                months.add(thangLap);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,6 +53,23 @@ public class ThongKeRespository {
 
         return months;
     }
+//    public ArrayList<Integer> showMonth() {
+//        String sql = "SELECT MONTH(NgayLap) AS ThangLap FROM HoaDon WHERE HoaDon.Deleted!=1 GROUP BY MONTH(NgayLap);";
+//        ArrayList<Integer> months = new ArrayList<>();
+//                
+//        try (Connection conn = dbConnection.getConnection();
+//                PreparedStatement ps = conn.prepareCall(sql)) {
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {                
+//                Integer namLap = rs.getInt("ThangLap");
+//                months.add(namLap);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return months;
+//    }
     
     
     
@@ -226,8 +243,6 @@ public class ThongKeRespository {
         }
         return hd;
     }
-
-    
     //
     public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Integer maHDD) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
@@ -256,14 +271,16 @@ public class ThongKeRespository {
         return lsHoaDon;
     }
 
-    public ArrayList<HD_HoaDonViewModel> getListHoaDonView(String bd, String kt) {
+    public ArrayList<HD_HoaDonViewModel> getListHoaDonVieww(java.util.Date bd, java.util.Date kt) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
                 + ", hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
                 + "INNER JOIN KhachHang kh ON kh.MaHoaDon = hdct.MaHoaDon\n"
-                + "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where hd.NgayLap BETWEEN '" + bd + "' and '" + kt + "'";
+                + "INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon where hd.NgayLap BETWEEN ? and ?";
         ArrayList<HD_HoaDonViewModel> lsHoaDon = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, bd);
+            ps.setObject(2, kt);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maHD = rs.getInt("MaHoaDonChiTiet");
@@ -335,5 +352,95 @@ public class ThongKeRespository {
             e.printStackTrace();
         }
         return lsHoaDon;
+    }
+
+///GetList bang doanh thu
+    public ArrayList<ThongKeViewDoanhThu> getListByNam(Integer nam) {
+        String sql = "SELECT \n"
+                + "    MONTH(NgayLap) AS Thang,\n"
+                + "    COUNT(*) AS SoLuongHoaDon,\n"
+                + "    SUM(TongTien) AS TongTien \n"
+                + "FROM \n"
+                + "    HoaDon\n"
+                + "WHERE \n"
+                + "    YEAR(NgayLap) = ?\n"
+                + "GROUP BY \n"
+                + "    YEAR(NgayLap), MONTH(NgayLap)\n"
+                + "ORDER BY \n"
+                + "    YEAR(NgayLap), MONTH(NgayLap)";
+        ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, nam); // Thiết lập tham số nam
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer thang = rs.getInt("Thang");
+                Integer soL = rs.getInt("SoLuongHoaDon");
+                Integer tongTien = rs.getInt("TongTien");
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien);
+                ls.add(tkv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+/////Load Bieu Do Thong Ke
+
+    public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThu() {
+        String sql = "SELECT \n"
+                + "    MONTH(NgayLap) AS Thang,\n"
+                + "    COUNT(*) AS SoLuongHoaDon,\n"
+                + "    SUM(TongTien) AS TongTien \n"
+                + "FROM \n"
+                + "    HoaDon\n"
+                + "GROUP BY \n"
+                + "    YEAR(NgayLap), MONTH(NgayLap)\n"
+                + "ORDER BY \n"
+                + "    YEAR(NgayLap), MONTH(NgayLap)";
+        ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer thang = rs.getInt("Thang");
+                Integer soL = rs.getInt("SoLuongHoaDon");
+                Integer tongTien = rs.getInt("TongTien");
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien);
+                ls.add(tkv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+
+    /////Load Bieu Do Thong Ke theo thang
+    public ArrayList<ThongKeViewDoanhThu> getListThongKeTheoThang(Integer thang, Integer nam) {
+        String sql = "SELECT NgayLap,\n"
+                + "    COUNT(*) AS SoLuongHoaDon,\n"
+                + "    SUM(TongTien) AS TongTien \n"
+                + "FROM \n"
+                + "    HoaDon \n"
+                + "WHERE \n"
+                + "    MONTH(NgayLap) = ? AND YEAR(NgayLap) = ?\n"
+                + "GROUP BY \n"
+                + "    YEAR(NgayLap), MONTH(NgayLap), NgayLap\n" // This line seems redundant
+                + "ORDER BY \n"
+                + "    YEAR(NgayLap), MONTH(NgayLap);";
+        ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setInt(1, thang); // Set the month parameter
+            ps.setInt(2, nam);   // Set the year parameter
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Date ngay = rs.getDate("NgayLap");
+                Integer soLuong = rs.getInt("SoLuongHoaDon");
+                Integer tongTien = rs.getInt("TongTien");
+                ThongKeViewDoanhThu tk = new ThongKeViewDoanhThu(soLuong, tongTien, ngay);
+                ls.add(tk);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
     }
 }

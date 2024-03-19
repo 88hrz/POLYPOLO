@@ -1453,7 +1453,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
         // IN
         try {
             XSSFWorkbook workBook = new XSSFWorkbook();
-            XSSFSheet sheet = workBook.createSheet("Danh Sach San Pham");
+            XSSFSheet sheet = workBook.createSheet("Danh Sách Sản Phẩm POLYPOLO");
             
             //STYLE TITLE
             XSSFRow titleRow = sheet.createRow(0);
@@ -1514,7 +1514,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
             cell.setCellValue("Trạng Thái");
 
             cell = row.createCell(9, org.apache.poi.ss.usermodel.CellType.STRING);
-            cell.setCellValue("Số Lượng");
+            cell.setCellValue("Tồn Kho");
             
             ArrayList<SanPhamViewModel> ls = spService.getListSanPham();
             for (int i = 0; i < ls.size(); i++) {
@@ -1564,7 +1564,6 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
         JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
-
     }//GEN-LAST:event_btnInMouseClicked
 
     private void LoadHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadHideActionPerformed

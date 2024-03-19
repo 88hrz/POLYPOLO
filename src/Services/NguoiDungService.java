@@ -28,11 +28,9 @@ public class NguoiDungService {
             return "Sửa thất bai";
         }
     }
-    
     public Boolean checkLogin(String userID, String passCode){
         return userRepo.checkLogin(userID, passCode);
-    }
-            
+    }    
     //GETLIST
     public ArrayList<UserViewModel> getList(){
         return userRepo.getList();
@@ -63,14 +61,10 @@ public class NguoiDungService {
     public void hideAccount(User u){
         userRepo.hideAccount(u);
     }
-    
-    
-    
     //CHECK ID
     public Boolean checkName(String name){
         return userRepo.checkName(name);
     }
-    
     //ADD
     public String addAccount(TaiKhoan tk){
         Boolean check = userRepo.addAccount(tk);

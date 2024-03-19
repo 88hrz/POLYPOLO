@@ -15,11 +15,6 @@ import javax.swing.JOptionPane;
  */
 public class Admin_View extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
-    /**
-     * Creates new form Main
-     * @param u
-     */
-    // ...
 
     public Admin_View(User u){
         initComponents();
@@ -33,9 +28,9 @@ public class Admin_View extends javax.swing.JFrame {
        
         menuName.setText("| Trang Chủ");
         
-//        QuanLyBanHang banHang = new QuanLyBanHang();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(banHang).setVisible(true);
+        QuanLyBanHang banHang = new QuanLyBanHang();
+        jGUIForms.removeAll();
+        jGUIForms.add(banHang).setVisible(true);
 //
 //        QuanLySanPham sanPham = new QuanLySanPham();
 //        jGUIForms.removeAll();
@@ -45,9 +40,13 @@ public class Admin_View extends javax.swing.JFrame {
 //        jGUIForms.removeAll();
 //        jGUIForms.add(taiKhoan).setVisible(true);
 
-        TrangChu trangChu = new TrangChu();
-        jGUIForms.removeAll();
-        jGUIForms.add(trangChu).setVisible(true);
+//        TrangChu trangChu = new TrangChu();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(trangChu).setVisible(true);
+//
+//          Admin_Window a_W = new Admin_Window();
+//          jGUIForms.removeAll();
+//          jGUIForms.add(a_W).setVisible(true);
     }
 
     
@@ -106,10 +105,10 @@ public class Admin_View extends javax.swing.JFrame {
         menuName.setForeground(new java.awt.Color(255, 255, 255));
         ngang.add(menuName, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 50, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 20)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Montserrat ExtraBold", 3, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("PolyPolo");
-        ngang.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        ngang.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 100, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));

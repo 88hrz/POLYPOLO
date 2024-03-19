@@ -297,8 +297,8 @@
         <Container class="javax.swing.JPanel" name="QLTK_m">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName=".">
-                <Property name="tabTitle" type="java.lang.String" value="."/>
+              <JTabbedPaneConstraints tabName="Qu&#x1ea3;n L&#xfd; T&#xe0;i Kho&#x1ea3;n">
+                <Property name="tabTitle" type="java.lang.String" value="Qu&#x1ea3;n L&#xfd; T&#xe0;i Kho&#x1ea3;n"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

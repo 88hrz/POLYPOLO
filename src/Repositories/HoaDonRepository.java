@@ -8,6 +8,7 @@ import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
 import ViewModels.HD_HoaDonViewModel;
+import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +19,86 @@ import java.util.ArrayList;
 public class HoaDonRepository {
     DbConnection dbConnection;
     
-    
+    //INVOICE
+    public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
+        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, hd.PhuongThucThanhToan, kh.SoDienThoai, kh.DiaChi FROM HoaDon hd INNER JOIN KhachHang kh ON Hd.MaHoaDon = kh.MaHoaDon \n" +
+                        "WHERE kh.Deleted!=1 AND hd.Deleted!=1 AND kh.MaHoaDon = ?";
+        ArrayList<HD_InvoiceViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maHD = rs.getInt("MaHoaDon");
+                String tenNV = rs.getString("TenNhanVien");
+                String tenKH = rs.getString("TenKhachHang");
+                String phuongThuc = rs.getString("PhuongThucThanhToan");
+                String soDT = rs.getString("SoDienThoai");
+                String diaC = rs.getString("DiaChi");
+                
+                HD_InvoiceViewModel listKH = new HD_InvoiceViewModel(maHD, tenNV, tenKH, soDT, diaC, phuongThuc);
+                ls.add(listKH);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    public ArrayList<HD_GioHangViewModel> printInvoiceById(Integer id) {
+        String sql = "SELECT spct.MaSanPham, spct.TenSanPhamChiTiet\n" +
+"                , ms.TenMau, s.TenSize, hdct.SoLuong, hdct.DonGia, SUM(hdct.DonGia * hdct.SoLuong) AS 'Total' FROM DanhMuc dm\n" +
+"                INNER JOIN SanPham sp ON dm.MaDanhMuc = sp.MaDanhMuc\n" +
+"                INNER JOIN SanPhamChiTiet spct ON spct.MaSanPham = sp.MaSanPham\n" +
+"                INNER JOIN MauSac ms ON ms.MaMau = spct.MaMau\n" +
+"                INNER JOIN Size s ON s.MaSize = spct.MaSize\n" +
+"                INNER JOIN HoaDonChiTiet hdct ON hdct.MaSanPhamChiTiet = spct.MaSanPhamChiTiet\n" +
+"                INNER JOIN HoaDon hd ON hd.MaHoaDon = hdct.MaHoaDon\n"
+                + "WHERE hd.MaHoaDon = ?"
+                + "				GROUP BY spct.MaSanPham, spct.TenSanPhamChiTiet\n"
+                + "                , ms.TenMau, s.TenSize, hdct.SoLuong, hdct.DonGia\n"
+                + "                ";
+        ArrayList<HD_GioHangViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maSP = rs.getInt("MaSanPham");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String tenMau = rs.getString("TenMau");
+                String tenSz = rs.getString("TenSize");
+                Integer soL = rs.getInt("SoLuong");
+                Double donG = rs.getDouble("DonGia");
+                Double total = rs.getDouble("Total");
+                
+                HD_GioHangViewModel invoice = new HD_GioHangViewModel(maSP, tenSP, tenMau, tenSz, soL, donG, total);
+                ls.add(invoice);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    public HD_GioHangViewModel updateSoLuongSP(Integer maHD){
+        String sql = "UPDATE HoaDonChiTiet \n" +
+                    "SET SoLuong = 1 + SoLuong\n" +
+                    "WHERE MaHoaDon = ?";
+        HD_GioHangViewModel gh = new HD_GioHangViewModel();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, maHD);
+            
+            gh = new HD_GioHangViewModel(maHD);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gh;
+    }
     //EMPTY BASKET
     public Boolean deleteProduct(int maHD) {
         String sql = "delete HoaDonChiTiet where MaHoaDonChiTiet = ?";
@@ -30,22 +110,6 @@ public class HoaDonRepository {
 
             int check = ps.executeUpdate();
             if (check > 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    public Boolean emptyBasket(int mahd){
-        String sql = "UPDATE HoaDon SET TongTien = 0 WHERE MaHoaDon = ?";
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
-            ps.setObject(1, mahd);
-            
-            int check = ps.executeUpdate();
-            if (check>0) {
                 return true;
             }
         } catch (Exception e) {

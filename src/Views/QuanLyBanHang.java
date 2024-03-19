@@ -8,17 +8,33 @@ import Models.DanhMuc;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
 import Models.NhanSu;
-import Models.SanPham;
 import Models.SanPhamChiTiet;
 import Services.HoaDonService;
 import Validator.Validate;
 import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_HoaDonViewModel;
+import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
-import ViewModels.SanPhamViewModel;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.border.Border;
+import com.itextpdf.layout.border.DashedBorder;
+import com.itextpdf.layout.border.SolidBorder;
+import com.itextpdf.layout.element.BlockElement;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.Property;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.pdfa.PdfADocument;
 import java.awt.Color;
-import java.sql.Date;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
@@ -33,6 +49,7 @@ import javax.swing.JOptionPane;
 public class QuanLyBanHang extends javax.swing.JInternalFrame {
     HoaDonService hdService = new HoaDonService();
     DecimalFormat formatter = new DecimalFormat("#,###");
+    LocalDate currentDate = LocalDate.now();
     /**
      * Creates new form QuanLyBanHang
      */
@@ -158,6 +175,8 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         Validate v = new Validate();
         
         v.isEmpty(txtTenKH, stb, "Chưa nhập tên khách hàng!");
+        v.isDateSelected(dcsNgayLap, stb, "Chưa chọn ngày tạo hóa đơn!");
+        v.isDateValid(dcsNgayLap, stb, "Ngày tạo hóa đơn không hợp lệ!");
         if (stb.length()>0) {
             JOptionPane.showMessageDialog(this, stb);
             btnThanhToan.setEnabled(false);
@@ -218,6 +237,16 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         
         return hd;
     }
+    
+    //INVOICE ELEMENTS
+    static Cell storeCell(String txt) {
+        return new Cell().add(txt).setFontSize(15f).setBold().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
+    }
+    static Cell get10fLeftCell(String txt, Boolean isBold) {
+        Cell customerCell = new Cell().add(txt).setFontSize(13f).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
+        return isBold ? customerCell.setBold():customerCell;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -249,6 +278,8 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         btnTaoHD = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
         btnThanhToan = new javax.swing.JButton();
+        btnInHD = new javax.swing.JButton();
+        btnHuyHD = new javax.swing.JButton();
         lblTongTien = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         cboTenNV = new javax.swing.JComboBox<>();
@@ -366,7 +397,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
                 .addComponent(btnXoaSanPham)
@@ -412,17 +443,38 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
             }
         });
 
+        btnInHD.setText("IN HÓA ĐƠN");
+        btnInHD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInHDMouseClicked(evt);
+            }
+        });
+
+        btnHuyHD.setText("HỦY HÓA ĐƠN");
+        btnHuyHD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHuyHDMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(btnTaoHD)
-                .addGap(18, 18, 18)
-                .addComponent(btnThanhToan)
-                .addGap(18, 18, 18)
-                .addComponent(btnMoi)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(btnInHD)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnHuyHD))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap(32, Short.MAX_VALUE)
+                        .addComponent(btnTaoHD)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnThanhToan)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMoi)))
                 .addGap(25, 25, 25))
         );
         jPanel5Layout.setVerticalGroup(
@@ -433,7 +485,11 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                     .addComponent(btnTaoHD)
                     .addComponent(btnMoi)
                     .addComponent(btnThanhToan))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnInHD)
+                    .addComponent(btnHuyHD))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         lblTongTien.setText("0");
@@ -497,9 +553,9 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                     .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearchKH)
                     .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(cboTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -519,7 +575,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dcsNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -630,9 +686,9 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(40, 40, 40))
         );
@@ -707,6 +763,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
             String soL = JOptionPane.showInputDialog(this, "Nhập số lượng SP muốn mua: ", "POLYPOLO xác nhận", 0);
             if (soL != null && !soL.isEmpty()) {
                 int soLuongMua = Integer.parseInt(soL);
+                
                 int pos = tblSanPham.getSelectedRow();
                 HD_SanPhamViewModel sp = hdService.getListSanPham().get(pos);
 
@@ -737,30 +794,6 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Bạn cần chọn hoặc tạo hóa đơn mới trước khi thêm sản phẩm vào giỏ hàng!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
         }
-//        DecimalFormat format = new DecimalFormat("#,###");
-//        
-//        String soL = JOptionPane.showInputDialog(this, "Nhập số lượng SP muốn mua: ");
-//        int pos = tblSanPham.getSelectedRow();
-//        HD_SanPhamViewModel sp = hdService.getListSanPham().get(pos);
-//        if (!soL.isEmpty()) {
-//            int posHD = tblHoaDon.getSelectedRow();
-//            Integer maHD = Integer.valueOf(tblHoaDon.getValueAt(posHD, 0).toString());
-//            Integer maSP = (Integer) tblSanPham.getValueAt(pos, 0);
-//            String giaV = tblSanPham.getValueAt(pos, 5).toString();           
-//            Double gia = Double.parseDouble(giaV);
-//            
-//            HoaDonChiTiet hdct = new HoaDonChiTiet(maHD, maSP, Integer.parseInt(soL), gia);
-//            JOptionPane.showMessageDialog(this, hdService.addHDCT(hdct));
-//            
-//            hdService.updateSP(sp.getSoLuong()-Integer.parseInt(soL), maSP);
-//            
-//            loadTableGioHang(hdService.getListGioHangById(maHD));
-//            loadTableSanPham(hdService.getListSanPham());
-//
-//            Double tongTien = hdService.getTotal(maHD).getTongTien();
-//            String formattedTongTien = format.format(tongTien);
-//            lblTongTien.setText(formattedTongTien);
-//        }
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
     private void btnMoiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMoiMouseClicked
@@ -779,7 +812,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
 
     private void btnSearchHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchHDMouseClicked
         //SEARCH
-        if (cboTrangThai.getSelectedItem().equals("Đã thanh toán")) {;
+        if (cboTrangThai.getSelectedItem().equals("Đã thanh toán")) {
             loadTableHoaDonView(hdService.getListByTrangThai("Đã thanh toán"));
             btnThanhToan.setEnabled(false);
             btnXoaSanPham.setEnabled(false);
@@ -827,8 +860,118 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         loadTableSanPham(hdService.getListByDanhMuc(danhMuc));
     }//GEN-LAST:event_btnFilterSPMouseClicked
 
+    private void btnInHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInHDMouseClicked
+        // IN HOADON
+        Integer pos = tblHoaDon.getSelectedRow();
+        Integer maHD = (Integer) tblHoaDon.getValueAt(pos, 0);
+        String path = "C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\invoice.pdf";
+        String fontPath = "C:\\Users\\X1\\OneDrive\\Documents\\resouces\\VietFontsWeb1_ttf\\vuArial.ttf";
+        
+        try (PdfWriter pdfWriter = new PdfWriter(path); 
+                PdfDocument pdfDocument = new PdfDocument(pdfWriter); 
+                Document doc = new Document(pdfDocument)) {
+            pdfDocument.setDefaultPageSize(PageSize.A4);
+            PdfFont font = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
+
+            float twoCol = 300f;
+            float twoCol150 = twoCol + 150f;
+            float twoColWidth[] = {twoCol150,twoCol};
+            float fiveCol = 100f;
+            float fiveColWidth[] = {40f,180f,80f,100f,100f};
+        //    float fullWidth[] = {twoCol150+twoCol};
+            float fullWidth[] = {fiveCol*5};
+            
+            //ROW 1 
+            Table table = new Table(twoColWidth);
+            Paragraph shiftN = new Paragraph("\n");
+            table.addCell(new Cell().add("INVOICE").setBorder(Border.NO_BORDER).setBold().setFontSize(20f));
+            table.addCell(new Cell().add("POLYPOLO - your faves \nTel: 0375 908 159\n Add: 21 Chau Long, Ba Dinh, HN").setBorder(Border.NO_BORDER));
+            
+            Border b = new SolidBorder(com.itextpdf.kernel.color.Color.LIGHT_GRAY, 2f);
+            Table divider = new Table(fullWidth);
+            divider.setBorder(b);
+            
+            doc.add(table);
+            doc.add(shiftN);
+            doc.add(divider);
+            doc.add(shiftN);
+            
+            //ROW 2
+            Table twoColTable = new Table(twoColWidth);
+            twoColTable.addCell(storeCell("Store Information").setFont(font));
+            twoColTable.addCell(storeCell("Customer Infos").setFont(font));
+            doc.add(twoColTable.setMarginBottom(8f));
+            
+            ArrayList<HD_InvoiceViewModel> lsKH = hdService.getListKHById(maHD);
+            for (int i = 0; i < lsKH.size(); i++) {
+                Table twoColTable2 = new Table(twoColWidth);
+                twoColTable2.addCell(get10fLeftCell("Store:", true).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("Customer:", true).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("PoloPro - CN Hà Nội", false));                
+                twoColTable2.addCell(get10fLeftCell(    lsKH.get(i).getTenKhachHang(), false).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("Tel:", true));
+                twoColTable2.addCell(get10fLeftCell("Tel: ", true)).setFont(font);
+                twoColTable2.addCell(get10fLeftCell("    0898 888 888", false));
+                twoColTable2.addCell(get10fLeftCell(    lsKH.get(i).getSoDT(), false).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("Add:", true).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("Add:", true).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("    21 Châu Long, Ba Đình, Hà Nội", false));
+                twoColTable2.addCell(get10fLeftCell(    lsKH.get(i).getDiaChi(), false).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("Email:", true));
+                twoColTable2.addCell(get10fLeftCell("     ", true).setFont(font));
+                twoColTable2.addCell(get10fLeftCell("polypolo@email.com", false));
+                
+                doc.add(twoColTable2.setMarginBottom(10f));
+            }
+            
+            Table divider2 = new Table(fullWidth);
+            Border bdg = new DashedBorder(com.itextpdf.kernel.color.Color.DARK_GRAY, 0.5f);
+            doc.add(divider2.setBorder(bdg).setMarginBottom(10f));
+            
+            //ROW 3
+            Paragraph thirdPara = new Paragraph("Danh Sách Sản Phẩm").setFont(font).setFontSize(15f);
+            doc.add(thirdPara.setBold());
+            
+            Table fiveColTable1 = new Table(fiveColWidth);
+            fiveColTable1.setBackgroundColor(com.itextpdf.kernel.color.Color.BLACK, 0.7f);
+            fiveColTable1.addCell(new Cell().add("STT").setBold().setFontColor(com.itextpdf.kernel.color.Color.WHITE).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.CENTER));
+            fiveColTable1.addCell(new Cell().add("Tên Sản Phẩm").setFont(font).setBold().setFontColor(com.itextpdf.kernel.color.Color.WHITE).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.CENTER));
+            fiveColTable1.addCell(new Cell().add("Số Lượng").setFont(font).setBold().setFontColor(com.itextpdf.kernel.color.Color.WHITE).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.CENTER));
+            fiveColTable1.addCell(new Cell().add("Đơn Giá").setFont(font).setBold().setFontColor(com.itextpdf.kernel.color.Color.WHITE).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.CENTER));
+            fiveColTable1.addCell(new Cell().add("Thành Tiền").setFont(font).setBold().setFontColor(com.itextpdf.kernel.color.Color.WHITE).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.CENTER));
+            doc.add(fiveColTable1);
+            
+            ArrayList<HD_GioHangViewModel> lsHD = hdService.printInvoiceById(maHD);
+            for (int i = 0; i < lsHD.size(); i++) {
+                Table fiveColTable2 = new Table(fiveColWidth);
+                fiveColTable2.addCell(new Cell().add(String.valueOf(i + 1)).setTextAlignment(TextAlignment.CENTER));
+                fiveColTable2.addCell(new Cell().add(lsHD.get(i).getTenSP()).setTextAlignment(TextAlignment.CENTER).setFont(font));
+                fiveColTable2.addCell(new Cell().add(String.valueOf(lsHD.get(i).getSoLuong())).setTextAlignment(TextAlignment.CENTER));
+                fiveColTable2.addCell(new Cell().add(String.valueOf(lsHD.get(i).getDonGia())).setTextAlignment(TextAlignment.CENTER));
+                fiveColTable2.addCell(new Cell().add(String.valueOf(lsHD.get(i).getThanhTien())).setTextAlignment(TextAlignment.CENTER));
+                doc.add(fiveColTable2.setBorder(Border.NO_BORDER));
+            } 
+            
+            doc.add(divider2.setBorder(bdg).setMarginBottom(10f));
+            Paragraph footPara = new Paragraph("Tổng Tiền: ").setFont(font).setFontSize(15f);
+            doc.add(thirdPara.setBold());
+            
+            doc.close();
+            System.out.println("in thanh congg");            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnInHDMouseClicked
+
+    private void btnHuyHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyHDMouseClicked
+        // HUY HD
+        
+    }//GEN-LAST:event_btnHuyHDMouseClicked
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFilterSP;
+    private javax.swing.JButton btnHuyHD;
+    private javax.swing.JButton btnInHD;
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearchHD;

@@ -9,6 +9,7 @@ import Repositories.HoaDonRepository;
 import Repositories.ThongKeRespository;
 import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_HoaDonViewModel;
+import ViewModels.ThongKeViewDoanhThu;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,7 +18,6 @@ import java.util.Date;
  * @author hmail
  */
 public class ThongKeService {
-
     ThongKeRespository tkrp = new ThongKeRespository();
     HoaDonRepository hdrp = new HoaDonRepository();
 
@@ -27,10 +27,14 @@ public class ThongKeService {
         return tkrp.showYear();
     }
 
-    public ArrayList<Integer> showMonth() {
-        return tkrp.showMonth();
-    }
+//    public ArrayList<Integer> showMonth() {
+//        return tkrp.showMonth();
+//    }
 
+    public ArrayList<Integer> showMonth(Integer Year) {
+        return tkrp.showMonth(Year);
+    }
+        
     public ArrayList<HoaDon> getListHD() {
         return hdrp.getList();
     }
@@ -70,9 +74,10 @@ public class ThongKeService {
         return tkrp.getListHoaDonView(ma);
     }
 
-    public ArrayList<HD_HoaDonViewModel> TheoNgay(String bt, String kt) {
-        return tkrp.getListHoaDonView(bt, kt);
+    public ArrayList<HD_HoaDonViewModel> TheoNgay(Date bd, Date kt) {
+        return tkrp.getListHoaDonVieww(bd, kt);
     }
+    
 
     public ArrayList<HoaDon> TTAA() {
         return hdrp.getList();
@@ -84,5 +89,15 @@ public class ThongKeService {
 
     public HD_HoaDonViewModel DonHang() {
         return tkrp.TonDonHang();
+    }
+    
+    public ArrayList<ThongKeViewDoanhThu> getListByNam(Integer nam){
+        return tkrp.getListByNam(nam);
+    }
+    public ArrayList<ThongKeViewDoanhThu> getListDoanhThu(){
+        return tkrp.getListBangDoanhThu();
+    }
+    public ArrayList<ThongKeViewDoanhThu> getListThongKeTheoThang(Integer thang, Integer nam){
+        return tkrp.getListThongKeTheoThang(thang, nam);
     }
 }

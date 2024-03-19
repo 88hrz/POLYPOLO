@@ -4,9 +4,10 @@
  */
 package Validator;
 
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
@@ -20,6 +21,38 @@ import javax.swing.JTextField;
  */
 public class Validate {
 
+    public Boolean isDateSelected(JDateChooser calendar, StringBuilder stb, String msg) {
+        Date date = calendar.getDate();
+        if (date == null) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("\n");
+            return false;
+        }
+        return true;
+    }
+    
+    public Boolean isDateValid(JDateChooser calendar, StringBuilder stb, String msg) {
+        Date date = calendar.getDate();
+        if (date == null) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("\n").append("Không được để trống ngày!").append("\n");
+            return false;
+        }
+
+        LocalDate selectedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+
+        if (selectedDate.isBefore(currentDate)) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("Ngày tạo hóa đơn không hợp lệ!").append("\n");
+            stb.append(msg).append("Ngày tạo hóa đơn phải từ hôm nay trở đi!").append("\n");
+            return false;
+        }
+
+        calendar.setBackground(Color.white);
+        return true;
+    }
+    
     public Boolean isRadioButtonSelected(ButtonGroup buttonGroup, StringBuilder stb, String msg) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -29,16 +62,6 @@ public class Validate {
         }
         stb.append(msg).append("\n");
         return false;
-    }
-
-    public Boolean isDateSelected(JDateChooser calendar, StringBuilder stb, String msg) {
-        Date date = calendar.getDate();
-        if (date == null) {
-            calendar.setBackground(Color.yellow);
-            stb.append(msg).append("\n");
-            return false;
-        }
-        return true;
     }
 
     public Boolean isEmpty(JTextField txt, StringBuilder stb, String msg) {

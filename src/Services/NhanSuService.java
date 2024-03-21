@@ -16,14 +16,15 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class NhanSuService {
+
     NhanSuRepo spr = new NhanSuRepo();
     NguoiDungRepo kmr = new NguoiDungRepo();
-    
+
     //GETLIST BY ID
-    public NhanSuViewModel getListById(Integer id){
+    public NhanSuViewModel getListById(Integer id) {
         return spr.getListById(id);
     }
-    
+
     public ArrayList<NhanSuViewModel> getList() {
         return spr.getList();
     }
@@ -35,12 +36,12 @@ public class NhanSuService {
     public ArrayList<NhanSuViewModel> SearchByName(String name) {
         return spr.searchByName(name);
     }
-    
-    public User getByID(String tenGV){
+
+    public User getByID(String tenGV) {
         return kmr.findID(tenGV);
     }
-    
-    public String AddNew(NhanSu sp ){
+
+    public String AddNew(NhanSu sp) {
         Boolean check = spr.AddNew(sp);
         if (check == true) {
             return "Them Thanh Cong";
@@ -48,21 +49,27 @@ public class NhanSuService {
             return "Them That Bai";
         }
     }
-    public String delete(String maNV){
+
+    public String delete(String maNV) {
         Boolean check = spr.delete(maNV);
-        if(check){
+        if (check) {
             return "Xóa thành công";
-        }else{
+        } else {
             return "Xóa thất bại";
         }
     }
-        public String  updateNew(NhanSu ns){
+
+    public String updateNew(NhanSu ns) {
         Boolean check = spr.updateNew(ns);
-        if(check){
+        if (check) {
             return "Cập nhật thành công";
-        }else{
+        } else {
             return "Cập nhật thất bại";
         }
     }
-        
+
+    public Boolean checkName(Integer maND) {
+        return spr.checkName(maND);
+    }
+
 }

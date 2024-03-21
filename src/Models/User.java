@@ -15,12 +15,22 @@ public class User {
     public User() {
     }
 
+    public User(Integer userID) {
+        this.userID = userID;
+    }
+    
     public User(Integer userID, String userName, String passCode, String role) {
         this.userID = userID;
         this.userName = userName;
         this.passCode = passCode;
         this.role = role;
     }  
+
+    public User(String userName, String passCode, String role) {
+        this.userName = userName;
+        this.passCode = passCode;
+        this.role = role;
+    }
     
     public User(String userName, String passCode) {
         this.userName = userName;
@@ -58,4 +68,13 @@ public class User {
     public void setPassCode(String passCode) {
         this.passCode = passCode;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "userID=" + userID + ", userName=" + userName + ", passCode=" + passCode + ", role=" + role + '}';
+    }
+    
 }
+/*
+dòng 18, 22,29,40
+*/

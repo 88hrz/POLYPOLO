@@ -24,6 +24,23 @@ public class NhanSu {
         this.maNhanVien = maNhanVien;
     }
 
+    public NhanSu(String tenNhanVien, String gioiTinh, String soDienThoai, String diaChi, Integer maNguoiDung, Integer maNhanVien) {
+        this.tenNhanVien = tenNhanVien;
+        this.gioiTinh = gioiTinh;
+        this.soDienThoai = soDienThoai;
+        this.diaChi = diaChi;
+        this.maNguoiDung = maNguoiDung;
+        this.maNhanVien = maNhanVien;
+    }
+    
+    public NhanSu(String tenNhanVien, String gioiTinh, String soDienThoai, String diaChi, Integer maNguoiDung) {
+        this.tenNhanVien = tenNhanVien;
+        this.gioiTinh = gioiTinh;
+        this.soDienThoai = soDienThoai;
+        this.diaChi = diaChi;
+        this.maNguoiDung = maNguoiDung;
+    }
+    
     public Integer getMaNhanVien() {
         return maNhanVien;
     }

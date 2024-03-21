@@ -13,12 +13,25 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -308,6 +321,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
         cboNam = new javax.swing.JComboBox<>();
         jScrollPane5 = new javax.swing.JScrollPane();
         tbBangTheoThang = new javax.swing.JTable();
+        btnINTKtheothang = new javax.swing.JButton();
+        btnINTKtheonam = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -549,7 +564,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblTienHoaDonThanh)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -579,7 +594,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(224, 224, 224)
                 .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(402, Short.MAX_VALUE))
+                .addContainerGap(373, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -701,12 +716,29 @@ public class TrangChu extends javax.swing.JInternalFrame {
         ));
         jScrollPane5.setViewportView(tbBangTheoThang);
 
+        btnINTKtheothang.setText("IN TK Theo Tháng");
+        btnINTKtheothang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnINTKtheothangMouseClicked(evt);
+            }
+        });
+
+        btnINTKtheonam.setText("IN TK Theo Năm");
+        btnINTKtheonam.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnINTKtheonamMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpanel5555Layout = new javax.swing.GroupLayout(jpanel5555);
         jpanel5555.setLayout(jpanel5555Layout);
         jpanel5555Layout.setHorizontalGroup(
             jpanel5555Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel5555Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnINTKtheothang)
+                .addGap(41, 41, 41)
+                .addComponent(btnINTKtheonam)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(42, 42, 42)
                 .addComponent(cboNam, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -714,7 +746,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
             .addGroup(jpanel5555Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         jpanel5555Layout.setVerticalGroup(
             jpanel5555Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -722,10 +754,12 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jpanel5555Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboNam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(btnINTKtheothang)
+                    .addComponent(btnINTKtheonam))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Bảng thống kê", jpanel5555);
@@ -757,7 +791,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cboThang, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(32, 32, 32)
                 .addComponent(cboNam2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -783,7 +817,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
         );
         jpanelBieuDoLayout.setVerticalGroup(
             jpanelBieuDoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 296, Short.MAX_VALUE)
+            .addGap(0, 263, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -792,11 +826,12 @@ public class TrangChu extends javax.swing.JInternalFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jpanelBieuDo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addGap(6, 6, 6)
+                        .addComponent(jpanelBieuDo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 14, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -804,8 +839,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jpanelBieuDo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jpanelBieuDo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Biểu đồ thống kê", jPanel9);
@@ -825,7 +860,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTabbedPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -847,11 +883,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
                                 .addComponent(dcsToi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnTimNgay)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 947, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -872,7 +905,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addComponent(dcsToi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -915,9 +949,179 @@ public class TrangChu extends javax.swing.JInternalFrame {
         Integer nam = (Integer) cboNam2.getSelectedItem();
         BieuDoThongKeTheoThang(jpanelBieuDo, thang, nam);
     }//GEN-LAST:event_cboThangMouseClicked
+
+    private void btnINTKtheothangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnINTKtheothangMouseClicked
+                       try {
+                        XSSFWorkbook workBook = new XSSFWorkbook();
+                        XSSFSheet sheet = workBook.createSheet("Danh Sach Thong Ke");
+            
+                        //STYLE TITLE
+                        XSSFRow titleRow = sheet.createRow(0);
+                        XSSFCell titleCell = titleRow.createCell(0);
+                        titleCell.setCellValue("Danh Sách Thống Kê POLYPOLO");
+                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,9));
+                        XSSFFont font = workBook.createFont();
+                        font.setFontHeightInPoints((short) 19);
+                        font.setBold(true);
+                        XSSFCellStyle style = workBook.createCellStyle();
+                        style.setFont(font);
+                        style.setAlignment(HorizontalAlignment.CENTER);
+                        style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
+                        titleCell.setCellStyle(style);
+            
+                        //DATE
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        String currentDate = sdf.format(new Date());
+                        XSSFRow dateRow = sheet.createRow(1);
+                        XSSFCell dateCell = dateRow.createCell(0);
+                        dateCell.setCellValue("Ngày xuất: " + currentDate);
+                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 9)); // Merge từ cột 0 đến 9
+                        XSSFCellStyle dateStyle = workBook.createCellStyle();
+                        dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+                        dateCell.setCellStyle(dateStyle);
+            
+                        //ADD
+                        XSSFRow row = null;
+                        Cell cell = null;
+            
+                        row = sheet.createRow(3);
+            
+                        cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("STT");
+            
+                        cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("Tháng");
+            
+                        cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("Số Lượng");
+            
+                        cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("Tổng Tiền");
+            
+            
+                        ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThu();
+                        for (int i = 0; i < ls.size(); i++) {
+                                row = sheet.createRow(4 + i);
+                
+                                cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                                cell.setCellValue(i + 1);
+                
+                                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                                cell.setCellValue("Tháng " + ls.get(i).getThang());
+                
+                                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+                                cell.setCellValue(ls.get(i).getSoLuong());
+                
+                                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                                cell.setCellValue(ls.get(i).getTongTien());
+                
+                
+                
+                            }
+            
+                        File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKE.xlsx");
+                        try {
+                                FileOutputStream fis = new FileOutputStream(file);
+                                workBook.write(fis);
+                                fis.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+            
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
+    }//GEN-LAST:event_btnINTKtheothangMouseClicked
+
+    private void btnINTKtheonamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnINTKtheonamMouseClicked
+                    try {
+                        XSSFWorkbook workBook = new XSSFWorkbook();
+                        XSSFSheet sheet = workBook.createSheet("Danh Sach Thong Ke");
+            
+                        //STYLE TITLE
+                        XSSFRow titleRow = sheet.createRow(0);
+                        XSSFCell titleCell = titleRow.createCell(0);
+                        titleCell.setCellValue("Danh Sách Thống Kê POLYPOLO");
+                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,9));
+                        XSSFFont font = workBook.createFont();
+                        font.setFontHeightInPoints((short) 19);
+                        font.setBold(true);
+                        XSSFCellStyle style = workBook.createCellStyle();
+                        style.setFont(font);
+                        style.setAlignment(HorizontalAlignment.CENTER);
+                        style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
+                        titleCell.setCellStyle(style);
+            
+                        //DATE
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        String currentDate = sdf.format(new Date());
+                        XSSFRow dateRow = sheet.createRow(1);
+                        XSSFCell dateCell = dateRow.createCell(0);
+                        dateCell.setCellValue("Ngày xuất: " + currentDate);
+                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 9)); // Merge từ cột 0 đến 9
+                        XSSFCellStyle dateStyle = workBook.createCellStyle();
+                        dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+                        dateCell.setCellStyle(dateStyle);
+            
+                        //ADD
+                        XSSFRow row = null;
+                        Cell cell = null;
+            
+                        row = sheet.createRow(3);
+            
+                        cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("STT");
+            
+                        cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("Năm");
+            
+                        cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("Số Lượng");
+            
+                        cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                        cell.setCellValue("Tổng Tiền");
+            
+            
+                        ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThuTheoNam();
+                        for (int i = 0; i < ls.size(); i++) {
+                                row = sheet.createRow(4 + i);
+                
+                                cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                                cell.setCellValue(i + 1);
+                
+                                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                                cell.setCellValue("Năm " + ls.get(i).getThang());
+                
+                                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+                                cell.setCellValue(ls.get(i).getSoLuong());
+                
+                                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                                cell.setCellValue(ls.get(i).getTongTien());
+                
+                
+                
+                            }
+            
+                        File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKE.xlsx");
+                        try {
+                                FileOutputStream fis = new FileOutputStream(file);
+                                workBook.write(fis);
+                                fis.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+            
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
+    }//GEN-LAST:event_btnINTKtheonamMouseClicked
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnINTKtheonam;
+    private javax.swing.JButton btnINTKtheothang;
     private javax.swing.JButton btnTimNgay;
     private javax.swing.JComboBox<String> cboNam;
     private javax.swing.JComboBox<String> cboNam2;

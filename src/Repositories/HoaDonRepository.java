@@ -21,7 +21,7 @@ public class HoaDonRepository {
     
     //INVOICE
     public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
-        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, hd.PhuongThucThanhToan, kh.SoDienThoai, kh.DiaChi FROM HoaDon hd INNER JOIN KhachHang kh ON Hd.MaHoaDon = kh.MaHoaDon \n" +
+        String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, hd.PhuongThucThanhToan, kh.SoDienThoai, kh.DiaChi, hd.LoaiKhachHang FROM HoaDon hd INNER JOIN KhachHang kh ON Hd.MaHoaDon = kh.MaHoaDon \n" +
                         "WHERE kh.Deleted!=1 AND hd.Deleted!=1 AND kh.MaHoaDon = ?";
         ArrayList<HD_InvoiceViewModel> ls = new ArrayList<>();
         
@@ -37,8 +37,9 @@ public class HoaDonRepository {
                 String phuongThuc = rs.getString("PhuongThucThanhToan");
                 String soDT = rs.getString("SoDienThoai");
                 String diaC = rs.getString("DiaChi");
+                String loaiK = rs.getString("LoaiKhachHang");
                 
-                HD_InvoiceViewModel listKH = new HD_InvoiceViewModel(maHD, tenNV, tenKH, soDT, diaC, phuongThuc);
+                HD_InvoiceViewModel listKH = new HD_InvoiceViewModel(maHD, tenNV, tenKH, soDT, diaC, phuongThuc,loaiK);
                 ls.add(listKH);
             }
         } catch (Exception e) {
@@ -553,8 +554,8 @@ public class HoaDonRepository {
     }
     //ADD HOADON
     public Boolean addHoaDon(HoaDon hoaDon) {
-        String sql = "INSERT INTO HoaDon (MaNhanVien, TenKhachHang, TenNhanVien, TongTien, NgayLap, PhuongThucThanhToan, TrangThai,Deleted)\n"
-                + "VALUES (?, ?, ?, 0, ?, ?, N'Chưa thanh toán',0);";
+        String sql = "INSERT INTO HoaDon (MaNhanVien, TenKhachHang, TenNhanVien, TongTien, NgayLap, PhuongThucThanhToan, TrangThai,LoaiKhachHang,Deleted)\n"
+                + "VALUES (?, ?, ?, 0, ?, ?, N'Chưa thanh toán',N'Khách Lẻ',0);";
 
         try (Connection conn = dbConnection.getConnection(); 
                 PreparedStatement ps = conn.prepareCall(sql)) {

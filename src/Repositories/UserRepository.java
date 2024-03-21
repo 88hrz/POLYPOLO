@@ -21,16 +21,68 @@ import java.util.Date;
  * @author X1
  */
 public class UserRepository {
+//Có thêm/sửa nhiều
     DbConnection dbConnection;
+
+    public static void main(String[] args) {
+        /*
+        Integer a= 1;
+        UserViewModel u = new UserRepository().getListById(a);
+        System.out.println(u.toString());
+         */
+        ArrayList<UserViewModel> list = new UserRepository().getList();
+        for (UserViewModel uvm : list) {
+            System.out.println(uvm.toString());
+        }
+    }
+
+    //HUONG- THÊM
+    public Boolean delete(String maND) {
+        String sql = "DELETE FROM [dbo].[NguoiDung]\n"
+                + "      WHERE [MaNguoiDung] = '" + maND + "'";
+
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            int ketQua = ps.executeUpdate();
+            if (ketQua > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public ArrayList<User> getMaTK() {
+        String sql = "select MaNguoiDung from NguoiDung";
+        ArrayList<User> list = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maTK = rs.getInt("MaNguoiDung");
+
+                User u = new User(maTK);
+                list.add(u);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public Boolean update(User u) {
         String sql = "UPDATE [dbo].[NguoiDung]\n"
-                + "   SET [MatKhau] = ?\n"
-                + "WHERE TenDangNhap = ?";
+                + "   SET [TenDangNhap] = ?\n"
+                + "      ,[MatKhau] = ?\n"
+                + "      ,[VaiTro] = ?\n"
+                + " WHERE MaNguoiDung = ?";
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
-            ps.setObject(1, u.getPassCode());
-            ps.setObject(2, u.getUserID());
+            ps.setObject(1, u.getUserName());
+            //HUONG - Đổi cái này là getUSERNAME
+            ps.setObject(2, u.getPassCode());
+            ps.setObject(3, u.getRole());
+            ps.setObject(4, u.getUserID());
 
             int check = ps.executeUpdate();
             if (check > 0) {
@@ -41,7 +93,27 @@ public class UserRepository {
         }
         return false;
     }
-    
+    public Boolean updateMatKhau(User u) {
+        String sql = "UPDATE [dbo].[NguoiDung]\n"
+                + "   SET [MatKhau] = ?\n"
+                + " WHERE TenDangNhap = ?";
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+           
+            //HUONG - Đổi cái này là getUSERNAME
+            ps.setObject(1, u.getPassCode());
+            ps.setObject(2, u.getUserName());
+
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public String getTenDN(String tenDN) {
         String sql = "Select NguoiDung.TenDangNhap from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung where TenDangNhap = '" + tenDN + "'";
         TaiKhoanViewModel tkvm = new TaiKhoanViewModel();
@@ -57,21 +129,20 @@ public class UserRepository {
         }
         return "Loi";
     }
-    
-    public User getListByUserId(String userID){
+
+    public User getListByUserId(String userID) {
         String sql = "SELECT * FROM NguoiDung nd WHERE nd.TenDangNhap = ? ";
         User u = new User();
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, userID);
-            
+
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 String username = rs.getString("TenDangNhap");
                 String password = rs.getString("MatKhau");
                 String role = rs.getString("VaiTro");
-                
+
                 u = new User(null, username, password, role);
             }
         } catch (Exception e) {
@@ -79,21 +150,111 @@ public class UserRepository {
         }
         return u;
     }
-    //CHECKLOGIN
-    public Boolean checkLogin(String userID, String passCode){
-        String sql = "SELECT * FROM NguoiDung WHERE TenDangNhap = ? AND MatKhau = ?";
-        User u = null;
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
-            ps.setObject(1, userID);
-            ps.setObject(2, passCode);
-            
+    public ArrayList<User> getListByTenDN(String tenDN) {
+        String sql = "SELECT * FROM NguoiDung nd WHERE nd.TenDangNhap like '%"+tenDN+"%' ";
+        ArrayList<User> list = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
+                Integer userID = rs.getInt("MaNguoiDung");
                 String username = rs.getString("TenDangNhap");
                 String password = rs.getString("MatKhau");
+                String role = rs.getString("VaiTro");
+
+                list.add(new User(userID, username, password, role));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public ArrayList<User> getListByVaiTro(String roles) {
+        String sql = "SELECT * FROM NguoiDung nd WHERE nd.VaiTro = ?";
+         ArrayList<User> list = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, roles);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer userID = rs.getInt("MaNguoiDung");
+                String username = rs.getString("TenDangNhap");
+                String password = rs.getString("MatKhau");
+                String role = rs.getString("VaiTro");
+
+                list.add(new User(userID, username, password, role));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public ArrayList<UserViewModel> getListByVaiTroTTTK(String roles) {
+        String sql = "select * from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung WHERE NguoiDung.VaiTro = ?";
+         ArrayList<UserViewModel> list = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, roles);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maNV = rs.getInt("MaNhanVien");
+                Integer maND = rs.getInt("MaNguoiDung");
+                String hoTen = rs.getString("TenNhanVien");
+                String gioiTinh = rs.getString("GioiTinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                String tenDN = rs.getString("TenDangNhap");
+                String mk = rs.getString("MatKhau");
+                String vaiTro = rs.getString("VaiTro");
                 
+                list.add(new UserViewModel(maNV, maND, tenDN, hoTen, mk, soDT, vaiTro, diaChi, gioiTinh));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public ArrayList<UserViewModel> getListByGioiTinh(String gtinh) {
+        String sql = "select * from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung WHERE NhanVien.GioiTinh = ?";
+         ArrayList<UserViewModel> list = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, gtinh);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maNV = rs.getInt("MaNhanVien");
+                Integer maND = rs.getInt("MaNguoiDung");
+                String hoTen = rs.getString("TenNhanVien");
+                String gioiTinh = rs.getString("GioiTinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                String tenDN = rs.getString("TenDangNhap");
+                String mk = rs.getString("MatKhau");
+                String vaiTro = rs.getString("VaiTro");
+                
+                list.add(new UserViewModel(maNV, maND, tenDN, hoTen, mk, soDT, vaiTro, diaChi, gioiTinh));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //CHECKLOGIN
+    public Boolean checkLogin(String userID, String passCode) {
+        String sql = "SELECT * FROM NguoiDung WHERE TenDangNhap = ? AND MatKhau = ?";
+        User u = null;
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, userID);
+            ps.setObject(2, passCode);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String username = rs.getString("TenDangNhap");
+                String password = rs.getString("MatKhau");
+
                 u = new User(userID, passCode);
             }
         } catch (Exception e) {
@@ -105,26 +266,36 @@ public class UserRepository {
             return true;
         }
     }
-    
-    //GETLIST
-    public ArrayList<UserViewModel> getList(){
-        String sql = "SELECT nv.MaNhanVien, nd.TenDangNhap, nd.MatKhau\n" +
-"            , nv.TenNhanVien, nv.SoDienThoai, nd.VaiTro FROM NguoiDung nd INNER JOIN NhanVien nv ON nd.MaNguoiDung = nv.MaNguoiDung\n" +
-"            WHERE nv.Deleted!=1 AND nd.Deleted!=1";
+
+    //THÊM PUBLIC ARRAY NÀY
+    public ArrayList<UserViewModel> getDataFromList() {
+        //HUONG -SỬA SQL
+        String sql = "SELECT NguoiDung.MaNguoiDung, NguoiDung.TenDangNhap, NguoiDung.MatKhau, NhanVien.TenNhanVien, NhanVien.SoDienThoai, NhanVien.GioiTinh, NhanVien.DiaChi, NhanVien.NgaySinh, NguoiDung.VaiTro\n"
+                + "FROM NguoiDung INNER JOIN NhanVien\n"
+                + "ON NguoiDung.MaNguoiDung = NhanVien.MaNguoiDung\n"
+                + ""
+                //HUONG -  BỎ DÒNG NÀY                
+                //" +           WHERE nv.Deleted!=1 AND nd.Deleted!=1"
+                + "";
         ArrayList<UserViewModel> ls = new ArrayList<>();
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
-                Integer maND = rs.getInt("MaNhanVien");
-                String  tenDN = rs.getString("TenDangNhap");
+            while (rs.next()) {
+
+                Integer maND = rs.getInt("MaNguoiDung");
+                String tenDN = rs.getString("TenDangNhap");
                 String mk = rs.getString("MatKhau");
                 String hoTen = rs.getString("TenNhanVien");
+                //THÊM
                 String vaiTro = rs.getString("VaiTro");
                 String soDT = rs.getString("SoDienThoai");
-                
-                UserViewModel u = new UserViewModel(maND, tenDN, hoTen, mk, soDT, vaiTro);
+                String gioiTinh = rs.getString("GioiTinh");
+                Date ngaySinh = rs.getDate("NgaySinh");
+                String diaChi = rs.getString("DiaChi");
+
+                //SỬA LẠI DÒNG, LẤY CONSTRUCTOR FULL
+                UserViewModel u = new UserViewModel(maND, tenDN, tenDN, mk, soDT, vaiTro, diaChi, gioiTinh, ngaySinh);
                 ls.add(u);
             }
         } catch (Exception e) {
@@ -133,20 +304,51 @@ public class UserRepository {
         return ls;
     }
 
-    public UserViewModel getListById(Integer id){
-        String sql = "SELECT nd.MaNguoiDung, nd.TenDangNhap, nd.MatKhau\n" +
-"                   , nv.TenNhanVien, nv.SoDienThoai, nv.GioiTinh, nv.DiaChi, nv.NgaySinh, nd.VaiTro FROM NguoiDung nd INNER JOIN NhanVien nv ON nd.MaNguoiDung = nv.MaNguoiDung\n" +
-"                   WHERE nv.Deleted !=1 AND nd.Deleted!=1 AND nd.MaNguoiDung = ?";
-        UserViewModel u = new UserViewModel();
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
-            ps.setObject(1, id);
-            
+    //GETLIST
+    public ArrayList<UserViewModel> getList() {
+        String sql = "select * from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung "
+                //HUONG -  BỎ DÒNG NÀY                
+                //" +           WHERE nv.Deleted!=1 AND nd.Deleted!=1"
+                + "";
+        ArrayList<UserViewModel> ls = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
+                Integer maNV = rs.getInt("MaNhanVien");
                 Integer maND = rs.getInt("MaNguoiDung");
-                String  tenDN = rs.getString("TenDangNhap");
+                String hoTen = rs.getString("TenNhanVien");
+                String gioiTinh = rs.getString("GioiTinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                String tenDN = rs.getString("TenDangNhap");
+                String mk = rs.getString("MatKhau");
+                String vaiTro = rs.getString("VaiTro");
+                
+                ls.add(new UserViewModel(maNV, maND, tenDN, hoTen, mk, soDT, vaiTro, diaChi, gioiTinh));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+
+    public UserViewModel getListById(Integer id) {
+        //HUONG - SUA SQL
+        String sql = "SELECT NguoiDung.MaNguoiDung, NguoiDung.TenDangNhap, NguoiDung.MatKhau\n"
+                + "                   , NhanVien.TenNhanVien, NhanVien.SoDienThoai, NhanVien.GioiTinh, NhanVien.DiaChi, NhanVien.NgaySinh, NguoiDung.VaiTro FROM NguoiDung INNER JOIN NhanVien ON NguoiDung.MaNguoiDung = NhanVien.MaNguoiDung\n"
+                //HUONG - BỎ DÒNG NÀY
+                //      + "                   WHERE nv.Deleted !=1 AND nd.Deleted!=1 AND "
+                + "where NguoiDung.MaNguoiDung = ?";
+        UserViewModel u = new UserViewModel();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maND = rs.getInt("MaNguoiDung");
+                String tenDN = rs.getString("TenDangNhap");
                 String mk = rs.getString("MatKhau");
                 String hoTen = rs.getString("TenNhanVien");
                 String vaiTro = rs.getString("VaiTro");
@@ -154,7 +356,7 @@ public class UserRepository {
                 String diaC = rs.getString("DiaChi");
                 Date ngayS = rs.getDate("NgaySinh");
                 String gioiT = rs.getString("GioiTinh");
-   
+
                 u = new UserViewModel(maND, tenDN, hoTen, mk, soDT, vaiTro, diaC, gioiT, ngayS);
             }
         } catch (Exception e) {
@@ -162,21 +364,20 @@ public class UserRepository {
         }
         return u;
     }
-    
+
     //GETLIST USER
-    public ArrayList<User> getListUser(){
-        String sql = "SELECT * FROM NguoiDung WHERE NguoiDung.Deleted !=1";
-        ArrayList<User> ls = new  ArrayList<>();
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
+    public ArrayList<User> getListUser() {
+        String sql = "SELECT * FROM NguoiDung ";
+        ArrayList<User> ls = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Integer id = rs.getInt("MaNguoiDung");
                 String userId = rs.getString("TenDangNhap");
                 String passCode = rs.getString("MatKhau");
                 String role = rs.getString("VaiTro");
-                
+
                 User u = new User(id, userId, passCode, role);
                 ls.add(u);
             }
@@ -185,6 +386,7 @@ public class UserRepository {
         }
         return ls;
     }
+
     public ArrayList<NhanSu> getAll() {
         String sql = "SELECT * FROM NhanVien WHERE Deleted !=1";
         ArrayList<NhanSu> list = new ArrayList<>();
@@ -217,40 +419,40 @@ public class UserRepository {
     }
 
     //SEARCH
-    public ArrayList<UserViewModel> getListBySearch(String name){
-        String sql = "SELECT nd.MaNguoiDung, nd.TenDangNhap, nd.MatKhau, nv.TenNhanVien, nd.VaiTro, nv.SoDienThoai FROM NguoiDung nd \n" +
-                        "INNER JOIN NhanVien nv ON nd.MaNguoiDung = nv.MaNguoiDung\n" +
-                        "WHERE nv.Deleted!=1 AND nv.TenNhanVien LIKE '%"+ name + "%'";
+    public ArrayList<UserViewModel> getListByTen(String name,String tendn) {
+        String sql = "select * from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung\n"
+                + "WHERE NhanVien.TenNhanVien LIKE '%" + name + "%' and NguoiDung.TenDangNhap LIKE '%" + tendn + "%' ";
         ArrayList<UserViewModel> ls = new ArrayList<>();
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
-            
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
+                Integer maNV = rs.getInt("MaNhanVien");
                 Integer maND = rs.getInt("MaNguoiDung");
-                String  tenDN = rs.getString("TenDangNhap");
-                String mk = rs.getString("MatKhau");
                 String hoTen = rs.getString("TenNhanVien");
+                String gioiTinh = rs.getString("GioiTinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                String tenDN = rs.getString("TenDangNhap");
+                String mk = rs.getString("MatKhau");
                 String vaiTro = rs.getString("VaiTro");
-                String soDT = rs.getString("SoDienThoai");;
                 
-                UserViewModel u = new UserViewModel(maND, tenDN, hoTen, vaiTro, mk, soDT);
-                ls.add(u);
+                ls.add(new UserViewModel(maNV, maND, tenDN, hoTen, mk, soDT, vaiTro, diaChi, gioiTinh));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ls;
     }
+
     //CHECK ID
-    public Boolean checkName(String name){
+    public Boolean checkName(String name) {
         String sql = "SELECT COUNT(*) FROM NguoiDung WHERE TenDangNhap = ?";
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, name);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1) > 0;
@@ -261,30 +463,19 @@ public class UserRepository {
         }
         return false;
     }
-    
-    
+
     //ADD ACCOUNT
-    public Boolean addAccount(TaiKhoan tk){
-        String sql = "INSERT INTO NguoiDung(TenDangNhap,MatKhau,VaiTro,Deleted) \n" +
-                                        "VALUES(?,?,?,0);\n"
-                + " INSERT INTO NhanVien(MaNguoiDung,TenNhanVien,GioiTinh,NgaySinh,SoDienThoai,DiaChi,Deleted)\n" +
-"                                       VALUES(?,?,?,?,?,?,0)";
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
-            ps.setObject(1, tk.getTenDN());
-            ps.setObject(2, tk.getMatK());
-            ps.setObject(3, tk.getVaiT());
-            
-            ps.setObject(4, tk.getMaND());
-            ps.setObject(5, tk.getTenNV());
-            ps.setObject(6, tk.getGioiT());
-            ps.setObject(7, tk.getNgayS());
-            ps.setObject(8, tk.getSoDT());
-            ps.setObject(9, tk.getDiaC());
-            
+    public Boolean addAccount(User u) {
+        String sql = "INSERT INTO NguoiDung(TenDangNhap,MatKhau,VaiTro) \n"
+                + "VALUES(?,?,?)\n";
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, u.getUserName());
+            ps.setObject(2, u.getPassCode());
+            ps.setObject(3, u.getRole());
+
             int check = ps.executeUpdate();
-            if (check>0) {
+            if (check > 0) {
                 return true;
             }
         } catch (Exception e) {
@@ -292,30 +483,28 @@ public class UserRepository {
         }
         return false;
     }
-    
+
     //UPDATE
-    public Boolean updateAccount(TaiKhoan tk){
-        String sql = "UPDATE NhanVien\n" +
-                        "SET TenNhanVien = ?, SoDienThoai = ?,DiaChi = ?,GioiTinh = ?,NgaySinh = ?\n" +
-                        "WHERE Deleted!=1 AND  MaNguoiDung = ?; "
+    public Boolean updateAccount(TaiKhoan tk) {
+        String sql = "UPDATE NhanVien\n"
+                + "SET TenNhanVien = ?, SoDienThoai = ?,DiaChi = ?,GioiTinh = ?,NgaySinh = ?\n"
+                + "WHERE Deleted!=1 AND  MaNguoiDung = ?; "
                 + "UPDATE NguoiDung SET TenDangNhap = ? , MatKhau = ?, VaiTro = ? WHERE MaNguoiDung = ?;";
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, tk.getTenNV());
             ps.setObject(2, tk.getSoDT());
             ps.setObject(3, tk.getDiaC());
             ps.setObject(4, tk.getGioiT());
             ps.setObject(5, tk.getMaND());
-            
+
             ps.setObject(6, tk.getTenDN());
             ps.setObject(7, tk.getMatK());
             ps.setObject(8, tk.getVaiT());
             ps.setObject(9, tk.getMaND());
-            
-            
+
             int check = ps.executeUpdate();
-            if (check>0) {
+            if (check > 0) {
                 return true;
             }
         } catch (Exception e) {
@@ -323,23 +512,22 @@ public class UserRepository {
         }
         return false;
     }
-    
+
     //HIDE
-    public Boolean hideAccount(User u){
+    public Boolean hideAccount(User u) {
         String sql = "UPDATE NguoiDung SET Deleted = 1 WHERE MaNguoiDung = ?";
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, u.getUserID());
-            
+
             int check = ps.executeUpdate();
-            if (check>0) {
+            if (check > 0) {
                 return true;
-            }        
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-   
+
 }

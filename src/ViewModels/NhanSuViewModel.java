@@ -11,6 +11,7 @@ package ViewModels;
 public class NhanSuViewModel {
     private Integer maNhanVien;
     private String tenNhanVien;
+    private Integer maNguoiDung;
     private String tenNguoiDung;
     private String gioiTinh;
     private String soDienThoai;
@@ -18,6 +19,17 @@ public class NhanSuViewModel {
     private String vaiTro;
 
     public NhanSuViewModel() {
+    }
+
+    public NhanSuViewModel(Integer maNhanVien, String tenNhanVien, Integer maNguoiDung, String tenNguoiDung, String gioiTinh, String soDienThoai, String diaChi, String vaiTro) {
+        this.maNhanVien = maNhanVien;
+        this.tenNhanVien = tenNhanVien;
+        this.maNguoiDung = maNguoiDung;
+        this.tenNguoiDung = tenNguoiDung;
+        this.gioiTinh = gioiTinh;
+        this.soDienThoai = soDienThoai;
+        this.diaChi = diaChi;
+        this.vaiTro = vaiTro;
     }
 
     public NhanSuViewModel(Integer maNhanVien, String tenNhanVien, String tenNguoiDung, String gioiTinh, String soDienThoai, String diaChi, String vaiTro) {
@@ -28,6 +40,14 @@ public class NhanSuViewModel {
         this.soDienThoai = soDienThoai;
         this.diaChi = diaChi;
         this.vaiTro = vaiTro;
+    }
+
+    public Integer getMaNguoiDung() {
+        return maNguoiDung;
+    }
+
+    public void setMaNguoiDung(Integer maNguoiDung) {
+        this.maNguoiDung = maNguoiDung;
     }
 
     public Integer getMaNhanVien() {
@@ -85,5 +105,13 @@ public class NhanSuViewModel {
     public void setVaiTro(String vaiTro) {
         this.vaiTro = vaiTro;
     }
+
+    @Override
+    public String toString() {
+        return "NhanSuViewModel{" + "maNhanVien=" + maNhanVien + ", tenNhanVien=" + tenNhanVien + ", maNguoiDung=" + maNguoiDung + ", tenNguoiDung=" + tenNguoiDung + ", gioiTinh=" + gioiTinh + ", soDienThoai=" + soDienThoai + ", diaChi=" + diaChi + ", vaiTro=" + vaiTro + '}';
+    }
     
 }
+/*
+dòng  24
+*/

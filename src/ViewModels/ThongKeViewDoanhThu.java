@@ -11,29 +11,28 @@ import java.util.Date;
  * @author hmail
  */
 public class ThongKeViewDoanhThu {
+
     private Integer thang;
     private Integer soLuong;
     private Integer tongTien;
-    private Date ngay; 
-    
-    
+    private Integer ngay;
+
     public ThongKeViewDoanhThu() {
     }
 
-    public ThongKeViewDoanhThu(Integer thang, Integer soLuong, Integer tongTien) {
-        this.thang = thang;
-        this.soLuong = soLuong;
-        this.tongTien = tongTien;
-    }
-
-    public ThongKeViewDoanhThu(Integer soLuong, Integer tongTien, Date ngay) {
+    public ThongKeViewDoanhThu(Integer soLuong, Integer tongTien, Integer ngay) {
         this.soLuong = soLuong;
         this.tongTien = tongTien;
         this.ngay = ngay;
     }
 
-    
-    
+    public ThongKeViewDoanhThu(Integer thang, Integer soLuong, Integer tongTien, Integer ngay) {
+        this.thang = thang;
+        this.soLuong = soLuong;
+        this.tongTien = tongTien;
+        this.ngay = ngay;
+    }
+
     public Integer getThang() {
         return thang;
     }
@@ -58,13 +57,12 @@ public class ThongKeViewDoanhThu {
         this.tongTien = tongTien;
     }
 
-    public Date getNgay() {
+    public Integer getNgay() {
         return ngay;
     }
 
-    public void setNgay(Date ngay) {
+    public void setNgay(Integer ngay) {
         this.ngay = ngay;
     }
-    
-    
+
 }

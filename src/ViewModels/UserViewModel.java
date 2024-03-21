@@ -11,6 +11,7 @@ import java.util.Date;
  * @author X1
  */
 public class UserViewModel {
+    private Integer maNV;
     private Integer id;
     private String tenDN;
     private String tenNV;
@@ -24,6 +25,31 @@ public class UserViewModel {
     public UserViewModel() {
     }
 
+    public UserViewModel(Integer maNV, Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro, String diaC, String gioiT, Date ngayS) {
+        this.maNV = maNV;
+        this.id = id;
+        this.tenDN = tenDN;
+        this.tenNV = tenNV;
+        this.matKhau = matKhau;
+        this.soDT = soDT;
+        this.vaiTro = vaiTro;
+        this.diaC = diaC;
+        this.gioiT = gioiT;
+        this.ngayS = ngayS;
+    }
+
+    public UserViewModel(Integer maNV, Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro, String diaC, String gioiT) {
+        this.maNV = maNV;
+        this.id = id;
+        this.tenDN = tenDN;
+        this.tenNV = tenNV;
+        this.matKhau = matKhau;
+        this.soDT = soDT;
+        this.vaiTro = vaiTro;
+        this.diaC = diaC;
+        this.gioiT = gioiT;
+    }
+    
     public UserViewModel(Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro) {
         this.id = id;
         this.tenDN = tenDN;
@@ -32,7 +58,8 @@ public class UserViewModel {
         this.soDT = soDT;
         this.vaiTro = vaiTro;
     }
-
+    
+    //THÊM CONSTRUCTOR  FULL
     public UserViewModel(Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro, String diaC, String gioiT, Date ngayS) {
         this.id = id;
         this.tenDN = tenDN;
@@ -45,6 +72,9 @@ public class UserViewModel {
         this.ngayS = ngayS;
     }
 
+    public Integer getMaNV() {
+        return maNV;
+    }
 
 //    public UserViewModel(Integer id, String tenDN, String tenNV, String vaiTro, String matKhau, String soDT) {
 //        this.id = id;
@@ -54,6 +84,9 @@ public class UserViewModel {
 //        this.matKhau = matKhau;
 //        this.soDT = soDT;
 //    }
+    public void setMaNV(Integer maNV) {
+        this.maNV = maNV;
+    }
 
     public String getGioiT() {
         return gioiT;
@@ -127,4 +160,14 @@ public class UserViewModel {
         this.soDT = soDT;
     }
 
+    @Override
+    public String toString() {
+        return "UserViewModel{" + "maNV=" + maNV + ", id=" + id + ", tenDN=" + tenDN + ", tenNV=" + tenNV + ", matKhau=" + matKhau + ", soDT=" + soDT + ", vaiTro=" + vaiTro + ", diaC=" + diaC + ", gioiT=" + gioiT + '}';
+    }
+
+
+
 }
+/*
+Thêm dòng 14 + get/setter; dòng 28,41
+*/

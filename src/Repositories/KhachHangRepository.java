@@ -96,7 +96,7 @@ public class KhachHangRepository {
 
     public boolean addNew(KhachHang kh) {
 
-        String sql = "INSERT INTO KhachHang ( TenKhachHang, GioiTinh, SoDienThoai, DiaChi,Deleted) VALUES (?, ?, ?, ?, 0)";
+        String sql = "INSERT INTO KhachHang ( TenKhachHang, GioiTinh, SoDienThoai, DiaChi,LoaiKhachHang,Deleted) VALUES (?, ?, ?, ?,N'Thành Viên', 0)";
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -104,7 +104,7 @@ public class KhachHangRepository {
             ps.setString(2, kh.getGioiTinh());
             ps.setString(3, kh.getSoDT());
             ps.setString(4, kh.getDiaChi());
-
+            
             int result = ps.executeUpdate();
             if (result > 0) {
                 return true;

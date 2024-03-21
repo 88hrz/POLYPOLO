@@ -14,6 +14,9 @@ public class KhachHang {
     private String gioiTinh;
     private String soDT;
     private String diaChi;
+    
+    public KhachHang() {
+    }
 
     public KhachHang(Integer maKH, String tenKH, String gioiTinh, String soDT, String diaChi) {
         this.maKH = maKH;
@@ -21,9 +24,6 @@ public class KhachHang {
         this.gioiTinh = gioiTinh;
         this.soDT = soDT;
         this.diaChi = diaChi;
-    }
-    
-    public KhachHang() {
     }
 
     public Integer getMaKH() {

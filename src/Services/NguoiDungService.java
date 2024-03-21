@@ -20,6 +20,15 @@ public class NguoiDungService {
     UserRepository userRepo = new UserRepository();
     NhanSuRepo nsRepo = new NhanSuRepo();
     
+    public String delete(String maND){
+        Boolean check = userRepo.delete(maND);
+        if(check){
+            return "Xóa thành công";
+        }else{
+            return "Xóa thất bại";
+        }
+    }
+    
     public String update(User u){
         Boolean kq = userRepo.update(u);
         if ( kq == true) {
@@ -28,9 +37,19 @@ public class NguoiDungService {
             return "Sửa thất bai";
         }
     }
+    public String updateMatKhau(User u){
+        Boolean kq = userRepo.updateMatKhau(u);
+        if ( kq == true) {
+            return "Sửa thành công";
+        } else {
+            return "Sửa thất bai";
+        }
+    }
+    
     public Boolean checkLogin(String userID, String passCode){
         return userRepo.checkLogin(userID, passCode);
-    }    
+    }
+            
     //GETLIST
     public ArrayList<UserViewModel> getList(){
         return userRepo.getList();
@@ -47,13 +66,14 @@ public class NguoiDungService {
         return userRepo.getListById(id);
     }
     //GETLIST BY SEARCH
-    public ArrayList<UserViewModel> getListBySearch(String name){
-        return userRepo.getListBySearch(name);
+    public ArrayList<UserViewModel> getListByTen(String name,String tendn){
+        return userRepo.getListByTen(name,tendn);
     }
     //GETLIST USER
     public ArrayList<User> getListUser(){
         return userRepo.getListUser();
-    }public User getListByUserId(String userId){
+    }
+    public User getListByUserId(String userId){
         return userRepo.getListByUserId(userId);
     }
     
@@ -61,13 +81,17 @@ public class NguoiDungService {
     public void hideAccount(User u){
         userRepo.hideAccount(u);
     }
+    
+    
+    
     //CHECK ID
     public Boolean checkName(String name){
         return userRepo.checkName(name);
     }
+    
     //ADD
-    public String addAccount(TaiKhoan tk){
-        Boolean check = userRepo.addAccount(tk);
+    public String addAccount(User u){
+        Boolean check = userRepo.addAccount(u);
         if (check) {
             return "Thêm tài khoản mới thành công ~uwu~";
         }else{

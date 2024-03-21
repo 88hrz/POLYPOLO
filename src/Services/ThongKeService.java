@@ -27,22 +27,18 @@ public class ThongKeService {
         return tkrp.showYear();
     }
 
-//    public ArrayList<Integer> showMonth() {
-//        return tkrp.showMonth();
-//    }
-
     public ArrayList<Integer> showMonth(Integer Year) {
         return tkrp.showMonth(Year);
     }
-        
+
     public ArrayList<HoaDon> getListHD() {
         return hdrp.getList();
     }
 
     //LOAD
-    public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Date ngayLap) {
-        return tkrp.getListHoaDonView((java.sql.Date) ngayLap);
-    }
+//    public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Date ngayLap) {
+//        return tkrp.getListHoaDonView(ngay);
+//    }
 
     public HD_HoaDonViewModel tongNgay() {
         return tkrp.tongDoanhThuNgay();
@@ -77,7 +73,6 @@ public class ThongKeService {
     public ArrayList<HD_HoaDonViewModel> TheoNgay(Date bd, Date kt) {
         return tkrp.getListHoaDonVieww(bd, kt);
     }
-    
 
     public ArrayList<HoaDon> TTAA() {
         return hdrp.getList();
@@ -91,6 +86,7 @@ public class ThongKeService {
         return tkrp.TonDonHang();
     }
     
+    
     public ArrayList<ThongKeViewDoanhThu> getListByNam(Integer nam){
         return tkrp.getListByNam(nam);
     }
@@ -99,5 +95,8 @@ public class ThongKeService {
     }
     public ArrayList<ThongKeViewDoanhThu> getListThongKeTheoThang(Integer thang, Integer nam){
         return tkrp.getListThongKeTheoThang(thang, nam);
+    }
+    public ArrayList<ThongKeViewDoanhThu> getListDoanhThuTheoNam(){
+        return tkrp.getListBangDoanhThuTheoNam();
     }
 }

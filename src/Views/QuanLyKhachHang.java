@@ -462,7 +462,6 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, khService.addNew(getModel()));
         loadTableKH(khService.getList());
         }
-        
     }//GEN-LAST:event_btnThemMouseClicked
 
     private void btnSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuaMouseClicked

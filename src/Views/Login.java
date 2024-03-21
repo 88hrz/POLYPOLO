@@ -86,7 +86,6 @@ public class Login extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(619, 360));
         setMinimumSize(new java.awt.Dimension(619, 360));
 
         jPanel5.setBackground(new java.awt.Color(224, 234, 243));
@@ -186,7 +185,7 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/LOGO_polypolo.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/polypolo_logo.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -238,6 +237,7 @@ public class Login extends javax.swing.JFrame {
                 u.setRole(uService.getListByUserId(userID).getRole());
 
                 dataStatic = txtID.getText();
+                System.out.println(txtID.getText());
                 JOptionPane.showMessageDialog(this,"Đăng nhập thành công!");
                 
                 Admin_View mainView = new Admin_View(u);

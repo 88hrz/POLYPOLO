@@ -10,18 +10,27 @@ package ViewModels;
  */
 public class HD_InvoiceViewModel {
     private Integer maHD;
-    private String tenNhanVien, tenKhachHang, soDT, diaChi, phuongThuc;
+    private String tenNhanVien, tenKhachHang, soDT, diaChi, phuongThuc, loaiKH;
 
     public HD_InvoiceViewModel() {
     }
 
-    public HD_InvoiceViewModel(Integer maHD, String tenNhanVien, String tenKhachHang, String soDT, String diaChi, String phuongThuc) {
+    public HD_InvoiceViewModel(Integer maHD, String tenNhanVien, String tenKhachHang, String soDT, String diaChi, String phuongThuc, String loaiKH) {
         this.maHD = maHD;
         this.tenNhanVien = tenNhanVien;
         this.tenKhachHang = tenKhachHang;
         this.soDT = soDT;
         this.diaChi = diaChi;
         this.phuongThuc = phuongThuc;
+        this.loaiKH = loaiKH;
+    }
+
+    public String getLoaiKH() {
+        return loaiKH;
+    }
+
+    public void setLoaiKH(String loaiKH) {
+        this.loaiKH = loaiKH;
     }
 
     public Integer getMaHD() {

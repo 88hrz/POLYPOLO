@@ -4,10 +4,12 @@
  */
 package Repositories;
 
+import Models.HoaDon;
 import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_HoaDonViewModel;
 import ViewModels.ThongKeViewDoanhThu;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -22,11 +24,10 @@ public class ThongKeRespository {
     public ArrayList<Integer> showYear() {
         String sql = "SELECT YEAR(NgayLap) AS NamLap FROM HoaDon WHERE HoaDon.Deleted!=1 GROUP BY YEAR(NgayLap);";
         ArrayList<Integer> years = new ArrayList<>();
-                
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)) {
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Integer namLap = rs.getInt("NamLap");
                 years.add(namLap);
             }
@@ -36,6 +37,7 @@ public class ThongKeRespository {
 
         return years;
     }
+
     public ArrayList<Integer> showMonth(int year) {
         String sql = "SELECT DISTINCT MONTH(NgayLap) AS ThangLap FROM HoaDon WHERE YEAR(NgayLap) = ? ORDER BY ThangLap;";
         ArrayList<Integer> months = new ArrayList<>();
@@ -53,27 +55,8 @@ public class ThongKeRespository {
 
         return months;
     }
-//    public ArrayList<Integer> showMonth() {
-//        String sql = "SELECT MONTH(NgayLap) AS ThangLap FROM HoaDon WHERE HoaDon.Deleted!=1 GROUP BY MONTH(NgayLap);";
-//        ArrayList<Integer> months = new ArrayList<>();
-//                
-//        try (Connection conn = dbConnection.getConnection();
-//                PreparedStatement ps = conn.prepareCall(sql)) {
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {                
-//                Integer namLap = rs.getInt("ThangLap");
-//                months.add(namLap);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return months;
-//    }
-    
-    
-    
-    //
+
+//    //
     public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Date ngay) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai ,\n"
                 + "					 hd.PhuongThucThanhToan, hd.TongTien , hd.NgayLap, hd.TenNhanVien FROM HoaDonChiTiet hdct\n"
@@ -101,6 +84,7 @@ public class ThongKeRespository {
         return lsHoaDon;
     }
 ////Tong doanh thu theo ngày hom nay them dkien đã thanh toán
+
     public HD_HoaDonViewModel tongDoanhThuNgay() {
         String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n"
                 + "FROM HoaDon\n"
@@ -119,6 +103,7 @@ public class ThongKeRespository {
         return hd;
     }
 ////Tong doanh thu theo tháng này them dkien đã thanh toán
+
     public HD_HoaDonViewModel tongDoanhThuThang() {
         String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n"
                 + "FROM HoaDon\n"
@@ -138,6 +123,7 @@ public class ThongKeRespository {
         return hd;
     }
 ////Tong doanh thu theo năm nay them dkien đã thanh toán
+
     public HD_HoaDonViewModel tongDoanhThuNam() {
         String sql = "SELECT CAST(COALESCE(SUM(TongTien), 0) AS VARCHAR(MAX)) AS TongDoanhThu\n"
                 + "FROM HoaDon\n"
@@ -175,6 +161,7 @@ public class ThongKeRespository {
         return hd;
     }
 ///Đếm số hóa đơn vẫn treo chưa thanh toán
+
     public HD_HoaDonViewModel tongHDTreo() {
         String sql = "SELECT COUNT(MaHoaDon) AS HoaDon\n"
                 + "FROM HoaDon\n"
@@ -193,6 +180,7 @@ public class ThongKeRespository {
         return hd;
     }
 ////Tính tổng tiền hóa đơn đã thanh toán
+
     public HD_HoaDonViewModel tongTienThanh() {
         String sql = "SELECT SUM(TongTien)\n"
                 + "FROM HoaDon\n"
@@ -201,7 +189,7 @@ public class ThongKeRespository {
         HD_HoaDonViewModel hd = new HD_HoaDonViewModel();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
-          
+
             while (rs.next()) {
                 hd = new HD_HoaDonViewModel(rs.getDouble(1));
             }
@@ -211,6 +199,7 @@ public class ThongKeRespository {
         return hd;
     }
 ////Tính tổng sản phẩm đã bán ra
+
     public HD_GioHangViewModel tongSPBan() {
         String sql = "SELECT SUM(SoLuong) AS TongSoLuongDaBan\n"
                 + "FROM HoaDonChiTiet;";
@@ -227,6 +216,7 @@ public class ThongKeRespository {
         }
         return hd;
     }
+
     public HD_HoaDonViewModel TonDonHang() {
         String sql = "SELECT COUNT(MaHoaDon) AS HoaDon\n"
                 + "FROM HoaDon\n";
@@ -243,6 +233,7 @@ public class ThongKeRespository {
         }
         return hd;
     }
+
     //
     public ArrayList<HD_HoaDonViewModel> getListHoaDonView(Integer maHDD) {
         String sql = "SELECT hdct.MaHoaDonChiTiet, kh.TenKhachHang, kh.SoDienThoai\n"
@@ -376,7 +367,7 @@ public class ThongKeRespository {
                 Integer thang = rs.getInt("Thang");
                 Integer soL = rs.getInt("SoLuongHoaDon");
                 Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien);
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien, null);
                 ls.add(tkv);
             }
         } catch (Exception e) {
@@ -404,7 +395,7 @@ public class ThongKeRespository {
                 Integer thang = rs.getInt("Thang");
                 Integer soL = rs.getInt("SoLuongHoaDon");
                 Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien);
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien, null);
                 ls.add(tkv);
             }
         } catch (Exception e) {
@@ -415,7 +406,7 @@ public class ThongKeRespository {
 
     /////Load Bieu Do Thong Ke theo thang
     public ArrayList<ThongKeViewDoanhThu> getListThongKeTheoThang(Integer thang, Integer nam) {
-        String sql = "SELECT NgayLap,\n"
+        String sql = "SELECT  DAY(NgayLap) as NgayLap,\n"
                 + "    COUNT(*) AS SoLuongHoaDon,\n"
                 + "    SUM(TongTien) AS TongTien \n"
                 + "FROM \n"
@@ -432,11 +423,38 @@ public class ThongKeRespository {
             ps.setInt(2, nam);   // Set the year parameter
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Date ngay = rs.getDate("NgayLap");
+                Integer ngay = rs.getInt("NgayLap");
                 Integer soLuong = rs.getInt("SoLuongHoaDon");
                 Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tk = new ThongKeViewDoanhThu(soLuong, tongTien, ngay);
+                ThongKeViewDoanhThu tk = new ThongKeViewDoanhThu(null, soLuong, tongTien, ngay);
                 ls.add(tk);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThuTheoNam() {
+        String sql = "SELECT  DAY(NgayLap) as NgayLap,\\n\"\n" +
+"                + \"    COUNT(*) AS SoLuongHoaDon,\\n\"\n" +
+"                + \"    SUM(TongTien*12) AS TongTien \\n\"\n" +
+"                + \"FROM \\n\"\n" +
+"                + \"    HoaDon \\n\"\n" +
+"                + \"WHERE \\n\"\n" +
+"                + \"    MONTH(NgayLap) = ? AND YEAR(NgayLap) = ?\\n\"\n" +
+"                + \"GROUP BY \\n\"\n" +
+"                + \"    YEAR(NgayLap), MONTH(NgayLap), NgayLap\\n\" // This line seems redundant\n" +
+"                + \"ORDER BY \\n\"\n" +
+"                + \"    YEAR(NgayLap), MONTH(NgayLap);";
+        ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer thang = rs.getInt("Thang");
+                Integer soL = rs.getInt("SoLuongHoaDon");
+                Integer tongTien = rs.getInt("TongTien");
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien, null);
+                ls.add(tkv);
             }
         } catch (Exception e) {
             e.printStackTrace();

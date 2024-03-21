@@ -36,7 +36,7 @@ public class Admin_View extends javax.swing.JFrame {
 //        jGUIForms.removeAll();
 //        jGUIForms.add(sanPham).setVisible(true);
 
-//        QuanLyTaiKhoan taiKhoan = new QuanLyTaiKhoan();
+//        old taiKhoan = new old();
 //        jGUIForms.removeAll();
 //        jGUIForms.add(taiKhoan).setVisible(true);
 

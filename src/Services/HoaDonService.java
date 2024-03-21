@@ -137,6 +137,17 @@ public class HoaDonService {
             return "Thêm sản phẩm thất bại :(";
         }
     }
+    public String mergeSP(int soL, int maHD, int maSPCT){
+        Boolean check = hdRepo.mergeSP(soL, maHD, maSPCT);
+        if (check) {
+            return "Thêm sản phẩm vào giỏ hàng thành công!";
+        }else{
+            return "Thêm sản phẩm thất bại :(";
+        }
+    }
+    public Boolean checkSPExists(int maHD, int maSPCT){
+        return hdRepo.checkSPExists(maHD, maSPCT);
+    }
 
    public String add(HoaDon hd){
         Boolean check = hdRepo.addHoaDon(hd);

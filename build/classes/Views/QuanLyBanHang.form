@@ -512,22 +512,15 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                              <Component id="btnInHD" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="btnHuyHD" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace pref="32" max="32767" attributes="0"/>
-                              <Component id="btnTaoHD" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnThanhToan" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnMoi" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace pref="32" max="32767" attributes="0"/>
+                      <Component id="btnTaoHD" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="btnInHD" max="32767" attributes="0"/>
+                          <Component id="btnThanhToan" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnMoi" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -541,12 +534,9 @@
                           <Component id="btnMoi" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnThanhToan" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnInHD" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnHuyHD" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
                       <EmptySpace pref="7" max="32767" attributes="0"/>
+                      <Component id="btnInHD" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -582,14 +572,6 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnInHDMouseClicked"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnHuyHD">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="H&#x1ee6;Y H&#xd3;A &#x110;&#x1a0;N"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnHuyHDMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>

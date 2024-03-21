@@ -237,4 +237,19 @@ public class KhachHangRepository {
         }
         return kh;
     }
+    
+    public boolean XoaKH(Integer maKH) {
+        String sql = "DELETE FROM KhachHang WHERE MaKhachHang = ?";
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, maKH);
+
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

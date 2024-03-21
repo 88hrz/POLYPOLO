@@ -51,8 +51,8 @@ public class KhachHangService {
             return "Cập nhật khách hàng thất bại :(";
         }
     }
-    public String XoaKH(KhachHang kh){
-        boolean check = kHRepo.XoaKH(kh);
+    public String XoaKH(Integer maKH){
+        boolean check = kHRepo.XoaKH(maKH);
         if (check) {
             return "Xóa khách hàng thành công!";
         }else{

@@ -354,7 +354,8 @@ public class HoaDonRepository {
         String sql = " UPDATE SanPhamChiTiet SET SoLuongTon = ?"
                 + "WHERE MaSanPhamChiTiet =?";
 
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, soL);
             ps.setObject(2, id);
 
@@ -367,7 +368,47 @@ public class HoaDonRepository {
         }
         return false;
     }
-    //GETLIST SP BY Ì
+    //FIX
+    public Boolean mergeSP(int soL, int maHD, int maSPCT){
+        String sql = "UPDATE HoaDonChiTiet\n" +
+                        "SET SoLuong = SoLuong + ? \n" +
+                        "WHERE MaHoaDon = ? AND MaSanPhamChiTiet = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, soL);
+            ps.setObject(2, maHD);
+            ps.setObject(3, maSPCT);
+            
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Boolean checkSPExists(int maHD, int maSPCT){
+        String sql = "SELECT COUNT(*) FROM HoaDonChiTiet\n" +
+                    "WHERE MaHoaDon = ? AND MaSanPhamChiTiet = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, maHD);
+            ps.setObject(2, maSPCT);
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;     
+    }
+    
+    //GETLIST SP BY ID
     public ArrayList<HD_SanPhamViewModel> getListById(Integer id){
         String sql ="SELECT spct.MaSanPham, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n" +
 "                , ms.TenMau, s.TenSize\n" +

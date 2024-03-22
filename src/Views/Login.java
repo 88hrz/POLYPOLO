@@ -237,7 +237,6 @@ public class Login extends javax.swing.JFrame {
                 u.setRole(uService.getListByUserId(userID).getRole());
 
                 dataStatic = txtID.getText();
-                System.out.println(txtID.getText());
                 JOptionPane.showMessageDialog(this,"Đăng nhập thành công!");
                 
                 Admin_View mainView = new Admin_View(u);

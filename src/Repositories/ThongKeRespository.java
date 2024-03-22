@@ -367,7 +367,8 @@ public class ThongKeRespository {
                 Integer thang = rs.getInt("Thang");
                 Integer soL = rs.getInt("SoLuongHoaDon");
                 Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien, null);
+                
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien);
                 ls.add(tkv);
             }
         } catch (Exception e) {
@@ -375,11 +376,13 @@ public class ThongKeRespository {
         }
         return ls;
     }
+    
 /////Load Bieu Do Thong Ke
 
     public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThu() {
         String sql = "SELECT \n"
                 + "    MONTH(NgayLap) AS Thang,\n"
+                + "    YEAR(NgayLap) AS Nam,\n"
                 + "    COUNT(*) AS SoLuongHoaDon,\n"
                 + "    SUM(TongTien) AS TongTien \n"
                 + "FROM \n"
@@ -393,9 +396,11 @@ public class ThongKeRespository {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer thang = rs.getInt("Thang");
+                Integer nam = rs.getInt("Nam");
                 Integer soL = rs.getInt("SoLuongHoaDon");
                 Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien, null);
+                
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, nam, soL, tongTien,null,null);
                 ls.add(tkv);
             }
         } catch (Exception e) {
@@ -406,7 +411,7 @@ public class ThongKeRespository {
 
     /////Load Bieu Do Thong Ke theo thang
     public ArrayList<ThongKeViewDoanhThu> getListThongKeTheoThang(Integer thang, Integer nam) {
-        String sql = "SELECT  DAY(NgayLap) as NgayLap,\n"
+        String sql = "SELECT DAY(NgayLap) as NgayLap,\n"
                 + "    COUNT(*) AS SoLuongHoaDon,\n"
                 + "    SUM(TongTien) AS TongTien \n"
                 + "FROM \n"
@@ -419,14 +424,15 @@ public class ThongKeRespository {
                 + "    YEAR(NgayLap), MONTH(NgayLap);";
         ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
-            ps.setInt(1, thang); // Set the month parameter
-            ps.setInt(2, nam);   // Set the year parameter
+            ps.setInt(1, thang); 
+            ps.setInt(2, nam);   
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer ngay = rs.getInt("NgayLap");
                 Integer soLuong = rs.getInt("SoLuongHoaDon");
                 Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tk = new ThongKeViewDoanhThu(null, soLuong, tongTien, ngay);
+                
+                ThongKeViewDoanhThu tk = new ThongKeViewDoanhThu(null, null, soLuong, tongTien, ngay, null);
                 ls.add(tk);
             }
         } catch (Exception e) {
@@ -434,26 +440,19 @@ public class ThongKeRespository {
         }
         return ls;
     }
-public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThuTheoNam() {
-        String sql = "SELECT  DAY(NgayLap) as NgayLap,\\n\"\n" +
-"                + \"    COUNT(*) AS SoLuongHoaDon,\\n\"\n" +
-"                + \"    SUM(TongTien*12) AS TongTien \\n\"\n" +
-"                + \"FROM \\n\"\n" +
-"                + \"    HoaDon \\n\"\n" +
-"                + \"WHERE \\n\"\n" +
-"                + \"    MONTH(NgayLap) = ? AND YEAR(NgayLap) = ?\\n\"\n" +
-"                + \"GROUP BY \\n\"\n" +
-"                + \"    YEAR(NgayLap), MONTH(NgayLap), NgayLap\\n\" // This line seems redundant\n" +
-"                + \"ORDER BY \\n\"\n" +
-"                + \"    YEAR(NgayLap), MONTH(NgayLap);";
+
+    public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThuTheoNam() {
+        String sql = "SELECT YEAR(NgayLap) AS Nam, COUNT(*) AS SoLuongHoaDon, SUM(TongTien*12) AS TongTien\n" +
+"              FROM HoaDon GROUP BY YEAR(NgayLap) ORDER BY YEAR(NgayLap)";
         ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Integer thang = rs.getInt("Thang");
+                Integer thang = rs.getInt("Nam");
                 Integer soL = rs.getInt("SoLuongHoaDon");
                 Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, soL, tongTien, null);
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, null, soL, tongTien, null, null);
                 ls.add(tkv);
             }
         } catch (Exception e) {

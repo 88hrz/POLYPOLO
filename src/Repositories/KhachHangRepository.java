@@ -44,10 +44,12 @@ public class KhachHangRepository {
 
     ///TABLE HOADON
     public ArrayList<KhachHangViewBang2> getList_Bang2(Integer MaHD) {
-        String sql = " select HoaDon.MaHoaDon, SanPhamChiTiet.TenSanPhamChiTiet, HoaDon.TenKhachHang, SoLuong, DonGia\n"
-                + "			   from HoaDonChiTiet \n"
-                + "			   join SanPhamChiTiet on HoaDonChiTiet.MaSanPhamChiTiet = SanPhamChiTiet.MaSanPhamChiTiet\n"
-                + "			   join HoaDon on HoaDon.MaHoaDon = HoaDonChiTiet.MaHoaDon where HoaDon.MaHoaDon = ?";
+        String sql = " SELECT HoaDon.MaHoaDon, SanPhamChiTiet.TenSanPhamChiTiet, KhachHang.TenKhachHang, SoLuong, DonGia, HoaDon.NgayLap\n"
+                + "FROM HoaDonChiTiet\n"
+                + "JOIN SanPhamChiTiet ON HoaDonChiTiet.MaSanPhamChiTiet = SanPhamChiTiet.MaSanPhamChiTiet\n"
+                + "JOIN HoaDon ON HoaDon.MaHoaDon = HoaDonChiTiet.MaHoaDon \n"
+                + "join KhachHang on HoaDon.MaHoaDon = KhachHang.MaHoaDon\n" +
+        "WHERE HoaDon.MaHoaDon = ?";
         ArrayList<KhachHangViewBang2> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
@@ -59,8 +61,8 @@ public class KhachHangRepository {
                 String tenKh = rs.getString("TenKhachHang");
                 Integer soLuong = rs.getInt("SoLuong");
                 Double DonGia = rs.getDouble("DonGia");
-
-                KhachHangViewBang2 kh = new KhachHangViewBang2(maHD, tenSP, tenKh, soLuong, DonGia);
+                Date ngay = rs.getDate("NgayLap");
+                KhachHangViewBang2 kh = new KhachHangViewBang2(maHD, tenSP, tenKh, soLuong, DonGia, DonGia, ngay);
                 list.add(kh);
             }
         } catch (Exception e) {
@@ -104,7 +106,7 @@ public class KhachHangRepository {
             ps.setString(2, kh.getGioiTinh());
             ps.setString(3, kh.getSoDT());
             ps.setString(4, kh.getDiaChi());
-            
+
             int result = ps.executeUpdate();
             if (result > 0) {
                 return true;
@@ -237,7 +239,7 @@ public class KhachHangRepository {
         }
         return kh;
     }
-    
+
     public boolean XoaKH(Integer maKH) {
         String sql = "DELETE FROM KhachHang WHERE MaKhachHang = ?";
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

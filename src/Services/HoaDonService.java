@@ -9,6 +9,7 @@ import Repositories.HoaDonRepository;
 import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
+import Models.MyReceipts;
 import Models.NhanSu;
 import Models.SanPhamChiTiet;
 import Repositories.DanhMucRepo;
@@ -29,6 +30,10 @@ public class HoaDonService {
     SanPhamRepository spRepo = new SanPhamRepository();
     DanhMucRepo dmRepo = new DanhMucRepo();
     
+    //EXPORT 
+    public ArrayList<MyReceipts> getMyReceipts(){
+        return hdRepo.getMyReceipts();
+    }
     //PRINT INVOICE
     public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
         return hdRepo.getListKHById(id);
@@ -54,8 +59,6 @@ public class HoaDonService {
             return "Xóa sản phẩm thất bại :(";
         }
     }
-
-    
     //GET LIST HOADON
     public ArrayList<HD_HoaDonViewModel> getListHoaDon(){
         return hdRepo.getListHoaDon();

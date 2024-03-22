@@ -58,7 +58,8 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
                 kh.getTenKH(),
                 kh.getSoLuong(),
                 kh.getDonGia(),
-                kh.getThanhTien()
+                kh.getThanhTien(),
+                kh.getNgayMua()
             });
         }
     }
@@ -94,7 +95,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         }
     }
 
-    //GETMODEL
+    //GETMODEL để add
     public KhachHang getModel() {
         Integer maKH = Integer.valueOf(khService.getList().get(khService.getList().size() - 1).getMaKH());
         String tenKh = txtTenKH.getText();
@@ -106,7 +107,19 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
         return kh;
     }
+    
+       //GETMODEL để update
+        public KhachHang getModel2() {
+        Integer maKH = Integer.valueOf(txtMaKH.getText());
+        String tenKh = txtTenKH.getText();
+        String soDT = txtSDT.getText();
+        String gioi = rdoNam.isSelected() ? "Nam" : "Nữ";
+        String dia = txtDiaChi.getText();
 
+        KhachHang kh = new KhachHang(maKH, tenKh, gioi, soDT, dia);
+
+        return kh;
+    }
     ///Click hiện lêns THEM PHAN NAY
     public void setModel(KhachHangViewModel kh) {
         if (kh != null) {
@@ -252,13 +265,13 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
         tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã Khách Hàng", "Tên Khách Hàng", "Giới Tính", "SĐT", "Địa Chỉ"
+                "Mã Khách Hàng", "Tên Khách Hàng", "Mã hóa đơn", "Giới Tính", "SĐT", "Địa Chỉ"
             }
         ));
         tblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -320,7 +333,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã Hóa Đơn", "Tên Khách Hàng", "Tên Sản Phẩm", "Số Lượng", "Đơn Giá", "Thành Tiền", "Ngày Mua Hàng"
+                "Mã Hóa Đơn", "Tên Sản Phẩm", "Tên Khách Hàng", "Số Lượng", "Đơn Giá", "Thành Tiền", "Ngày Mua Hàng"
             }
         ));
         tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -479,7 +492,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
     private void btnSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuaMouseClicked
         if (validateKhachHang()) {
-            KhachHang kh = getModel();
+            KhachHang kh = getModel2();
             String rs = khService.update(kh);
             JOptionPane.showMessageDialog(this, rs);
             loadTableKH(khService.getList());
@@ -497,6 +510,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Đã hủy thao tác xóa khách hàng!", "POLYPOLO thông báo", 0);
         }
+        clearForm();
     }//GEN-LAST:event_btnXoaMouseClicked
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked

@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -21,6 +22,19 @@ import javax.swing.JTextField;
  */
 public class Validate {
 
+    public Boolean validPassCode(JPasswordField jpass, String msg, StringBuilder stb){
+        String passCode = new String(jpass.getPassword());
+        if (passCode.matches("\\d{3}")) {
+            return true;
+        } else {
+            if (stb != null) {
+                stb.append("Mật khẩu sai định dạng!").append("\n");
+                stb.append(msg);
+            }
+            return false;
+        }
+    }
+    
     public Boolean isDateSelected(JDateChooser calendar, StringBuilder stb, String msg) {
         Date date = calendar.getDate();
         if (date == null) {

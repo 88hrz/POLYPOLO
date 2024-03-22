@@ -4,27 +4,33 @@
  */
 package Models;
 
+import java.util.Date;
+
 /**
  *
  * @author hmail
  */
 public class KhachHangViewBang2 {
+
     private Integer maHD;
     private String tenSP;
     private String tenKH;
     private Integer soLuong;
     private Double donGia;
     private Double thanhTien;
+    private Date ngayMua;
 
     public KhachHangViewBang2() {
     }
 
-    public KhachHangViewBang2(Integer maHD, String tenSP, String tenKH, Integer soLuong, Double donGia) {
+    public KhachHangViewBang2(Integer maHD, String tenSP, String tenKH, Integer soLuong, Double donGia, Double thanhTien, Date ngayMua) {
         this.maHD = maHD;
         this.tenSP = tenSP;
         this.tenKH = tenKH;
         this.soLuong = soLuong;
         this.donGia = donGia;
+        this.thanhTien = thanhTien;
+        this.ngayMua = ngayMua;
     }
 
     public Integer getMaHD() {
@@ -68,12 +74,19 @@ public class KhachHangViewBang2 {
     }
 
     public Double getThanhTien() {
-        return donGia*soLuong;
+        return donGia * soLuong;
     }
 
     public void setThanhTien(Double thanhTien) {
         this.thanhTien = thanhTien;
     }
-    
-    
+
+    public Date getNgayMua() {
+        return ngayMua;
+    }
+
+    public void setNgayMua(Date ngayMua) {
+        this.ngayMua = ngayMua;
+    }
+
 }

@@ -7,6 +7,7 @@ package Services;
 import Models.NhanSu;
 import Models.TaiKhoan;
 import Models.User;
+import Repositories.H_TaiKhoanRepository;
 import Repositories.NhanSuRepo;
 import Repositories.UserRepository;
 import ViewModels.UserViewModel;
@@ -18,7 +19,18 @@ import java.util.ArrayList;
  */
 public class NguoiDungService {
     UserRepository userRepo = new UserRepository();
+    H_TaiKhoanRepository taiKhoanRepository = new H_TaiKhoanRepository();
     NhanSuRepo nsRepo = new NhanSuRepo();
+    
+    public String getName(String tenDN) {
+        return taiKhoanRepository.getName(tenDN);
+    }
+    public String getTenDN(String tenDN) {
+        return taiKhoanRepository.getTenDN(tenDN);
+    }
+    public ArrayList<UserViewModel> filterByRoleAndGender(String vaiT, String gioiT){
+        return userRepo.filterByRoleAndGender(vaiT, gioiT);
+    }
     
     public String delete(String maND){
         Boolean check = userRepo.delete(maND);

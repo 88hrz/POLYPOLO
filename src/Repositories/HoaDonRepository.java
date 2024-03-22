@@ -7,6 +7,7 @@ package Repositories;
 import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
+import Models.MyReceipts;
 import ViewModels.HD_HoaDonViewModel;
 import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
@@ -19,6 +20,37 @@ import java.util.ArrayList;
 public class HoaDonRepository {
     DbConnection dbConnection;
     
+    //IMPORT EXCEL
+    public ArrayList<MyReceipts> getMyReceipts(){
+        String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, hd.LoaiKhachHang, SUM(hdct.SoLuong) AS SoL, hd.TongTien, hd.PhuongThucThanhToan, hd.TenNhanVien, hd.TrangThai, hd.NgayLap\n" +
+                        "FROM HoaDon hd INNER JOIN HoaDonChiTiet hdct ON hd.MaHoaDon = hdct.MaHoaDon \n" +
+                        "GROUP BY hd.MaHoaDon, hd.TenKhachHang, hd.LoaiKhachHang, hd.TongTien, hd.PhuongThucThanhToan, hd.TenNhanVien, hd.TrangThai, hd.NgayLap \n" +
+                        "ORDER BY hd.NgayLap";
+        ArrayList<MyReceipts> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maHD = rs.getInt("MaHoaDon");
+                String tenK = rs.getString("TenKhachHang");
+                String loaiK = rs.getString("LoaiKhachHang");
+                Integer soL = rs.getInt("SoL");
+                Double tongT = rs.getDouble("TongTien");
+                String phuongT = rs.getString("PhuongThucThanhToan");
+                String tenN = rs.getString("TenNhanVien");
+                String trangT = rs.getString("TrangThai");
+                Date ngayL = rs.getDate("NgayLap");
+                
+                MyReceipts mS = new MyReceipts(maHD, soL, tenK, phuongT, trangT, loaiK, tongT, ngayL, tenN);
+                ls.add(mS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;  
+    }
     //INVOICE
     public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
         String sql = "SELECT hd.MaHoaDon, hd.TenNhanVien, hd.TenKhachHang, hd.PhuongThucThanhToan, kh.SoDienThoai, kh.DiaChi, hd.LoaiKhachHang FROM HoaDon hd INNER JOIN KhachHang kh ON Hd.MaHoaDon = kh.MaHoaDon \n" +
@@ -615,10 +647,4 @@ public class HoaDonRepository {
         }
         return false;
     }
-//    public static void main(String[] args) {
-//        HoaDonRepository hdr = new HoaDonRepository();
-//        for (HD_HoaDonViewModel hd : hdr.getListHoaDonView()) {
-//            System.out.println(hd.getMaHD());
-//        }
-//    }
 }

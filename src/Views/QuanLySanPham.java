@@ -8,9 +8,11 @@ import Models.DanhMuc;
 import Models.KichCo;
 import Models.MauSac;
 import Models.SanPham;
+import Services.NguoiDungService;
 import Services.SanPhamService;
 import Validator.Validate;
 import ViewModels.SanPhamViewModel;
+import ViewModels.UserViewModel;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,13 +25,24 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 /**
  *
@@ -38,15 +51,27 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class QuanLySanPham extends javax.swing.JInternalFrame {
     SanPhamService spService = new SanPhamService();
     DecimalFormat formatter = new DecimalFormat("#,###");
+    NguoiDungService uService = new NguoiDungService();
+    
     /**
      * Creates new form QuanLySanPham
      */
+    
     public QuanLySanPham() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         load();
+    }
+    
+    public static UserViewModel u;
+
+    private String d;
+
+    public String Data(String d) {
+        this.d = d;
+        return d;
     }
     
     void load() {
@@ -348,6 +373,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
         btnHide = new javax.swing.JButton();
         LoadHide = new javax.swing.JButton();
         btnHide1 = new javax.swing.JButton();
+        btnImport = new javax.swing.JButton();
         btnIn = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         txtSoLuong = new javax.swing.JTextField();
@@ -487,7 +513,14 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
             }
         });
 
-        btnIn.setText("IN");
+        btnImport.setText("IMPORT");
+        btnImport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnImportMouseClicked(evt);
+            }
+        });
+
+        btnIn.setText("EXPORT");
         btnIn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnInMouseClicked(evt);
@@ -499,40 +532,43 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
+                        .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addComponent(btnHide1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(LoadHide)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnImport)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnIn)
+                        .addContainerGap())))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
                     .addComponent(btnSua)
                     .addComponent(btnClear)
                     .addComponent(btnHide))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHide1)
                     .addComponent(LoadHide)
+                    .addComponent(btnImport)
                     .addComponent(btnIn))
-                .addContainerGap())
+                .addGap(12, 12, 12))
         );
 
         jLabel12.setText("Số Lượng Tồn:");
@@ -604,13 +640,10 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel7Layout.createSequentialGroup()
-                                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cboKichCo, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(46, 46, 46))))
+                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboKichCo, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(123, 123, 123))))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtGiaNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -619,6 +652,8 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
         jPanel7Layout.setVerticalGroup(
@@ -674,17 +709,17 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel11)
                                 .addGap(97, 97, 97))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel7Layout.createSequentialGroup()
-                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(txtGiaNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel15))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(txtGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel13))))
-                                .addGap(90, 90, 90))))))
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtGiaNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel15))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel13))
+                                .addGap(90, 90, 90))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(81, 81, 81))))))
         );
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP)), "Chi Tiết Sản Phẩm", javax.swing.border.TitledBorder.LEADING, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 3, 17), new java.awt.Color(0, 0, 153))); // NOI18N
@@ -769,9 +804,10 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
             .addGroup(ChiTietSanPhamLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ChiTietSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 15, Short.MAX_VALUE))
+                    .addGroup(ChiTietSanPhamLayout.createSequentialGroup()
+                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 15, Short.MAX_VALUE))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
         ChiTietSanPhamLayout.setVerticalGroup(
             ChiTietSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1468,33 +1504,47 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
             style.setAlignment(HorizontalAlignment.CENTER);
             style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
             titleCell.setCellStyle(style);
-            
+           
             //DATE
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             String currentDate = sdf.format(new Date());
+            
+            SimpleDateFormat sdfHrs = new SimpleDateFormat("HH:mm:ss");
+            String currentTime = sdfHrs.format(new Date());
+            
             XSSFRow dateRow = sheet.createRow(1);
-            Cell dateCell = dateRow.createCell(0);
-            dateCell.setCellValue("Ngày xuất: " + currentDate);
+            org.apache.poi.ss.usermodel.Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Ngày: " + currentDate + " | Giờ: " +currentTime);
             sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 9)); // Merge từ cột 0 đến 9
             XSSFCellStyle dateStyle = workBook.createCellStyle();
             dateStyle.setAlignment(HorizontalAlignment.RIGHT);
             dateCell.setCellStyle(dateStyle);
             
+            //STYLE FONT
+            Font headerFont = workBook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 11);
+            
+            CellStyle headerStyle = workBook.createCellStyle();
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
             //ADD
             XSSFRow row = null;
             Cell cell = null;
-
             row = sheet.createRow(3);
 
             cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("STT");
 
             cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            Sheet s = cell.getSheet();
             cell.setCellValue("Mã Sản Phẩm");
+            s.autoSizeColumn(1);
 
             cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Tên Sản Phẩm");
-
+            
             cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Danh Mục");
 
@@ -1515,42 +1565,99 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
 
             cell = row.createCell(9, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Tồn Kho");
-            
+
+            for (int i = 0; i < 10; i++) {
+                cell = row.getCell(i);
+                cell.setCellStyle(headerStyle);
+            }
+
             ArrayList<SanPhamViewModel> ls = spService.getListSanPham();
             for (int i = 0; i < ls.size(); i++) {
                 row = sheet.createRow(4 + i);
 
+                //STYLE FONT
+                CellStyle docuStyle = workBook.createCellStyle();
+                docuStyle.setAlignment(HorizontalAlignment.CENTER);
+                
+                CellStyle cellStyleFormatNumber = null;
+
+                if (cellStyleFormatNumber == null) {
+                    short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
+                    Workbook workbook = row.getSheet().getWorkbook();
+                    cellStyleFormatNumber = workbook.createCellStyle();
+                    cellStyleFormatNumber.setDataFormat(format);
+                }
+
                 cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
                 cell.setCellValue(i + 1);
+                cell.setCellStyle(docuStyle);
 
                 cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
                 cell.setCellValue("SP" + ls.get(i).getMaSPCT());
+                cell.setCellStyle(docuStyle);
 
                 cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getTenSP());
+                s.autoSizeColumn(2);
 
                 cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getTenDM());
+                s.autoSizeColumn(3);
 
                 cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getMauSac());
+                cell.setCellStyle(docuStyle);
 
                 cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getKichCo());
+                cell.setCellStyle(docuStyle);
 
-                cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getGiaNhap());
+                s.autoSizeColumn(6);
+                cell.setCellStyle(cellStyleFormatNumber);
 
-                cell = row.createCell(7, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell = row.createCell(7, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getGiaBan());
+                s.autoSizeColumn(7);
 
                 cell = row.createCell(8, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getTrangThai());
+                s.autoSizeColumn(8);
+                cell.setCellStyle(docuStyle);
 
                 cell = row.createCell(9, org.apache.poi.ss.usermodel.CellType.NUMERIC);
                 cell.setCellValue(ls.get(i).getSoLuong());
+                cell.setCellStyle(docuStyle);
             }
+            
+            //STYLE
+            CellStyle footerStyle = workBook.createCellStyle();
+            footerStyle.setFont(headerFont);
+            footerStyle.setAlignment(HorizontalAlignment.LEFT);
+            
+            //ROW CUỐI
+            int rowS = 5 + ls.size();
 
+            XSSFRow tongSPRow = sheet.createRow(rowS);
+            org.apache.poi.ss.usermodel.Cell tongSPCell = tongSPRow.createCell(1);
+
+            tongSPCell.setCellValue("Tổng Sản Phẩm:");
+            tongSPCell.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell tongSPCelll = tongSPRow.createCell(2);
+            tongSPCelll.setCellValue(ls.size());
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+
+            org.apache.poi.ss.usermodel.Cell ngX = tongSPRow.createCell(7);
+            ngX.setCellValue("Người Xuất:");
+            ngX.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell thongT = tongSPRow.createCell(8);
+            thongT.setCellValue(uService.getName(Login.dataStatic));
+            sheet.autoSizeColumn(7);
+            sheet.autoSizeColumn(8);
+            
+        
             File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\DS_demo.xlsx");
             try {
                 FileOutputStream fis = new FileOutputStream(file);
@@ -1593,6 +1700,11 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSuaTTActionPerformed
 
+    private void btnImportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnImportMouseClicked
+        // IMPORT 
+        
+    }//GEN-LAST:event_btnImportMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChiTietSanPham;
@@ -1606,6 +1718,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnHide;
     private javax.swing.JButton btnHide1;
     private javax.swing.JButton btnHideTT;
+    private javax.swing.JButton btnImport;
     private javax.swing.JButton btnIn;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearch1;

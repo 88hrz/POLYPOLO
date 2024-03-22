@@ -4,6 +4,7 @@
  */
 package Views;
 
+import Models.HoaDon;
 import Services.HoaDonService;
 import Services.ThongKeService;
 import ViewModels.HD_GioHangViewModel;
@@ -24,8 +25,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -809,6 +814,8 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jpanelBieuDo.setPreferredSize(new java.awt.Dimension(0, 296));
+
         javax.swing.GroupLayout jpanelBieuDoLayout = new javax.swing.GroupLayout(jpanelBieuDo);
         jpanelBieuDo.setLayout(jpanelBieuDoLayout);
         jpanelBieuDoLayout.setHorizontalGroup(
@@ -817,7 +824,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
         );
         jpanelBieuDoLayout.setVerticalGroup(
             jpanelBieuDoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 296, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -829,7 +836,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jpanelBieuDo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jpanelBieuDo, javax.swing.GroupLayout.DEFAULT_SIZE, 892, Short.MAX_VALUE))
                     .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 14, Short.MAX_VALUE))
         );
@@ -840,7 +847,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpanelBieuDo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Biểu đồ thống kê", jPanel9);
@@ -951,171 +958,223 @@ public class TrangChu extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cboThangMouseClicked
 
     private void btnINTKtheothangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnINTKtheothangMouseClicked
-                       try {
-                        XSSFWorkbook workBook = new XSSFWorkbook();
-                        XSSFSheet sheet = workBook.createSheet("Danh Sach Thong Ke");
+        //IN
+        try {
+            XSSFWorkbook workBook = new XSSFWorkbook();
+            XSSFSheet sheet = workBook.createSheet("THỐNG KÊ THÁNG");
             
-                        //STYLE TITLE
-                        XSSFRow titleRow = sheet.createRow(0);
-                        XSSFCell titleCell = titleRow.createCell(0);
-                        titleCell.setCellValue("Danh Sách Thống Kê POLYPOLO");
-                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,9));
-                        XSSFFont font = workBook.createFont();
-                        font.setFontHeightInPoints((short) 19);
-                        font.setBold(true);
-                        XSSFCellStyle style = workBook.createCellStyle();
-                        style.setFont(font);
-                        style.setAlignment(HorizontalAlignment.CENTER);
-                        style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
-                        titleCell.setCellStyle(style);
+            //STYLE TITLE
+            XSSFRow titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Danh Sách Thống Kê POLYPOLO"); 
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,9)); 
+            XSSFFont font = workBook.createFont();
+            font.setFontHeightInPoints((short) 19);
+            font.setBold(true);
+            XSSFCellStyle style = workBook.createCellStyle();
+            style.setFont(font);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
+            titleCell.setCellStyle(style);
             
-                        //DATE
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        String currentDate = sdf.format(new Date());
-                        XSSFRow dateRow = sheet.createRow(1);
-                        XSSFCell dateCell = dateRow.createCell(0);
-                        dateCell.setCellValue("Ngày xuất: " + currentDate);
-                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 9)); // Merge từ cột 0 đến 9
-                        XSSFCellStyle dateStyle = workBook.createCellStyle();
-                        dateStyle.setAlignment(HorizontalAlignment.RIGHT);
-                        dateCell.setCellStyle(dateStyle);
+            //DATE
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = sdf.format(new Date());
+            XSSFRow dateRow = sheet.createRow(1);
+            Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Ngày xuất: " + currentDate);
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 9)); // Merge từ cột 0 đến 9
+            XSSFCellStyle dateStyle = workBook.createCellStyle();
+            dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+            dateCell.setCellStyle(dateStyle);
+
+            //ADD
+            XSSFRow row = null;
+            Cell cell = null;
+
+            row = sheet.createRow(3);
+
+            cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Tháng");
             
-                        //ADD
-                        XSSFRow row = null;
-                        Cell cell = null;
+            cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Năm");
+
+            cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Số Đơn Hàng");
+            Sheet s = cell.getSheet();
+            s.autoSizeColumn(4);
             
-                        row = sheet.createRow(3);
+
+            cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Doanh Thu");
+
+            row = sheet.createRow(15);
             
-                        cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("STT");
+            cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Người Xuất:");
             
-                        cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("Tháng");
-            
-                        cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("Số Lượng");
-            
-                        cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("Tổng Tiền");
-            
-            
-                        ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThu();
-                        for (int i = 0; i < ls.size(); i++) {
-                                row = sheet.createRow(4 + i);
+            ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThu();
+            for (int i = 0; i < ls.size(); i++) {
+                row = sheet.createRow(4 + i);
+                CellStyle cellStyleFormatNumber = null;
+                if (cellStyleFormatNumber == null) {
+                    short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
+                    Workbook workbook = row.getSheet().getWorkbook();
+                    cellStyleFormatNumber = workbook.createCellStyle();
+                    cellStyleFormatNumber.setDataFormat(format);
+                }
                 
-                                cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
-                                cell.setCellValue(i + 1);
+                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(i + 1);
+
+                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue("Tháng " + ls.get(i).getThang());
                 
-                                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
-                                cell.setCellValue("Tháng " + ls.get(i).getThang());
+                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue("Năm " + ls.get(i).getNam());
+
+                cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getSoLuong());
+
+                cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTongTien());
+                s.autoSizeColumn(5);
+                cell.setCellStyle(cellStyleFormatNumber);
+            }
+            ArrayList<HoaDon> hd = hdsv.getList();
+            for (int i = 0; i < hd.size(); i++) {
+                row = sheet.createRow(16);
                 
-                                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
-                                cell.setCellValue(ls.get(i).getSoLuong());
-                
-                                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
-                                cell.setCellValue(ls.get(i).getTongTien());
-                
-                
-                
-                            }
-            
-                        File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKE.xlsx");
-                        try {
-                                FileOutputStream fis = new FileOutputStream(file);
-                                workBook.write(fis);
-                                fis.close();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-            
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
+                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(hd.get(i).getTenNV());
+               
+            }
+            File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKETHANG.xlsx");
+
+            try {
+                FileOutputStream fis = new FileOutputStream(file);
+                workBook.write(fis);
+                fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thống kê thành công!", "POLYPOLO thông báo", 0);
     }//GEN-LAST:event_btnINTKtheothangMouseClicked
 
     private void btnINTKtheonamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnINTKtheonamMouseClicked
-                    try {
-                        XSSFWorkbook workBook = new XSSFWorkbook();
-                        XSSFSheet sheet = workBook.createSheet("Danh Sach Thong Ke");
+        //IN
+        try {
+            XSSFWorkbook workBook = new XSSFWorkbook();
+            XSSFSheet sheet = workBook.createSheet("THỐNG KÊ NĂM");
             
-                        //STYLE TITLE
-                        XSSFRow titleRow = sheet.createRow(0);
-                        XSSFCell titleCell = titleRow.createCell(0);
-                        titleCell.setCellValue("Danh Sách Thống Kê POLYPOLO");
-                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,9));
-                        XSSFFont font = workBook.createFont();
-                        font.setFontHeightInPoints((short) 19);
-                        font.setBold(true);
-                        XSSFCellStyle style = workBook.createCellStyle();
-                        style.setFont(font);
-                        style.setAlignment(HorizontalAlignment.CENTER);
-                        style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
-                        titleCell.setCellStyle(style);
+            //STYLE TITLE
+            XSSFRow titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Danh Sách Thống Kê POLYPOLO"); 
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,9)); 
+            XSSFFont font = workBook.createFont();
+            font.setFontHeightInPoints((short) 19);
+            font.setBold(true);
+            XSSFCellStyle style = workBook.createCellStyle();
+            style.setFont(font);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
+            titleCell.setCellStyle(style);
             
-                        //DATE
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        String currentDate = sdf.format(new Date());
-                        XSSFRow dateRow = sheet.createRow(1);
-                        XSSFCell dateCell = dateRow.createCell(0);
-                        dateCell.setCellValue("Ngày xuất: " + currentDate);
-                        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 9)); // Merge từ cột 0 đến 9
-                        XSSFCellStyle dateStyle = workBook.createCellStyle();
-                        dateStyle.setAlignment(HorizontalAlignment.RIGHT);
-                        dateCell.setCellStyle(dateStyle);
+            //DATE
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = sdf.format(new Date());
+            XSSFRow dateRow = sheet.createRow(1);
+            Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Ngày xuất: " + currentDate);
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 9)); // Merge từ cột 0 đến 9
+            XSSFCellStyle dateStyle = workBook.createCellStyle();
+            dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+            dateCell.setCellStyle(dateStyle);
+
+            //ADD
+            XSSFRow row = null;
+            Cell cell = null;
+
+            row = sheet.createRow(3);
+
+            cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Năm");
+
+            cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Số Lượng Đơn Hàng");
+
+            cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Doanh Thu");
             
-                        //ADD
-                        XSSFRow row = null;
-                        Cell cell = null;
+            row = sheet.createRow(15);
             
-                        row = sheet.createRow(3);
+            cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Người Xuất: ");
             
-                        cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("STT");
-            
-                        cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("Năm");
-            
-                        cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("Số Lượng");
-            
-                        cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
-                        cell.setCellValue("Tổng Tiền");
-            
-            
-                        ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThuTheoNam();
-                        for (int i = 0; i < ls.size(); i++) {
-                                row = sheet.createRow(4 + i);
+            ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThuTheoNam();
+            for (int i = 0; i < ls.size(); i++) {
+                row = sheet.createRow(4 + i);
+                CellStyle cellStyleFormatNumber = null;
+
+                //STYLE FONT
+                CellStyle docuStyle = workBook.createCellStyle();
+                docuStyle.setAlignment(HorizontalAlignment.CENTER);
                 
-                                cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
-                                cell.setCellValue(i + 1);
-                
-                                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
-                                cell.setCellValue("Năm " + ls.get(i).getThang());
-                
-                                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
-                                cell.setCellValue(ls.get(i).getSoLuong());
-                
-                                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
-                                cell.setCellValue(ls.get(i).getTongTien());
-                
-                
-                
-                            }
+                if (cellStyleFormatNumber == null) {
+                    short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
+                    Workbook workbook = row.getSheet().getWorkbook();
+                    cellStyleFormatNumber = workbook.createCellStyle();
+                    cellStyleFormatNumber.setDataFormat(format);
+                }
+                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(i + 1);
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue("Năm " + ls.get(i).getThang());
+
+                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getSoLuong());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTongTien());
+                cell.setCellStyle(cellStyleFormatNumber);
+            }
             
-                        File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKE.xlsx");
-                        try {
-                                FileOutputStream fis = new FileOutputStream(file);
-                                workBook.write(fis);
-                                fis.close();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-            
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
+            ArrayList<HoaDon> hd = hdsv.getList();
+            for (int i = 0; i < hd.size(); i++) {
+                row = sheet.createRow(16);
+                
+                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(hd.get(i).getTenNV());
+               
+            } 
+            File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKENAM.xlsx");
+
+            try {
+                FileOutputStream fis = new FileOutputStream(file);
+                workBook.write(fis);
+                fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thống kê thành công!", "POLYPOLO thông báo", 0);
     }//GEN-LAST:event_btnINTKtheonamMouseClicked
    
 

@@ -21,22 +21,41 @@ import java.util.Date;
  * @author X1
  */
 public class UserRepository {
-//Có thêm/sửa nhiều
+    
     DbConnection dbConnection;
-
-    public static void main(String[] args) {
-        /*
-        Integer a= 1;
-        UserViewModel u = new UserRepository().getListById(a);
-        System.out.println(u.toString());
-         */
-        ArrayList<UserViewModel> list = new UserRepository().getList();
-        for (UserViewModel uvm : list) {
-            System.out.println(uvm.toString());
+    
+    public ArrayList<UserViewModel> filterByRoleAndGender(String vaiT, String gioiT){
+        String sql = "SELECT * FROM NhanVien nv INNER JOIN NguoiDung nd ON nv.MaNguoiDung = nd.MaNguoiDung\n" +
+                    "WHERE nd.VaiTro = ? AND nv.GioiTinh = ? ;";
+        ArrayList<UserViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, vaiT);
+            ps.setObject(2, gioiT);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maNV = rs.getInt("MaNhanVien");
+                Integer maND = rs.getInt("MaNguoiDung");
+                String hoTen = rs.getString("TenNhanVien");
+                String gioiTinh = rs.getString("GioiTinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                String tenDN = rs.getString("TenDangNhap");
+                String mk = rs.getString("MatKhau");
+                String vaiTro = rs.getString("VaiTro");
+                
+                UserViewModel u = new UserViewModel(maNV, maND, tenDN, hoTen, mk, soDT, vaiTro, diaChi, gioiTinh);
+                ls.add(u);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return ls;
+        
     }
-
-    //HUONG- THÊM
+    
     public Boolean delete(String maND) {
         String sql = "DELETE FROM [dbo].[NguoiDung]\n"
                 + "      WHERE [MaNguoiDung] = '" + maND + "'";

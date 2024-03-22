@@ -3,34 +3,40 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ViewModels;
-
-import java.util.Date;
-
 /**
  *
  * @author hmail
  */
 public class ThongKeViewDoanhThu {
-
     private Integer thang;
+    private Integer nam;
     private Integer soLuong;
     private Integer tongTien;
     private Integer ngay;
+    private String tennv;
 
     public ThongKeViewDoanhThu() {
     }
 
-    public ThongKeViewDoanhThu(Integer soLuong, Integer tongTien, Integer ngay) {
-        this.soLuong = soLuong;
-        this.tongTien = tongTien;
-        this.ngay = ngay;
-    }
+//    public ThongKeViewDoanhThu(Integer soLuong, Integer tongTien, Integer ngay) {
+//        this.soLuong = soLuong;
+//        this.tongTien = tongTien;
+//        this.ngay = ngay;
+//    }
 
-    public ThongKeViewDoanhThu(Integer thang, Integer soLuong, Integer tongTien, Integer ngay) {
+    public ThongKeViewDoanhThu(Integer thang, Integer soLuong, Integer tongTien) {
         this.thang = thang;
         this.soLuong = soLuong;
         this.tongTien = tongTien;
+    }
+
+    public ThongKeViewDoanhThu(Integer thang, Integer nam, Integer soLuong, Integer tongTien, Integer ngay, String tennv) {
+        this.thang = thang;
+        this.nam = nam;
+        this.soLuong = soLuong;
+        this.tongTien = tongTien;
         this.ngay = ngay;
+        this.tennv = tennv;
     }
 
     public Integer getThang() {
@@ -39,6 +45,14 @@ public class ThongKeViewDoanhThu {
 
     public void setThang(Integer thang) {
         this.thang = thang;
+    }
+
+    public Integer getNam() {
+        return nam;
+    }
+
+    public void setNam(Integer nam) {
+        this.nam = nam;
     }
 
     public Integer getSoLuong() {
@@ -63,6 +77,14 @@ public class ThongKeViewDoanhThu {
 
     public void setNgay(Integer ngay) {
         this.ngay = ngay;
+    }
+
+    public String getTennv() {
+        return tennv;
+    }
+
+    public void setTennv(String tennv) {
+        this.tennv = tennv;
     }
 
 }

@@ -26,15 +26,15 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnImport" min="-2" pref="75" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="txtFilePath" min="-2" pref="381" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       <Component id="btnChooseFile" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" min="-2" pref="709" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" min="-2" pref="848" max="-2" attributes="0"/>
+                  <Component id="btnImport" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
+              <EmptySpace pref="26" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -68,18 +68,54 @@
         <Component class="javax.swing.JTable" name="tblImportSP">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="7" rowCount="4">
+              <Table columnCount="13" rowCount="4">
                 <Column editable="true" title="MSP" type="java.lang.Object"/>
                 <Column editable="true" title="MDM" type="java.lang.Object"/>
-                <Column editable="true" title="MaMau" type="java.lang.Object"/>
-                <Column editable="true" title="MaSize" type="java.lang.Object"/>
+                <Column editable="true" title="M&#xe3; M&#xe0;u" type="java.lang.Object"/>
+                <Column editable="true" title="M&#xe3; Size" type="java.lang.Object"/>
                 <Column editable="true" title="Gi&#xe1; Nh&#x1ead;p" type="java.lang.Object"/>
                 <Column editable="true" title="Gi&#xe1; B&#xe1;n" type="java.lang.Object"/>
+                <Column editable="true" title="Tr&#x1ea1;ng Th&#xe1;i" type="java.lang.Object"/>
+                <Column editable="true" title="MSPCT" type="java.lang.Object"/>
+                <Column editable="true" title="MSP" type="java.lang.Object"/>
+                <Column editable="true" title="T&#xea;n SP" type="java.lang.Object"/>
+                <Column editable="true" title="Size" type="java.lang.Object"/>
+                <Column editable="true" title="M&#xe0;u" type="java.lang.Object"/>
                 <Column editable="true" title="Tr&#x1ea1;ng Th&#xe1;i" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>

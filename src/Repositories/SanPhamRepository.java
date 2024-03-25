@@ -7,7 +7,6 @@ package Repositories;
 import Models.SanPham;
 import Models.SanPhamChiTiet;
 import ViewModels.SanPhamViewModel;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.sql.*;
 
@@ -240,27 +239,6 @@ public class SanPhamRepository {
             e.printStackTrace();
         }
         return ls;
-    }
-   
-    //ADD SANPHAM
-    public Boolean addImport(SanPham sp){
-        String sql = "INSERT INTO SanPham(MaDanhMuc, TrangThai, GiaNhap, GiaBan, Deleted) VALUES (?, ?, ?, ?,0);";
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
-            ps.setInt(1, sp.getMaDM());
-            ps.setString(2, sp.getTrangThai());
-            ps.setDouble(3, sp.getGiaNhap());
-            ps.setDouble(4, sp.getGiaBan());
-            
-            int check = ps.executeUpdate();
-            if (check>0) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
     public Boolean addSP(SanPham sp){
         String sql = "INSERT INTO SanPham(MaDanhMuc, TrangThai, GiaNhap, GiaBan, Deleted) VALUES (?, ?, ?, ?,0);"

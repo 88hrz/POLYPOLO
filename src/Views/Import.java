@@ -14,6 +14,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -45,21 +47,10 @@ public class Import extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
-    void loadTable(ArrayList<SanPham> ls){
+    void importExcelToTable() {
         DefaultTableModel model = (DefaultTableModel) tblImportSP.getModel();
         model.setRowCount(0);
-        for (SanPham sp : ls) {
-            model.addRow(new Object[]{
-                sp.getMaSP(), sp.getMaDM(), sp.getMaMau(), sp.getMaSz()
-                    , sp.getGiaNhap(), sp.getGiaBan(), sp.getTrangThai()
-            });
-        }
-    }
 
-    void importExcelToTable(){
-        DefaultTableModel model = (DefaultTableModel) tblImportSP.getModel();
-        model.setRowCount(0);
-        
         File excelFile;
         FileInputStream fis = null;
         BufferedInputStream excelBIS = null;
@@ -78,27 +69,35 @@ public class Import extends javax.swing.JFrame {
                 excelBIS = new BufferedInputStream(fis);
                 excelImportToJTable = new XSSFWorkbook(excelBIS);
                 XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
- 
+
                 for (int row = 1; row < excelSheet.getLastRowNum(); row++) {
-  
                     XSSFRow excelRow = excelSheet.getRow(row);
- 
-                    XSSFCell excelNo = excelRow.getCell(0);
-                    XSSFCell excelMaSP = excelRow.getCell(1);
-                    XSSFCell excelMaDM = excelRow.getCell(2);
-                    XSSFCell excelMaMau = excelRow.getCell(3);
-                    XSSFCell excelMaSize = excelRow.getCell(4);
-                    XSSFCell excelGiaNhap = excelRow.getCell(5);
-                    XSSFCell excelGiaBan = excelRow.getCell(6);
-                    XSSFCell excelTrangThai = excelRow.getCell(7);
-                    
-                //    JLabel excelJL = new JLabel(new ImageIcon(new ImageIcon(excelImage.getStringCellValue()).getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
-                    model.addRow(new Object[]{excelNo, excelMaSP, excelMaDM, excelMaMau, excelMaSize, excelGiaNhap, excelGiaBan, excelTrangThai});
+                    if (excelRow != null && excelRow.getCell(0) != null) {
+                        // Lấy dữ liệu từ các ô trong hàng
+                        Integer excelNo = (int) excelRow.getCell(0).getNumericCellValue();
+//                        Integer excelMaSP = (int) excelRow.getCell(1).getNumericCellValue();
+                        Integer excelMaDM = (int) excelRow.getCell(1).getNumericCellValue();
+                        Integer excelMaMau = (int) excelRow.getCell(2).getNumericCellValue();
+                        Integer excelMaSize = (int) excelRow.getCell(3).getNumericCellValue();
+                        Double excelGiaNhap = excelRow.getCell(4).getNumericCellValue();
+                        Double excelGiaBan = excelRow.getCell(5).getNumericCellValue();
+                        String excelTrangThai = excelRow.getCell(6).getStringCellValue();
+                        Integer excelMaSPCT = (int) excelRow.getCell(7).getNumericCellValue();
+                        Integer excelMSP = (int) excelRow.getCell(8).getNumericCellValue();
+                        String excelTenSP = excelRow.getCell(9).getStringCellValue();
+                        String excelSize = excelRow.getCell(10).getStringCellValue();
+                        String excelMau = excelRow.getCell(11).getStringCellValue();
+                        String excelTT = excelRow.getCell(12).getStringCellValue();
+                        Integer excelSLT = (int) excelRow.getCell(13).getNumericCellValue();
+
+                        // Thêm hàng mới vào bảng
+                        model.addRow(new Object[]{excelNo, excelMaDM, excelMaMau, excelMaSize, excelGiaNhap, excelGiaBan, excelTrangThai, excelMaSPCT, excelMSP, excelTenSP, excelSize, excelMau, excelTT, excelSLT});
+                    }
                 }
                 JOptionPane.showMessageDialog(null, "Import success!!!");
             } catch (IOException iOException) {
                 JOptionPane.showMessageDialog(null, iOException.getMessage());
-            }finally{
+            } finally {
                 try {
                     if (fis != null) {
                         fis.close();
@@ -115,37 +114,44 @@ public class Import extends javax.swing.JFrame {
             }
         }
     }
-    
+
     //GETMODEL
     public SanPham getModelSP() {
-    Integer pos = tblImportSP.getSelectedRow();
-    if (pos == -1) {
-        return null;
+        Integer pos = tblImportSP.getSelectedRow();
+        if (pos == -1) {
+            return null;
+        }
+        Integer maSP = (Integer) tblImportSP.getValueAt(pos, 0);
+        Integer maDM = (Integer) tblImportSP.getValueAt(pos, 1);
+        Integer maMau = (Integer) tblImportSP.getValueAt(pos, 2);
+        Integer maSz = (Integer) tblImportSP.getValueAt(pos, 3);
+        Double giaN = (Double) tblImportSP.getValueAt(pos, 4);
+        Double giaB = (Double) tblImportSP.getValueAt(pos, 5);
+        String trangT = (String) tblImportSP.getValueAt(pos, 6);
+        String tenSP = (String) tblImportSP.getValueAt(pos, 10);
+        Integer soL = (Integer) tblImportSP.getValueAt(pos, 13);
+        
+        SanPham sp = new SanPham();
+        sp.setMaSP(Integer.valueOf(spService.getListSP().get(spService.getListSP().size()-1).getMaSP()));
+        sp.setTenSP(tenSP);
+        sp.setMaDM(maDM);
+        sp.setTrangThai(trangT);
+        sp.setGiaNhap(giaN);
+        sp.setGiaBan(giaB);
+        sp.setMaSz(maSz);
+        sp.setMaMau(maMau);
+        sp.setSoLuong(soL);
+
+        return sp;
     }
-    Integer maSP = (Integer) tblImportSP.getValueAt(pos, 1);
-    Integer maDM = (Integer) tblImportSP.getValueAt(pos, 2);
-    Integer maMau = (Integer) tblImportSP.getValueAt(pos, 3);
-    Integer maSz = (Integer) tblImportSP.getValueAt(pos, 4);
-    Double giaN = (Double) tblImportSP.getValueAt(pos, 5);
-    Double giaB = (Double) tblImportSP.getValueAt(pos, 6);
-    String trangT = (String) tblImportSP.getValueAt(pos, 7);
 
-    SanPham sp = new SanPham();
-    sp.setMaSP(maSP);
-    sp.setMaDM(maDM);sp.setMaMau(maMau);
-    sp.setMaSz(maSz);
-    sp.setGiaNhap(giaN);
-    sp.setGiaBan(giaB);
-    sp.setTrangThai(trangT);
-
-    return sp;
-}
     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -160,13 +166,13 @@ public class Import extends javax.swing.JFrame {
 
         tblImportSP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "MSP", "MDM", "MaMau", "MaSize", "Giá Nhập", "Giá Bán", "Trạng Thái"
+                "MSP", "MDM", "Mã Màu", "Mã Size", "Giá Nhập", "Giá Bán", "Trạng Thái", "MSPCT", "MSP", "Tên SP", "Size", "Màu", "Trạng Thái"
             }
         ));
         jScrollPane1.setViewportView(tblImportSP);
@@ -192,13 +198,13 @@ public class Import extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39)
                         .addComponent(btnChooseFile))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 848, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,66 +249,6 @@ public class Import extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Import().setVisible(true);
-
-                //IMPORT
-                try {
-                    // Bước 1: Đọc dữ liệu từ tệp Excel vào Java
-                    String excelFilePath = "C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\IMPORT.xlsx";
-                    FileInputStream excelFile = new FileInputStream(new File(excelFilePath));
-
-                    //           FileInputStream excelFile = new FileInputStream(new File("C:\\Users\\ACER\\Desktop"));
-                    Workbook workbook = new XSSFWorkbook(excelFile);
-                    Sheet sheet = workbook.getSheetAt(0); // Đọc sheet đầu tiên
-
-                    // Bước 2: Kết nối với cơ sở dữ liệu SQL
-                    Connection conn = (Connection) DbConnection.getConnection();
-
-                    if (conn != null) {
-                        // Bước 3: Lưu dữ liệu vào cơ sở dữ liệu SQL
-                        for (Row row : sheet) {
-                            // Đọc dữ liệu từ các ô trong mỗi dòng và lưu vào cơ sở dữ liệu SQL
-                            String tenSach = row.getCell(0).getStringCellValue(); // Tên sách
-                            String theLoai = row.getCell(1).getStringCellValue(); // Thể loại
-
-                            Cell soTrangCell = row.getCell(2);
-                            int soTrang;
-                            if (soTrangCell.getCellType() == CellType.NUMERIC) {
-                                soTrang = (int) soTrangCell.getNumericCellValue();
-                            } else {
-                                soTrang = 0; // hoặc thông báo lỗi tùy thuộc vào yêu cầu của bạn
-                            }
-
-                            int soLuongTon = (int) row.getCell(3).getNumericCellValue(); // Số lượng tồn
-                            int idTacGia = (int) row.getCell(4).getNumericCellValue(); // ID tác giả
-                            String trangThai = row.getCell(5).getStringCellValue(); // Trạng thái
-
-                            // Thực hiện truy vấn INSERT
-                            String sql = "INSERT INTO Sach (TenSach, TheLoai, SoTrang, SoLuongTon, idTacGia, TrangThai) VALUES (?, ?, ?, ?, ?, ?)";
-                            PreparedStatement statement = conn.prepareCall(sql);
-                            statement.setString(1, tenSach);
-                            statement.setString(2, theLoai);
-                            statement.setInt(3, soTrang);
-                            statement.setInt(4, soLuongTon);
-                            statement.setInt(5, idTacGia);
-                            statement.setString(6, trangThai);
-
-                            statement.executeUpdate();
-                        }
-
-                        // Đóng kết nối
-                        conn.close();
-
-                        System.out.println("Import tu Excel vao SQL thanh cong.");
-                    } else {
-                        System.out.println("Không thể kết nối đến cơ sở dữ liệu.");
-                    }
-
-                    // Đóng workbook sau khi sử dụng xong
-                    workbook.close();
-                } catch (IOException | SQLException ex) {
-                    ex.printStackTrace();
-                }
-
             }
         });
     }

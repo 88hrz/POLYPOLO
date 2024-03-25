@@ -26,6 +26,14 @@ public class SanPhamService {
     MauSacRepo msRepo = new MauSacRepo();
     KichCoRepo szRepo = new KichCoRepo();
     
+    public String addImport(SanPham sp){
+        Boolean check = spRepo.addImport(sp);
+        if (check) {
+            return "Import thành công!";
+        }else{
+            return "Import thất bại :(";
+        }
+    }
     //GETLIST SP
     public ArrayList<SanPham> getListSP(){
         return spRepo.getListSP();

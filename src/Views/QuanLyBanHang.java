@@ -44,13 +44,14 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -61,6 +62,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -89,14 +91,17 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         validateFalse();
     }
     
+    NumberFormat format = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
     //<editor-fold defaultstate="collapsed" desc=" LOAD ">
     void loadTableGioHang(ArrayList<HD_GioHangViewModel> ls){
         DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
         model.setRowCount(0);
         
         for (HD_GioHangViewModel gioHang : ls) {
-            String formattedDonGia = formatter.format(gioHang.getDonGia());
-            String formattedThanhTien = formatter.format(gioHang.getThanhTien());
+            String formattedDonGia = format.format(gioHang.getDonGia());
+            String formattedThanhTien = format.format(gioHang.getThanhTien());
+        //    String formattedDonGia = formatter.format(gioHang.getDonGia());
+        //    String formattedThanhTien = formatter.format(gioHang.getThanhTien());
             
             model.addRow(new Object []{
                 gioHang.getMaHDCT(), gioHang.getMaSP(), gioHang.getTenSP(), gioHang.getMauSac()
@@ -1280,6 +1285,10 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
                 s.autoSizeColumn(9);
                 cell.setCellStyle(docuStyle);
             }
+            
+            //FILTER
+            int lastRow = sheet.getLastRowNum();
+            sheet.setAutoFilter(new CellRangeAddress(3, lastRow, 8, 8));
             
             //STYLE
             CellStyle footerStyle = workBook.createCellStyle();

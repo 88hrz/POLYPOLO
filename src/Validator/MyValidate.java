@@ -15,14 +15,84 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 
 /**
  *
  * @author X1
  */
-public class Validate {
+public class MyValidate {
+    
+    //EXCEL VALIDATE
+    public Boolean isNotEmptyCell(Cell cell, StringBuilder stb, String msg) {
+        if (cell == null || cell.getCellType() == CellType.BLANK || cell.getCellType() == CellType.STRING && cell.getStringCellValue().trim().isEmpty()) {
+            stb.append("Không thể import dữ liệu!").append("\n");
+            stb.append(msg).append("\n");
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-    public Boolean validPassCode(JPasswordField jpass, String msg, StringBuilder stb){
+    public boolean isCellTypeInt(XSSFCell cell, StringBuilder errorMessage, String message) {
+        if (cell == null) {
+            errorMessage.append(message).append(" Cell is null.\n");
+            return false;
+        }
+
+        switch (cell.getCellType()) {
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    errorMessage.append(message).append(" Date is not allowed.\n");
+                    return false;
+                }
+                return true;
+            case STRING:
+            try {
+                Integer.parseInt(cell.getStringCellValue());
+                return true;
+            } catch (NumberFormatException e) {
+                errorMessage.append(message).append(" Cannot parse string to int.\n");
+                return false;
+            }
+            case BLANK:
+                errorMessage.append(message).append(" Cell is blank.\n");
+                return false;
+            default:
+                errorMessage.append(message).append(" Unsupported cell type.\n");
+                return false;
+        }
+    }
+
+//    public Boolean isCellTypeInt(Cell cell, StringBuilder stb, String msg) {
+//        // CHECK TYPE
+//        double cellValue = cell.getNumericCellValue();
+//        if (cell.getCellType() == CellType.NUMERIC && (cellValue % 1) == 0 && cellValue > 0) {
+//            return true;
+//        } else {
+//            stb.append("Không thể import dữ liệu!").append("\n");
+//            stb.append(msg).append("\n");
+//            return false;
+//        }
+//        //    stb.append("Data nhập vào phải là kiểu số nguyên dương!").append("\n");
+//    }
+    
+    public Boolean isCellTypeString(Cell cell, StringBuilder stb, String msg) {
+        // CHECK TYPE
+        if (cell.getCellType() == CellType.STRING) {
+            return true;
+        } else {
+            stb.append("Không thể import dữ liệu!").append("\n");
+            stb.append(msg).append("\n");
+            return false;
+        }
+    }
+    
+    //JAVA VALIDATE
+    public Boolean validPassCode(JPasswordField jpass, String msg, StringBuilder stb) {
         String passCode = new String(jpass.getPassword());
         if (passCode.matches("\\d{3}")) {
             return true;

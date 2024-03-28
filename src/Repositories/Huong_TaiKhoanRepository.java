@@ -4,16 +4,52 @@
  */
 package Repositories;
 
+import Models.User;
 import ViewModels.TaiKhoanViewModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 /**
  *
  * @author Admin
  */
-public class H_TaiKhoanRepository {
+public class Huong_TaiKhoanRepository {
+    
+    public ArrayList<User> getListGV() {
+        String sql = "select * from NguoiDung";
+        ArrayList<User> list = new ArrayList<>();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User km = new User(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4));
+                list.add(km);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public User findID(String tenND) {
+        String sql = "select MaNguoiDung, TenDangNhap, MatKhau, VaiTro from NguoiDung "
+                + "where VaiTro = ?";
+        User Km = new User();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenND);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User km = new User(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4));
+                Km = km;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Km;
+    }
     
     public String getName(String tenDN) {
         String sql = "Select NhanVien.TenNhanVien from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung where TenDangNhap = '" + tenDN + "'";

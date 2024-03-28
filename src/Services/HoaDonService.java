@@ -13,7 +13,7 @@ import Models.MyReceipts;
 import Models.NhanSu;
 import Models.SanPhamChiTiet;
 import Repositories.DanhMucRepo;
-import Repositories.NhanSuRepo;
+import Repositories.Hoa_NhanSuRepo;
 import Repositories.SanPhamRepository;
 import ViewModels.HD_HoaDonViewModel;
 import ViewModels.HD_InvoiceViewModel;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HoaDonService {
     HoaDonRepository hdRepo = new HoaDonRepository();
-    NhanSuRepo nsRepo = new NhanSuRepo();
+    Hoa_NhanSuRepo nsRepo = new Hoa_NhanSuRepo();
     SanPhamRepository spRepo = new SanPhamRepository();
     DanhMucRepo dmRepo = new DanhMucRepo();
     

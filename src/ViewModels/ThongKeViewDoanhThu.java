@@ -14,6 +14,7 @@ public class ThongKeViewDoanhThu {
     private Integer tongTien;
     private Integer ngay;
     private String tennv;
+    private Integer loiNhuan;
 
     public ThongKeViewDoanhThu() {
     }
@@ -39,6 +40,26 @@ public class ThongKeViewDoanhThu {
         this.tennv = tennv;
     }
 
+    public ThongKeViewDoanhThu(Integer thang, Integer nam, Integer soLuong, Integer tongTien, Integer ngay, String tennv, Integer loiNhuan) {
+        this.thang = thang;
+        this.nam = nam;
+        this.soLuong = soLuong;
+        this.tongTien = tongTien;
+        this.ngay = ngay;
+        this.tennv = tennv;
+        this.loiNhuan = loiNhuan;
+    }
+
+    public Integer getLoiNhuan() {
+        return loiNhuan;
+    }
+
+    public void setLoiNhuan(Integer loiNhuan) {
+        this.loiNhuan = loiNhuan;
+    }
+
+    
+    
     public Integer getThang() {
         return thang;
     }

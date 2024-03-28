@@ -5,27 +5,19 @@
 package Views;
 
 import Models.SanPham;
-import java.sql.*;
-import Repositories.DbConnection;
 import Services.SanPhamService;
+import Validator.MyValidate;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.sun.jdi.connect.spi.Connection;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -37,6 +29,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Import extends javax.swing.JFrame {
     SanPhamService spService = new SanPhamService();
+    DecimalFormat formatter = new DecimalFormat("#,###");
     
     /**
      * Creates new form Import
@@ -45,6 +38,113 @@ public class Import extends javax.swing.JFrame {
     public Import() {
         initComponents();
         setLocationRelativeTo(null);
+    }
+    
+    //VALIDATE
+//    public boolean validateExcelDataByColumn(XSSFRow excelRow) {
+//        StringBuilder stb = new StringBuilder();
+//        MyValidate v = new MyValidate();
+//
+//        int checkCell = Math.min(excelRow.getLastCellNum(), 8);
+//        boolean isValid = true;
+//
+//        boolean[] columnInt = {true, true, true, true, true, false, false, true};
+//
+//        for (int cellIndex = 0; cellIndex < checkCell; cellIndex++) {
+//            XSSFCell cell = excelRow.getCell(cellIndex, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+//            boolean cellValid = v.isNotEmptyCell(cell, stb, "Cột " + (cellIndex + 1) + " đang bị trống!\n");
+//
+//            if (!cellValid) {
+//                isValid = false;
+//                continue;
+//            }
+//
+//            if (cellIndex >= columnInt.length) {
+//                stb.append("Cột ").append(cellIndex + 1).append(" vượt quá giới hạn kiểm tra.\n");
+//                isValid = false;
+//                break;
+//            }
+//
+//            if (columnInt[cellIndex]) {
+//                if (!v.isCellTypeInt(cell, stb, "Lỗi định dạng, data nhập vào phải là kiểu số nguyên dương!")) {
+//                    isValid = false;
+//                }
+//            } else {
+//                if (!v.isCellTypeString(cell, stb, "Lỗi định dạng, data nhập vào phải là 1 chuỗi ký tự!")) {
+//                    isValid = false;
+//                }
+//            }
+//        }
+//        return isValid;
+//    }
+      
+    public boolean validateData() {
+        int pos = tblImportSP.getSelectedRow();
+
+        Integer excelMaSP = (Integer) tblImportSP.getValueAt(pos, 0);
+        Integer excelMaDM = (Integer) tblImportSP.getValueAt(pos, 1);
+        Integer excelMaMau = (Integer) tblImportSP.getValueAt(pos, 2);
+        Integer excelMaSize = (Integer) tblImportSP.getValueAt(pos, 3);
+        Double excelGiaNhap = (Double) tblImportSP.getValueAt(pos, 4);
+        Double excelGiaBan = (Double) tblImportSP.getValueAt(pos, 5);
+        String excelTrangThai = (String) tblImportSP.getValueAt(pos, 6);
+        String excelTenSP = (String) tblImportSP.getValueAt(pos, 7);
+        Integer excelSLT = (Integer) tblImportSP.getValueAt(pos, 8);
+
+        if (spService.checkId(excelMaSP)) {
+            JOptionPane.showMessageDialog(this, "Id sản phẩm bị trùng, không thể thêm!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!(excelMaSP instanceof Integer) || excelMaSP <= 0) {
+            JOptionPane.showMessageDialog(this, "Sai định dạng, Id phải là số nguyên dương!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!spService.checkName(excelTenSP)) {
+            JOptionPane.showMessageDialog(this, "Tên sản phẩm bị trùng, không thể thêm!", "POLYPOLO thông báo", 0);
+            return false;
+        }
+        if (!spService.checkIdCat(excelMaDM)) {
+            JOptionPane.showMessageDialog(this, "Mã danh mục không tồn tại, không thể thêm!", "POLYPOLO thông báo", 0);
+            return false;
+        }
+        if (!(excelMaDM instanceof Integer) || excelMaDM <= 0) {
+            JOptionPane.showMessageDialog(this, "Sai định dạng, mã danh mục phải là số nguyên dương!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!spService.checkIdColor(excelMaMau)) {
+            JOptionPane.showMessageDialog(this, "Mã màu không tồn tại, không thể thêm!", "POLYPOLO thông báo", 0);
+            return false;
+        }
+        if (!(excelMaMau instanceof Integer) || excelMaMau <= 0) {
+            JOptionPane.showMessageDialog(this, "Sai định dạng, mã màu phải là số nguyên dương!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!spService.checkIdSz(excelMaSize)) {
+            JOptionPane.showMessageDialog(this, "Mã size không tồn tại, không thể thêm!", "POLYPOLO thông báo", 0);
+            return false;
+        }
+        if (!(excelMaSize instanceof Integer) || excelMaSize <= 0) {
+            JOptionPane.showMessageDialog(this, "Sai định dạng, mã size phải là số nguyên dương!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!(excelGiaNhap instanceof Double) || excelGiaNhap <= 0) {
+            JOptionPane.showMessageDialog(this, "Giá nhập phải là số và lớn hơn 0!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!(excelGiaBan instanceof Double) || excelGiaBan <= 0) {
+            JOptionPane.showMessageDialog(this, "Giá bán phải là số và lớn hơn 0!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!(excelTrangThai instanceof String)) {
+            JOptionPane.showMessageDialog(this, "Trạng thái phải là chuỗi ký tự!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!(excelSLT instanceof Integer) || (Integer) excelSLT < 0) {
+            JOptionPane.showMessageDialog(this, "Sai định dạng, số lượng phải là số nguyên không âm!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
     }
     
     void importExcelToTable() {
@@ -61,6 +161,7 @@ public class Import extends javax.swing.JFrame {
         FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILES", "xls", "xlsx", "xlsm");
         excelFileChooser.setFileFilter(fnef);
         int excelChooser = excelFileChooser.showOpenDialog(null);
+
         if (excelChooser == JFileChooser.APPROVE_OPTION) {
             try {
                 excelFile = excelFileChooser.getSelectedFile();
@@ -70,33 +171,39 @@ public class Import extends javax.swing.JFrame {
                 excelImportToJTable = new XSSFWorkbook(excelBIS);
                 XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
 
-                for (int row = 1; row < excelSheet.getLastRowNum(); row++) {
+                for (int row = 1; row <= excelSheet.getLastRowNum(); row++) { //START FROM ROW 2
                     XSSFRow excelRow = excelSheet.getRow(row);
-                    if (excelRow != null && excelRow.getCell(0) != null) {
-                        // Lấy dữ liệu từ các ô trong hàng
-                        Integer excelNo = (int) excelRow.getCell(0).getNumericCellValue();
-//                        Integer excelMaSP = (int) excelRow.getCell(1).getNumericCellValue();
-                        Integer excelMaDM = (int) excelRow.getCell(1).getNumericCellValue();
-                        Integer excelMaMau = (int) excelRow.getCell(2).getNumericCellValue();
-                        Integer excelMaSize = (int) excelRow.getCell(3).getNumericCellValue();
-                        Double excelGiaNhap = excelRow.getCell(4).getNumericCellValue();
-                        Double excelGiaBan = excelRow.getCell(5).getNumericCellValue();
-                        String excelTrangThai = excelRow.getCell(6).getStringCellValue();
-                        Integer excelMaSPCT = (int) excelRow.getCell(7).getNumericCellValue();
-                        Integer excelMSP = (int) excelRow.getCell(8).getNumericCellValue();
-                        String excelTenSP = excelRow.getCell(9).getStringCellValue();
-                        String excelSize = excelRow.getCell(10).getStringCellValue();
-                        String excelMau = excelRow.getCell(11).getStringCellValue();
-                        String excelTT = excelRow.getCell(12).getStringCellValue();
-                        Integer excelSLT = (int) excelRow.getCell(13).getNumericCellValue();
 
-                        // Thêm hàng mới vào bảng
-                        model.addRow(new Object[]{excelNo, excelMaDM, excelMaMau, excelMaSize, excelGiaNhap, excelGiaBan, excelTrangThai, excelMaSPCT, excelMSP, excelTenSP, excelSize, excelMau, excelTT, excelSLT});
+                    if (excelRow != null) {
+                        boolean isEmptyRow = true;
+
+                        for (int cellNum = 0; cellNum < excelRow.getLastCellNum(); cellNum++) {
+                            XSSFCell cell = excelRow.getCell(cellNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                            if (cell != null && cell.getCellType() != CellType.BLANK) {
+                                isEmptyRow = false;
+                                break;
+                            }
+                        }
+
+                        if (!isEmptyRow) {
+                            Integer excelMaSP = (int) excelRow.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            Integer excelMaDM = (int) excelRow.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            Integer excelMaMau = (int) excelRow.getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            Integer excelMaSize = (int) excelRow.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            Double excelGiaNhap = excelRow.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            Double excelGiaBan = excelRow.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue();         
+                            String excelTrangThai = excelRow.getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue();
+                            String excelTenSP = excelRow.getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue();
+                            Integer excelSLT = (int) excelRow.getCell(8, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                            String giaN = formatter.format(excelGiaNhap);
+                            String giaB = formatter.format(excelGiaBan);
+                            model.addRow(new Object[]{excelMaSP, excelMaDM, excelMaMau, excelMaSize, giaN, giaB, excelTrangThai, excelTenSP, excelSLT});
+                        }
                     }
                 }
-                JOptionPane.showMessageDialog(null, "Import success!!!");
-            } catch (IOException iOException) {
-                JOptionPane.showMessageDialog(null, iOException.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             } finally {
                 try {
                     if (fis != null) {
@@ -114,38 +221,27 @@ public class Import extends javax.swing.JFrame {
             }
         }
     }
-
+    
     //GETMODEL
     public SanPham getModelSP() {
-        Integer pos = tblImportSP.getSelectedRow();
-        if (pos == -1) {
-            return null;
-        }
-        Integer maSP = (Integer) tblImportSP.getValueAt(pos, 0);
-        Integer maDM = (Integer) tblImportSP.getValueAt(pos, 1);
-        Integer maMau = (Integer) tblImportSP.getValueAt(pos, 2);
-        Integer maSz = (Integer) tblImportSP.getValueAt(pos, 3);
-        Double giaN = (Double) tblImportSP.getValueAt(pos, 4);
-        Double giaB = (Double) tblImportSP.getValueAt(pos, 5);
-        String trangT = (String) tblImportSP.getValueAt(pos, 6);
-        String tenSP = (String) tblImportSP.getValueAt(pos, 10);
-        Integer soL = (Integer) tblImportSP.getValueAt(pos, 13);
+        int pos = tblImportSP.getSelectedRow();
         
-        SanPham sp = new SanPham();
-        sp.setMaSP(Integer.valueOf(spService.getListSP().get(spService.getListSP().size()-1).getMaSP()));
-        sp.setTenSP(tenSP);
-        sp.setMaDM(maDM);
-        sp.setTrangThai(trangT);
-        sp.setGiaNhap(giaN);
-        sp.setGiaBan(giaB);
-        sp.setMaSz(maSz);
-        sp.setMaMau(maMau);
-        sp.setSoLuong(soL);
-
-        return sp;
+        if (pos < 0) {
+            return null;
+        } 
+        return new SanPham(
+                Integer.valueOf(spService.getListSP().get(spService.getListSP().size() - 1).getMaSP() + 1),
+                (String) tblImportSP.getValueAt(pos, 7), // tenSP
+                (Integer) tblImportSP.getValueAt(pos, 1), // maDM
+                (String) tblImportSP.getValueAt(pos, 6), // trangT
+                (Double) tblImportSP.getValueAt(pos, 4), // giaN
+                (Double) tblImportSP.getValueAt(pos, 5), // giaB
+                (Integer) tblImportSP.getValueAt(pos, 3), // maSz
+                (Integer) tblImportSP.getValueAt(pos, 2), // maMau
+                (Integer) tblImportSP.getValueAt(pos, 8) // soL
+        );
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,25 +253,13 @@ public class Import extends javax.swing.JFrame {
     private void initComponents() {
 
         txtFilePath = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblImportSP = new javax.swing.JTable();
         btnChooseFile = new javax.swing.JButton();
         btnImport = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblImportSP = new javax.swing.JTable();
+        btnImport1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        tblImportSP.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "MSP", "MDM", "Mã Màu", "Mã Size", "Giá Nhập", "Giá Bán", "Trạng Thái", "MSPCT", "MSP", "Tên SP", "Size", "Màu", "Trạng Thái"
-            }
-        ));
-        jScrollPane1.setViewportView(tblImportSP);
 
         btnChooseFile.setText("Choose File");
         btnChooseFile.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -191,6 +275,26 @@ public class Import extends javax.swing.JFrame {
             }
         });
 
+        tblImportSP.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "MaSP", "MDM", "Mã Màu", "Mã Size", "Giá Nhập", "Giá Bán", "Trạng Thái", "Tên SP", "Số Lượng"
+            }
+        ));
+        jScrollPane1.setViewportView(tblImportSP);
+
+        btnImport1.setText("IMPORT");
+        btnImport1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnImport1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -202,8 +306,12 @@ public class Import extends javax.swing.JFrame {
                         .addComponent(txtFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39)
                         .addComponent(btnChooseFile))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 848, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnImport1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 848, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -213,10 +321,13 @@ public class Import extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnChooseFile))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnImport)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnImport))
+                    .addComponent(btnImport1))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
@@ -230,8 +341,18 @@ public class Import extends javax.swing.JFrame {
 
     private void btnImportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnImportMouseClicked
         // ADD
-        JOptionPane.showMessageDialog(this, spService.addImport(getModelSP()));
+        try {
+            if (validateData()) {
+                JOptionPane.showMessageDialog(this, spService.addImport(getModelSP()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnImportMouseClicked
+
+    private void btnImport1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnImport1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImport1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -256,6 +377,7 @@ public class Import extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChooseFile;
     private javax.swing.JButton btnImport;
+    private javax.swing.JButton btnImport1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblImportSP;
     private javax.swing.JTextField txtFilePath;

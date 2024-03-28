@@ -26,28 +26,67 @@ public class SanPhamService {
     MauSacRepo msRepo = new MauSacRepo();
     KichCoRepo szRepo = new KichCoRepo();
     
-    public Boolean addImport(SanPham sp){
-       return spRepo.addSP(sp);
+    //CHECK ID
+    public Boolean checkId(Integer id) {
+        return spRepo.checkId(id);
+    }
+    public Boolean checkName(String tenSP){
+        return spRepo.checkName(tenSP);
+    }
+    public boolean checkIdCat(Integer id) {
+        return dmRepo.checkIdCat(id);
+    }
+    public boolean checkIdColor(Integer id) {
+        return msRepo.checkIdColor(id);
+    }
+    public boolean checkIdSz(Integer id) {
+        return szRepo.checkIdSz(id);
     }
     
-    //GETLIST SP
+    //IMPORT
+    public String addImport(SanPham sp){
+       Boolean check = spRepo.addSP(sp);
+        if (check) {
+            return "Import data thành công!";
+        }else{
+            return "Import data thất bại!";
+        }
+    }
+    
+    //GETLIST
     public ArrayList<SanPham> getListSP(){
         return spRepo.getListSP();
     }
     public SanPhamViewModel getListById(Integer id){
         return spRepo.getListByID(id);
     }
-    //HIDE
-    public void hidetTTMS(MauSac ms){
-        msRepo.hideTTMS(ms);
+    public ArrayList<SanPhamViewModel> getListSanPham(){
+        return spRepo.getListSanPham();
     }
-    public void hideTTSz(KichCo sz){
-        szRepo.hideTTSz(sz);
+    public ArrayList<SanPhamViewModel> getListByDanhMuc(String danhMuc){
+        return spRepo.getListByDanhMuc(danhMuc);
     }
-//    public Boolean unhideSP(MauSac ms){
-//        return msRepo.unhideTTMS(ms);
-//    }
-    //GETLIST HIDE
+    //UNHIDE
+    public ArrayList<SanPhamViewModel> getListHide(){
+        return spRepo.getListHideSP();
+    }
+    //SEARCH
+    public ArrayList<SanPhamViewModel> getListBySearch(String name){
+        return spRepo.getListBySearch(name);
+    }
+    
+    //GET_CBO 
+    public ArrayList<DanhMuc> getCboDM(){
+        return dmRepo.getList();
+    }
+    public ArrayList<MauSac> getCboMau(){
+        return msRepo.getList();
+    }
+    public ArrayList<KichCo> getCboSz(){
+        return szRepo.getList();
+    }
+    
+    //GETLIST TT
     public ArrayList<MauSac> getListHideTTMS(){
         return msRepo.getListHide();
     }
@@ -60,52 +99,36 @@ public class SanPhamService {
     public Boolean unhideSP(SanPham sp){
         return spRepo.unhideSP(sp);
     }
-    //GETLIST UNHIDE
-    public ArrayList<SanPhamViewModel> getListHide(){
-        return spRepo.getListHideSP();
+    
+    //ACTION HIDE
+    public void hidetTTMS(MauSac ms){
+        msRepo.hideTTMS(ms);
     }
-    //GETLIST
-    public ArrayList<SanPhamViewModel> getListSanPham(){
-        return spRepo.getListSanPham();
+    public void hideTTSz(KichCo sz){
+        szRepo.hideTTSz(sz);
     }
-    public ArrayList<SanPhamViewModel> getListByDanhMuc(String danhMuc){
-        return spRepo.getListByDanhMuc(danhMuc);
+//    public Boolean unhideSP(MauSac ms){
+//        return msRepo.unhideTTMS(ms);
+//    }
+
+    //GET_ID 
+    public SanPham getId(String tenSP){
+        return spRepo.getId(tenSP);
     }
-    //GET_CBO DM
-    public ArrayList<DanhMuc> getCboDM(){
-        return dmRepo.getList();
-    }
-    //GET_CBO MS
-    public ArrayList<MauSac> getCboMau(){
-        return msRepo.getList();
-    }
-    //GET_CBO SZ
-    public ArrayList<KichCo> getCboSz(){
-        return szRepo.getList();
-    }
-    //GETLIST BY SEARCH
-    public ArrayList<SanPhamViewModel> getListBySearch(String name){
-        return spRepo.getListBySearch(name);
-    }
-    //GET_ID COLOR
     public MauSac getIdByName(String name){
         return msRepo.getIdByName(name);
     }
-    //SZ
     public KichCo getIdByNamee(String name){
         return szRepo.getIdByName(name);
     }
-    //TENDM
     public DanhMuc getIdByNameee(String name){
         return dmRepo.getIdByName(name);
     }
-    
-    //GETNAME
     public SanPhamChiTiet getName(String name){
         return spRepo.getName(name);
     }
 
-    //ADD
+    //CRUD
     public String addSP(SanPham sp){
         Boolean check = spRepo.addSP(sp);
         if (check) {
@@ -114,15 +137,6 @@ public class SanPhamService {
             return "Thêm mới sản phẩm thất bại :(";
         }
     }
-    //GET ID
-    public SanPham getId(String tenSP){
-        return spRepo.getId(tenSP);
-    }
-    //CHECK ID
-    public Boolean checkName(String tenSP){
-        return spRepo.checkName(tenSP);
-    }
-    //UPDATE
     public String updateSP(SanPham sp){
         Boolean check = spRepo.updateSP(sp);
         if (check) {
@@ -131,6 +145,7 @@ public class SanPhamService {
             return "Update thất bại!!";
         }
     }
+    
     //DANHMUC
     public ArrayList<DanhMuc> getList(){
         return dmRepo.getList();
@@ -166,7 +181,7 @@ public class SanPhamService {
         }
     }
     
-    //THUOC TINH
+    //THUOCTINH
     public ArrayList<MauSac> loadDataColor() {
         return msRepo.getList();
     }

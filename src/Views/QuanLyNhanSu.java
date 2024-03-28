@@ -9,7 +9,7 @@ import Models.NhanSu;
 import Models.User;
 import Repositories.UserRepository;
 import Services.NhanSuService;
-import Validator.Validate;
+import Validator.MyValidate;
 import ViewModels.NhanSuViewModel;
 import ViewModels.UserViewModel;
 import java.awt.Color;
@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class QuanLyNhanSu extends javax.swing.JInternalFrame {
 //Sửa nhiều
+
     NhanSuService nss = new NhanSuService();
 
     /**
@@ -36,43 +37,15 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
-        
+
         fillToTable(nss.getList());
         UserRepository userRepository = new UserRepository();
-        loadCboTK(userRepository.getMaTK());//HUONG - THÊM
+        
 
     }
 
     //HUONG - THÊM
-    public void loadCboTK(ArrayList<User> ls) {
-        DefaultComboBoxModel cboDM1 = (DefaultComboBoxModel) cboMaND.getModel();
-        HashSet<Integer> danhMucSet = new HashSet<>();
 
-        for (User u : ls) {
-            Integer danhMuc = u.getUserID();
-            // Kiểm tra xem phương thức đã tồn tại trong HashSet chưa
-            if (!danhMucSet.contains(danhMuc)) {
-                cboDM1.addElement(danhMuc);
-                // Thêm phương thức vào HashSet để kiểm tra trùng lặp
-                danhMucSet.add(danhMuc);
-            }
-        }
-    }
-
-    /*
-    public void loadCboBox(ArrayList<User> ls) {
-        DefaultComboBoxModel cbomodel = (DefaultComboBoxModel) cboVaiTro.getModel();
-        HashSet<String> vaiTroSet = new HashSet<>();
-
-        for (User nd : ls) {
-            String vaiTro = nd.getRole();
-            if (!vaiTroSet.contains(vaiTro)) {
-                cbomodel.addElement(vaiTro);
-                vaiTroSet.add(vaiTro);
-            }
-        }
-    }
-     */
     public void fillToTable(ArrayList<NhanSuViewModel> lssanpham) {
         DefaultTableModel model = (DefaultTableModel) tblNhanSu.getModel();
         model.setRowCount(0);
@@ -93,7 +66,7 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
     //VALIDATE
     public Boolean validateNhanSu() {
         StringBuilder stb = new StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
 
         v.isEmpty(txtTenNV, stb, "Chưa nhập tên nhân viên!");
         v.isEmpty(txtSDT, stb, "Chưa nhập số điện thoại!");
@@ -108,23 +81,37 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
     }
 
     public NhanSu getModel() {
-        Integer maND = (Integer) cboMaND.getSelectedItem();
+        ArrayList<User> list = nss.getListGV();
+        ArrayList<NhanSuViewModel> ls = nss.getList();
+        Integer i = 0;
+        Integer j = 0;
+        NhanSu ns = new NhanSu();
+        try {
+            while (list.get(i).getUserID() == ls.get(j).getMaNguoiDung()) {
+                System.out.println(list.get(i).getUserID());
+                System.out.println(ls.get(j).getMaNguoiDung());
+                i++;
+                j++;
+            }
+        } catch (Exception e) {
 
-        String tenNV = txtTenNV.getText();
-        String sdt = txtSDT.getText();
-        String dc = txtDiaChi.getText();
-        //tk k lấy từ vai trò
-        String gtinh;
-        if (rdoNam.isSelected()) {
-            gtinh = "Nam";
-        } else {
-            gtinh = "Nữ";
+            ns.setMaNguoiDung(list.get(i).getUserID());
+            
+            ns.setTenNhanVien(txtTenNV.getText());
+            ns.setSoDienThoai(txtSDT.getText());
+            ns.setDiaChi(txtDiaChi.getText());
+            //tk k lấy từ vai trò
+            if (rdoNam.isSelected()) {
+                ns.setGioiTinh("Nam");
+            } else {
+                ns.setGioiTinh("Nữ");
+            }
+            
         }
-        return new NhanSu(tenNV, gtinh, sdt, dc, maND);
+        return ns;
     }
 
     public NhanSu getModelSua() {
-        Integer maND = (Integer) cboMaND.getSelectedItem();
 
         Integer maNV = Integer.valueOf(txtMaNV.getText());
         String tenNV = txtTenNV.getText();
@@ -137,7 +124,7 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         } else {
             gtinh = "Nữ";
         }
-        return new NhanSu(tenNV, gtinh, sdt, dc, maND, maNV);
+        return new NhanSu(tenNV, gtinh, sdt, dc, maNV);
     }
 
     /**
@@ -176,8 +163,6 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        cboMaND = new javax.swing.JComboBox<>();
 
         jTextField1.setText("jTextField1");
 
@@ -320,14 +305,6 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
 
         jLabel21.setText("Số Điện Thoại:");
 
-        jLabel4.setText("Mã Người Dùng:");
-
-        cboMaND.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cboMaNDMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -344,16 +321,12 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
                             .addComponent(txtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboMaND, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(rdoNam, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoNu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addComponent(rdoNam, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(rdoNu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -397,11 +370,7 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(rdoNam)
-                            .addComponent(rdoNu))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(cboMaND, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(rdoNu)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -439,7 +408,8 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
     private void tblNhanSuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanSuMouseClicked
         // CLICK 
         int pos = tblNhanSu.getSelectedRow();
-        NhanSuViewModel ns = nss.getList().get(pos);
+        Integer id = (Integer) tblNhanSu.getValueAt(pos, 0);
+        NhanSuViewModel ns = nss.getListById(id);
         txtMaNV.setText(ns.getMaNhanVien().toString());
         txtTenNV.setText(ns.getTenNhanVien());
         if (ns.getGioiTinh().equalsIgnoreCase("Nam")) {
@@ -449,26 +419,21 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         }
         txtSDT.setText(ns.getSoDienThoai());
         txtDiaChi.setText(ns.getDiaChi());
-        cboMaND.setSelectedItem(ns.getMaNguoiDung());
 
     }//GEN-LAST:event_tblNhanSuMouseClicked
 
     private void btnThemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMouseClicked
         // ADD
         int result = JOptionPane.showConfirmDialog(this, "Bạn muốn tạo thông tin nhân viên?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
-        Integer maND = (Integer) cboMaND.getSelectedItem();
-        if (nss.checkName(maND)) {
-            JOptionPane.showMessageDialog(this, "!");
+
+        if (validateNhanSu() && result == JOptionPane.YES_OPTION) {
+            String kq = nss.AddNew(getModel());
+            JOptionPane.showMessageDialog(this, kq);
             fillToTable(nss.getList());
         } else {
-            if (validateNhanSu() && result == JOptionPane.YES_OPTION) {
-                String kq = nss.AddNew(getModel());
-                JOptionPane.showMessageDialog(this, kq);
-                fillToTable(nss.getList());
-            } else {
-                JOptionPane.showMessageDialog(this, "Đã hủy thao tác thêm nhân viên!", "POLYPOLO thông báo", 0);
-            }
+            JOptionPane.showMessageDialog(this, "Đã hủy thao tác thêm nhân viên!", "POLYPOLO thông báo", 0);
         }
+
     }//GEN-LAST:event_btnThemMouseClicked
 
     private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
@@ -480,7 +445,6 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         rdoNam.setSelected(false);
         rdoNu.setSelected(false);
         fillToTable(nss.getList());
-        cboMaND.setSelectedItem("1");
         txtTenNV.setBackground(Color.WHITE);
         txtSDT.setBackground(Color.WHITE);
         txtDiaChi.setBackground(Color.WHITE);
@@ -504,7 +468,6 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnXoaMouseClicked
 
     private void btnSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuaMouseClicked
-        Integer maND = (Integer) cboMaND.getSelectedItem();
 
         String kq = nss.updateNew(getModelSua());
         JOptionPane.showMessageDialog(this, kq);
@@ -519,11 +482,6 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
         fillToTable(ls);
     }//GEN-LAST:event_btnSearchNSMouseClicked
 
-    private void cboMaNDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboMaNDMouseClicked
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_cboMaNDMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
@@ -532,14 +490,12 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> cboMaND;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
@@ -564,4 +520,4 @@ public class QuanLyNhanSu extends javax.swing.JInternalFrame {
 - Sửa getModel(110), thêm  getModelSua(126)
 - Copy copy lại nút
 
-*/
+ */

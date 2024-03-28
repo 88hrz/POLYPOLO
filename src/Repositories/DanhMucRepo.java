@@ -15,7 +15,25 @@ import java.sql.*;
 public class DanhMucRepo {
     DbConnection dbConnection;
     
-    //GET LIST
+    //CHECK ID
+    public boolean checkIdCat(Integer id) {
+        String sql = "SELECT COUNT(*) FROM DanhMuc WHERE Deleted!=1 AND MaDanhMuc = ?";
+        
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    //GETLIST BY ID
     public DanhMuc getListById(Integer id){
         String sql = "SELECT * FROM DanhMuc WHERE Deleted!=1 AND MaDanhMuc = ?";
         DanhMuc dm = new DanhMuc();
@@ -37,6 +55,8 @@ public class DanhMucRepo {
         }
         return dm;
     }
+    
+    //SEARCH
     public ArrayList<DanhMuc> getListDMByName(String name){
         String sql = "SELECT * FROM DanhMuc WHERE Deleted!=1 AND TenDanhMuc LIKE '%"+name+"%'";
         ArrayList<DanhMuc> ls = new ArrayList<>();
@@ -58,6 +78,8 @@ public class DanhMucRepo {
         }
         return ls;
     }
+    
+    //GETLIST
     public ArrayList<DanhMuc> getList(){
         String sql = "SELECT * FROM DanhMuc WHERE Deleted !=1";
         ArrayList<DanhMuc> ls = new ArrayList<>();
@@ -78,6 +100,7 @@ public class DanhMucRepo {
         }
         return ls;
     }
+    
     //GET_ID
     public DanhMuc getIdByName(String name){
         String sql = "SELECT MaDanhMuc, TenDanhMuc FROM DanhMuc WHERE TenDanhMuc = ?";
@@ -99,6 +122,7 @@ public class DanhMucRepo {
         }
         return dm;
     }
+    
     //CRUD
     public Boolean addDanhMuc(DanhMuc dm){
         String sql = "INSERT INTO DanhMuc(TenDanhMuc, TrangThai,Deleted) VALUES\n" +
@@ -118,6 +142,7 @@ public class DanhMucRepo {
         }
         return false;
     }
+    
     public Boolean updateDanhMuc(DanhMuc dm){
         String sql = "UPDATE DanhMuc\n" +
                      "SET TenDanhMuc = ?, TrangThai = ? WHERE MaDanhMuc = ?";
@@ -137,6 +162,7 @@ public class DanhMucRepo {
         }
         return false;
     }
+    
     public Boolean anDanhMuc(DanhMuc dm){
         String sql = "UPDATE DanhMuc\n" +
                     "SET Deleted = 1 WHERE MaDanhMuc = ?";

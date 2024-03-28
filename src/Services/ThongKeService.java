@@ -21,7 +21,10 @@ public class ThongKeService {
     ThongKeRespository tkrp = new ThongKeRespository();
     HoaDonRepository hdrp = new HoaDonRepository();
 
-    //PIE CHART
+    //EXPORT
+    public ArrayList<ThongKeViewDoanhThu> getListDoanhThuTheoThang(){
+        return tkrp.getListBangDoanhThuTheoThang();
+    }
     //LOAD CBO
     public ArrayList<Integer> showYear() {
         return tkrp.showYear();

@@ -7,8 +7,8 @@ package Services;
 import Models.NhanSu;
 import Models.TaiKhoan;
 import Models.User;
-import Repositories.H_TaiKhoanRepository;
-import Repositories.NhanSuRepo;
+import Repositories.Huong_TaiKhoanRepository;
+import Repositories.Hoa_NhanSuRepo;
 import Repositories.UserRepository;
 import ViewModels.UserViewModel;
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ import java.util.ArrayList;
  *
  * @author X1
  */
-public class NguoiDungService {
+public class UserService {
     UserRepository userRepo = new UserRepository();
-    H_TaiKhoanRepository taiKhoanRepository = new H_TaiKhoanRepository();
-    NhanSuRepo nsRepo = new NhanSuRepo();
+    Huong_TaiKhoanRepository taiKhoanRepository = new Huong_TaiKhoanRepository();
+    Hoa_NhanSuRepo nsRepo = new Hoa_NhanSuRepo();
     
     public String getName(String tenDN) {
         return taiKhoanRepository.getName(tenDN);

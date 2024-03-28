@@ -8,6 +8,7 @@ import Models.KichCo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,24 @@ import java.util.ArrayList;
  */
 public class KichCoRepo {
     DbConnection dbConnection;
+    
+    //CHECK ID
+    public boolean checkIdSz(Integer id) {
+        String sql = "SELECT COUNT(*) FROM Size WHERE Deleted!=1 AND MaSize = ?";
+        
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
     //HIDE
     public Boolean hideTTSz(KichCo sz){
@@ -33,6 +52,7 @@ public class KichCoRepo {
         }
         return false;
     }
+    
     //GETLIST
     public ArrayList<KichCo> getList(){
         String sql = "SELECT * FROM Size WHERE Deleted !=1";
@@ -93,6 +113,7 @@ public class KichCoRepo {
         }
         return false;
     }
+    
     //UPDATE
     public Boolean updateSz(KichCo sz){
         String sql = "UPDATE Size SET TenSize = ? WHERE MaSize =?"; 

@@ -20,6 +20,91 @@ public class ThongKeRespository {
 
     DbConnection dbConnection;
 
+    //EXPORT
+    public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThuTheoThang() {
+        String sql = "SELECT\n"
+                + "    MONTH(NgayLap) AS Thang,\n"
+                + "    YEAR(NgayLap) AS Nam,\n"
+                + "    COUNT(*) AS SoLuongHoaDon,\n"
+                + "	SanPham.GiaNhap,\n"
+                + "    HoaDon.TongTien,\n"
+                + "    HoaDon.TongTien - SanPham.GiaNhap AS LoiNhuan\n"
+                + "FROM\n"
+                + "    HoaDon\n"
+                + "JOIN\n"
+                + "    HoaDonChiTiet ON HoaDonChiTiet.MaHoaDon = HoaDon.MaHoaDon\n"
+                + "JOIN\n"
+                + "    SanPhamChiTiet ON SanPhamChiTiet.MaSanPham = HoaDonChiTiet.MaSanPhamChiTiet\n"
+                + "JOIN\n"
+                + "    SanPham ON SanPhamChiTiet.MaSanPham = SanPham.MaSanPham\n"
+                + "\n"
+                + "GROUP BY\n"
+                + "HoaDon.TongTien,\n"
+                + "SanPham.GiaNhap,\n"
+                + "    YEAR(NgayLap),\n"
+                + "    MONTH(NgayLap)\n"
+                + "ORDER BY\n"
+                + "    YEAR(NgayLap),\n"
+                + "    MONTH(NgayLap);";
+        ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer thang = rs.getInt("Thang");
+                Integer nam = rs.getInt("Nam");
+                Integer soL = rs.getInt("SoLuongHoaDon");
+                Integer tongTien = rs.getInt("TongTien");
+                Integer loiNhuan = rs.getInt("LoiNhuan");
+
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, nam, soL, tongTien, nam, sql, loiNhuan);
+                ls.add(tkv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThuTheoNam() {
+        String sql = "SELECT\n"
+                + "    YEAR(NgayLap) AS Nam,\n"
+                + "    COUNT(*) AS SoLuongHoaDon,\n"
+                + "	SanPham.GiaNhap,\n"
+                + "    HoaDon.TongTien*12,\n"
+                + "    (HoaDon.TongTien - SanPham.GiaNhap)*12 AS LoiNhuan\n"
+                + "FROM\n"
+                + "    HoaDon\n"
+                + "JOIN\n"
+                + "    HoaDonChiTiet ON HoaDonChiTiet.MaHoaDon = HoaDon.MaHoaDon\n"
+                + "JOIN\n"
+                + "    SanPhamChiTiet ON SanPhamChiTiet.MaSanPham = HoaDonChiTiet.MaSanPhamChiTiet\n"
+                + "JOIN\n"
+                + "    SanPham ON SanPhamChiTiet.MaSanPham = SanPham.MaSanPham\n"
+                + "\n"
+                + "GROUP BY\n"
+                + "HoaDon.TongTien,\n"
+                + "SanPham.GiaNhap,\n"
+                + "    YEAR(NgayLap),\n"
+                + "    MONTH(NgayLap)\n"
+                + "ORDER BY\n"
+                + "    YEAR(NgayLap),\n"
+                + "    MONTH(NgayLap);";
+        ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer thang = rs.getInt("Nam");
+                Integer soL = rs.getInt("SoLuongHoaDon");
+                Integer tongTien = rs.getInt("TongTien");
+                Integer loiNhuan = rs.getInt("LoiNhuan");
+                
+                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(null, thang, soL, tongTien, null, null, tongTien);
+                ls.add(tkv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
     //LOAD PIE_CHART
     public ArrayList<Integer> showYear() {
         String sql = "SELECT YEAR(NgayLap) AS NamLap FROM HoaDon WHERE HoaDon.Deleted!=1 GROUP BY YEAR(NgayLap);";
@@ -434,26 +519,6 @@ public class ThongKeRespository {
                 
                 ThongKeViewDoanhThu tk = new ThongKeViewDoanhThu(null, null, soLuong, tongTien, ngay, null);
                 ls.add(tk);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ls;
-    }
-
-    public ArrayList<ThongKeViewDoanhThu> getListBangDoanhThuTheoNam() {
-        String sql = "SELECT YEAR(NgayLap) AS Nam, COUNT(*) AS SoLuongHoaDon, SUM(TongTien*12) AS TongTien\n" +
-"              FROM HoaDon GROUP BY YEAR(NgayLap) ORDER BY YEAR(NgayLap)";
-        ArrayList<ThongKeViewDoanhThu> ls = new ArrayList<>();
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Integer thang = rs.getInt("Nam");
-                Integer soL = rs.getInt("SoLuongHoaDon");
-                Integer tongTien = rs.getInt("TongTien");
-                ThongKeViewDoanhThu tkv = new ThongKeViewDoanhThu(thang, null, soL, tongTien, null, null);
-                ls.add(tkv);
             }
         } catch (Exception e) {
             e.printStackTrace();

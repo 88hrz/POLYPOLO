@@ -5,10 +5,9 @@
 package Views;
 
 import Models.KhachHang;
-import Models.KhachHangViewBang2;
-import Services.HoaDonService;
+import Models.Linh_KhachHangViewBang2;
 import Services.KhachHangService;
-import Validator.Validate;
+import Validator.MyValidate;
 import ViewModels.KhachHangViewModel;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
 public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
     KhachHangService khService = new KhachHangService();
-    HoaDonService hds = new HoaDonService();
 
     /**
      * Creates new form QuanLyKhachHang
@@ -48,10 +46,10 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     }
 
     //LOAD2
-    void loadTable2(ArrayList<KhachHangViewBang2> ls) {
+    void loadTable2(ArrayList<Linh_KhachHangViewBang2> ls) {
         DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
         model.setRowCount(0);
-        for (KhachHangViewBang2 kh : ls) {
+        for (Linh_KhachHangViewBang2 kh : ls) {
             model.addRow(new Object[]{
                 kh.getMaHD(),
                 kh.getTenSP(),
@@ -67,7 +65,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     //Them phan validate
     public Boolean validateKhachHang() {
         StringBuilder stb = new StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
 
         v.isEmpty(txtTenKH, stb, "Chưa nhập tên khách hàng!");
         v.isEmpty(txtSDT, stb, "Chưa nhập số điện thoại!");
@@ -84,9 +82,21 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     ////Validate tim kiem
     public Boolean validateTimKiem() {
         StringBuilder stb = new StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
 
         v.isEmpty(txtSearchKH, stb, "Vui lòng nhập tên cần tìm");
+        if (stb.length() > 0) {
+            JOptionPane.showMessageDialog(this, stb);
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public Boolean validateTimKiemSDT() {
+        StringBuilder stb = new StringBuilder();
+        MyValidate v = new MyValidate();
+
+        v.isEmpty(txtSearchKH1, stb, "Vui lòng nhập số điện thoại cần tìm");
         if (stb.length() > 0) {
             JOptionPane.showMessageDialog(this, stb);
             return false;
@@ -175,6 +185,9 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         txtSearchKH = new javax.swing.JTextField();
         btnSearchKH = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtSearchKH1 = new javax.swing.JTextField();
+        btnSearchKH1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         txtTenKH = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
@@ -290,6 +303,15 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setText("Tìm kiếm theo sđt:");
+
+        btnSearchKH1.setText("SEARCH");
+        btnSearchKH1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSearchKH1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -297,9 +319,14 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtSearchKH1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSearchKH1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtSearchKH, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -313,7 +340,11 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearchKH)
                     .addComponent(txtSearchKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(txtSearchKH1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchKH1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -350,7 +381,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 893, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,7 +428,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
                     .addComponent(jSeparator1)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -471,7 +502,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnClearMouseClicked
 
     private void btnSearchKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchKHMouseClicked
-        ///Tìm đc rồi ạ
+        // SEARCH
         if (validateTimKiem()) {
             String id = txtSearchKH.getText();
             ArrayList<KhachHangViewModel> ls = khService.getListSearch(id);
@@ -517,10 +548,23 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
+    private void btnSearchKH1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchKH1MouseClicked
+        // TODO add your handling code here:
+        if (validateTimKiemSDT()) {
+            String sdt = txtSearchKH1.getText();
+            ArrayList<KhachHangViewModel> ls = khService.getListSearchSDT(sdt);
+            loadTableKH(ls);
+        }
+        txtSearchKH.setText("");
+        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+        model.setRowCount(0);
+    }//GEN-LAST:event_btnSearchKH1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnSearchKH;
+    private javax.swing.JButton btnSearchKH1;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
@@ -530,6 +574,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -546,6 +591,7 @@ public class QuanLyKhachHang extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtSearchKH;
+    private javax.swing.JTextField txtSearchKH1;
     private javax.swing.JTextField txtTenKH;
     // End of variables declaration//GEN-END:variables
 }

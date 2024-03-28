@@ -11,8 +11,8 @@ import Models.MyReceipts;
 import Models.NhanSu;
 import Models.SanPhamChiTiet;
 import Services.HoaDonService;
-import Services.NguoiDungService;
-import Validator.Validate;
+import Services.UserService;
+import Validator.MyValidate;
 import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_HoaDonViewModel;
 import ViewModels.HD_InvoiceViewModel;
@@ -75,8 +75,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class QuanLyBanHang extends javax.swing.JInternalFrame {
     HoaDonService hdService = new HoaDonService();
+    UserService uService = new UserService();
     DecimalFormat formatter = new DecimalFormat("#,###");
-    NguoiDungService uService = new NguoiDungService();
     
     /**
      * Creates new form QuanLyBanHang
@@ -92,6 +92,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
     }
     
     NumberFormat format = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+    
     //<editor-fold defaultstate="collapsed" desc=" LOAD ">
     void loadTableGioHang(ArrayList<HD_GioHangViewModel> ls){
         DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
@@ -209,11 +210,11 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         return d;
     }
     
-    //<editor-fold defaultstate="collapsed" desc=" Validate ">
+    //<editor-fold defaultstate="collapsed" desc=" MyValidate ">
     //VALIDATE
     public Boolean validateTel() {
         StringBuilder stb = new StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
 
         v.isEmpty(txtSDT, stb, "Chưa nhập số điện thoại để tìm!");
         v.isPhoneNumber(txtSDT, "Vui lòng nhập đúng định dạng SĐT!", stb);
@@ -227,7 +228,7 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
     }
     public Boolean validateHoaDon(){
         StringBuilder stb = new  StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
         
         v.isEmpty(txtTenKH, stb, "Chưa nhập tên khách hàng!");
         v.isDateSelected(dcsNgayLap, stb, "Chưa chọn ngày tạo hóa đơn!");

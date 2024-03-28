@@ -8,9 +8,9 @@ import Models.DanhMuc;
 import Models.KichCo;
 import Models.MauSac;
 import Models.SanPham;
-import Services.NguoiDungService;
+import Services.UserService;
 import Services.SanPhamService;
-import Validator.Validate;
+import Validator.MyValidate;
 import ViewModels.SanPhamViewModel;
 import ViewModels.UserViewModel;
 import java.awt.Color;
@@ -45,7 +45,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class QuanLySanPham extends javax.swing.JInternalFrame {
     SanPhamService spService = new SanPhamService();
     DecimalFormat formatter = new DecimalFormat("#,###");
-    NguoiDungService uService = new NguoiDungService();
+    UserService uService = new UserService();
     
     /**
      * Creates new form QuanLySanPham
@@ -297,7 +297,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
     //VALIDATE
     public Boolean validateSanPham(){
         StringBuilder stb = new  StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
         
         v.isEmpty(txtTSPCT, stb, "Chưa nhập tên sản phẩm!");
         v.isEmpty(txtSoLuong, stb, "Số lượng sản phẩm bị trống!");
@@ -312,7 +312,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
     }
     public Boolean validateThuocTinh(){
         StringBuilder stb = new  StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
         
         v.isEmpty(txtTenTT, stb, "Tên thuộc tính bị trống!");
         if (stb.length()>0) {
@@ -324,7 +324,7 @@ public class QuanLySanPham extends javax.swing.JInternalFrame {
     }
     public Boolean validateDanhMuc(){
         StringBuilder stb = new  StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
         
         v.isEmpty(txtTenDanhMuc, stb, "Tên danh mục bị trống!");
         if (stb.length()>0) {

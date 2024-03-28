@@ -406,7 +406,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblSP)
-                        .addGap(0, 25, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -569,7 +569,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblTienHoaDonThanh)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -868,29 +868,29 @@ public class TrangChu extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTabbedPane1)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 911, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dcsTu, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(dcsTu, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(32, 32, 32)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(29, 29, 29)
                                 .addComponent(dcsToi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnTimNgay)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
@@ -913,7 +913,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                         .addComponent(dcsToi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -1011,13 +1011,16 @@ public class TrangChu extends javax.swing.JInternalFrame {
 
             cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Doanh Thu");
+            
+            cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Lợi Nhuận");
 
-            row = sheet.createRow(15);
+            row = sheet.createRow(28);
             
             cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Người Xuất:");
             
-            ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThu();
+            ArrayList<ThongKeViewDoanhThu> ls = tksv.getListDoanhThuTheoThang();
             for (int i = 0; i < ls.size(); i++) {
                 row = sheet.createRow(4 + i);
                 CellStyle cellStyleFormatNumber = null;
@@ -1044,15 +1047,22 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 cell.setCellValue(ls.get(i).getTongTien());
                 s.autoSizeColumn(5);
                 cell.setCellStyle(cellStyleFormatNumber);
+                
+                cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getLoiNhuan());
+                s.autoSizeColumn(6);
+                cell.setCellStyle(cellStyleFormatNumber);
             }
+            
             ArrayList<HoaDon> hd = hdsv.getList();
             for (int i = 0; i < hd.size(); i++) {
-                row = sheet.createRow(16);
+                row = sheet.createRow(29);
                 
                 cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(hd.get(i).getTenNV());
                
             }
+            
             File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKETHANG.xlsx");
 
             try {
@@ -1113,11 +1123,16 @@ public class TrangChu extends javax.swing.JInternalFrame {
 
             cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Số Lượng Đơn Hàng");
+            Sheet s = cell.getSheet();
+            s.autoSizeColumn(3);
 
             cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Doanh Thu");
             
-            row = sheet.createRow(15);
+            cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Lợi Nhuận");
+            
+            row = sheet.createRow(28);
             
             cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
             cell.setCellValue("Người Xuất: ");
@@ -1142,7 +1157,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
                 cell.setCellStyle(docuStyle);
 
                 cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.NUMERIC);
-                cell.setCellValue("Năm " + ls.get(i).getThang());
+                cell.setCellValue("Năm " + ls.get(i).getNam());
 
                 cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getSoLuong());
@@ -1150,17 +1165,24 @@ public class TrangChu extends javax.swing.JInternalFrame {
 
                 cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(ls.get(i).getTongTien());
+                s.autoSizeColumn(4);
+                cell.setCellStyle(cellStyleFormatNumber);
+                
+                cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getLoiNhuan());
+                s.autoSizeColumn(5);
                 cell.setCellStyle(cellStyleFormatNumber);
             }
             
             ArrayList<HoaDon> hd = hdsv.getList();
             for (int i = 0; i < hd.size(); i++) {
-                row = sheet.createRow(16);
+                row = sheet.createRow(29);
                 
                 cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
                 cell.setCellValue(hd.get(i).getTenNV());
                
             } 
+            
             File file = new File("C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\THONGKENAM.xlsx");
 
             try {

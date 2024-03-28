@@ -240,6 +240,7 @@ public class SanPhamRepository {
         }
         return ls;
     }
+    
     public Boolean addSP(SanPham sp){
         String sql = "INSERT INTO SanPham(MaDanhMuc, TrangThai, GiaNhap, GiaBan, Deleted) VALUES (?, ?, ?, ?,0);"
                 + "INSERT INTO SanPhamChiTiet (MaSanPham, TenSanPhamChiTiet, MaSize, MaMau, TrangThai, SoLuongTon,Deleted) \n" +
@@ -345,6 +346,23 @@ public class SanPhamRepository {
         return sp;
     }
     //CHECK ID
+    public boolean checkId(Integer id) {
+        String sql = "SELECT COUNT(*) FROM SanPhamChiTiet WHERE Deleted!=1 AND MaSanPham = ?";
+        
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     public boolean checkName(String tenSP) {
         String sql = "SELECT COUNT(*) FROM SanPhamChiTiet WHERE Deleted!=1 AND TenSanPhamChiTiet = ?";
         

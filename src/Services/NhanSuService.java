@@ -6,9 +6,9 @@ package Services;
 
 import Models.User;
 import Models.NhanSu;
-import Repositories.NhanSuRepo;
+import Repositories.Hoa_NhanSuRepo;
+import Repositories.Huong_TaiKhoanRepository;
 import ViewModels.NhanSuViewModel;
-import Repositories.NguoiDungRepo;
 import java.util.ArrayList;
 
 /**
@@ -17,8 +17,8 @@ import java.util.ArrayList;
  */
 public class NhanSuService {
 
-    NhanSuRepo spr = new NhanSuRepo();
-    NguoiDungRepo kmr = new NguoiDungRepo();
+    Hoa_NhanSuRepo spr = new Hoa_NhanSuRepo();
+    Huong_TaiKhoanRepository kmr = new Huong_TaiKhoanRepository();
 
     //GETLIST BY ID
     public NhanSuViewModel getListById(Integer id) {

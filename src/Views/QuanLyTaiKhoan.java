@@ -5,11 +5,11 @@
 package Views;
 
 import Models.User;
-import Repositories.H_TaiKhoanRepository;
+import Repositories.Huong_TaiKhoanRepository;
 import Repositories.UserRepository;
-import Services.NguoiDungService;
 import Services.NhanSuService;
-import Validator.Validate;
+import Services.UserService;
+import Validator.MyValidate;
 import ViewModels.UserViewModel;
 import java.awt.event.ActionListener;
 import static java.awt.image.ImageObserver.HEIGHT;
@@ -24,8 +24,8 @@ import javax.swing.table.DefaultTableModel;
  * @author X1
  */
 public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
-    NguoiDungService uService = new NguoiDungService();
-    H_TaiKhoanRepository taiKhoanRepository = new H_TaiKhoanRepository();
+    UserService uService = new UserService();
+    Huong_TaiKhoanRepository taiKhoanRepository = new Huong_TaiKhoanRepository();
     UserRepository userRepository = new UserRepository();
     NhanSuService nss = new NhanSuService();
     
@@ -109,7 +109,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
     //VALIDATE
     public boolean validateTK() {
         StringBuilder stb = new StringBuilder();
-        Validate v = new Validate();
+        MyValidate v = new MyValidate();
         
         v.isEmpty(txtTenDangNhap1, stb, "Tên đăng nhập bị trống!");
         v.isEmpty(txtMatKhau1, stb, "Mật khẩu bị trống!");
@@ -683,7 +683,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)

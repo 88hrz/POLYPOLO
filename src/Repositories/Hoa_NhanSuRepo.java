@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class NhanSuRepo {
+public class Hoa_NhanSuRepo {
     DbConnection dbConnection;
-    //GETBYID
+    
     public NhanSu getIdByName(String name) {
         String sql = "SELECT MaNhanVien, TenNhanVien FROM NhanVien\n"
                 + "WHERE Deleted!=1 AND TenNhanVien = ?";
@@ -173,28 +173,28 @@ public class NhanSuRepo {
         return false;
     }
 
-    public static void main(String[] args) {
-        Integer maND = 8;
-        Integer maNV = 1007;
-        String tenNV = "Hoa";
-        String sdt = "001100";
-        String dc = "Vn";
-        //tk k lấy từ vai trò
-        String gtinh = "Nữ";
-
-        NhanSu ns = new NhanSu(tenNV, gtinh, sdt, dc, maND, maNV);
-        Boolean check = new NhanSuRepo().updateNew(ns);
-        if(check){
-            System.out.println("Sửa thành công");
-            System.out.println(ns.toString());
-        }else{
-            System.out.println("Sửa thất bại") ;
-        }
-        ArrayList<NhanSuViewModel> list = new NhanSuRepo().getList();
-        for (NhanSuViewModel nsvm : list) {
-            System.out.println(nsvm.toString());
-        }
-    }
+//    public static void main(String[] args) {
+//        Integer maND = 8;
+//        Integer maNV = 1007;
+//        String tenNV = "Hoa";
+//        String sdt = "001100";
+//        String dc = "Vn";
+//        //tk k lấy từ vai trò
+//        String gtinh = "Nữ";
+//
+//        NhanSu ns = new NhanSu(tenNV, gtinh, sdt, dc, maND, maNV);
+//        Boolean check = new Hoa_NhanSuRepo().updateNew(ns);
+//        if(check){
+//            System.out.println("Sửa thành công");
+//            System.out.println(ns.toString());
+//        }else{
+//            System.out.println("Sửa thất bại") ;
+//        }
+//        ArrayList<NhanSuViewModel> list = new Hoa_NhanSuRepo().getList();
+//        for (NhanSuViewModel nsvm : list) {
+//            System.out.println(nsvm.toString());
+//        }
+//    }
 
     public Boolean updateNew(NhanSu ns) {
         String sql = //"alter table NhanVien nocheck constraint FK__NhanVien__MaNguo__49C3F6B7\n"+

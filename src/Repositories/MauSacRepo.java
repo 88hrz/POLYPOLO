@@ -15,6 +15,24 @@ import java.sql.*;
 public class MauSacRepo {
     DbConnection dbConnection;
     
+    //CHECK ID
+    public boolean checkIdColor(Integer id) {
+        String sql = "SELECT COUNT(*) FROM MauSac WHERE Deleted!=1 AND MaMau = ?";
+        
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     //HIDE_UNHIDE
     public Boolean hideTTMS(MauSac ms){
         String sql = "UPDATE MauSac SET Deleted = 1 WHERE MaMau = ?";
@@ -31,6 +49,7 @@ public class MauSacRepo {
         }
         return false;
     }
+    
     public Boolean unhideTTMS(MauSac ms){
         String sql = "UPDATE MauSac SET Deleted = 0 WHERE MaMau = ?";
         try (Connection conn = dbConnection.getConnection();
@@ -46,7 +65,8 @@ public class MauSacRepo {
         }
         return false;
     }
-    //GETLIST MAUSAC
+    
+    //GETLIST
     public ArrayList<MauSac> getList(){
         String sql = "SELECT * FROM MauSac WHERE Deleted !=1";
         ArrayList<MauSac> ls = new ArrayList<>();
@@ -66,6 +86,7 @@ public class MauSacRepo {
         }
         return ls;
     }
+    
     public ArrayList<MauSac> getListHide(){
         String sql = "SELECT * FROM MauSac WHERE Deleted !=0";
         ArrayList<MauSac> ls = new ArrayList<>();
@@ -125,6 +146,7 @@ public class MauSacRepo {
         }
         return false;
     }
+    
     //UPDATE
     public Boolean updateColor(MauSac ms){
         String sql = "UPDATE MauSac SET TenMau = ? WHERE MaMau = ?";

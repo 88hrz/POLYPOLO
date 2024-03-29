@@ -28,22 +28,19 @@ public class Admin_View extends javax.swing.JFrame {
        
         menuName.setText("| Trang Chủ");
         
-        QuanLyBanHang banHang = new QuanLyBanHang();
-        jGUIForms.removeAll();
-        jGUIForms.add(banHang).setVisible(true);
+//        QuanLyBanHang banHang = new QuanLyBanHang();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(banHang).setVisible(true);
 //
 //        QuanLySanPham sanPham = new QuanLySanPham();
 //        jGUIForms.removeAll();
 //        jGUIForms.add(sanPham).setVisible(true);
 
-//        old taiKhoan = new old();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(taiKhoan).setVisible(true);
 
-//        TrangChu trangChu = new TrangChu();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(trangChu).setVisible(true);
-//
+        TrangChu trangChu = new TrangChu();
+        jGUIForms.removeAll();
+        jGUIForms.add(trangChu).setVisible(true);
+
 //          Admin_Window a_W = new Admin_Window();
 //          jGUIForms.removeAll();
 //          jGUIForms.add(a_W).setVisible(true);
@@ -72,9 +69,9 @@ public class Admin_View extends javax.swing.JFrame {
         verticalLayout = new javax.swing.JPanel();
         menuName = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         lbl_UserID = new javax.swing.JLabel();
         txtUser_ID = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         horizontalMenu = new javax.swing.JPanel();
         trangChu = new javax.swing.JPanel();
         lblTrangChu = new javax.swing.JLabel();
@@ -107,14 +104,9 @@ public class Admin_View extends javax.swing.JFrame {
 
         logo.setFont(new java.awt.Font("Montserrat ExtraBold", 3, 20)); // NOI18N
         logo.setForeground(new java.awt.Color(255, 255, 255));
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/polo_png.png"))); // NOI18N
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/user-polo.png"))); // NOI18N
         logo.setText("PolyPolo");
         verticalLayout.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 150, 50));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/user.png"))); // NOI18N
-        verticalLayout.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, -1, 40));
 
         lbl_UserID.setFont(new java.awt.Font("Montserrat Medium", 1, 12)); // NOI18N
         lbl_UserID.setText("stallion");
@@ -123,6 +115,9 @@ public class Admin_View extends javax.swing.JFrame {
         txtUser_ID.setBackground(new java.awt.Color(224, 224, 224));
         txtUser_ID.setEnabled(false);
         verticalLayout.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 30, 110, 20));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/user-icon20.png"))); // NOI18N
+        verticalLayout.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, 40, 40));
 
         bg.add(verticalLayout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 80));
 
@@ -512,7 +507,7 @@ public class Admin_View extends javax.swing.JFrame {
     private javax.swing.JPanel exit;
     private javax.swing.JPanel horizontalMenu;
     private javax.swing.JDesktopPane jGUIForms;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel khachHang;
     private javax.swing.JLabel lblBanHang;
     private javax.swing.JLabel lblExit;

@@ -933,9 +933,9 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
         String trangT = (String) tblHoaDon.getValueAt(pos, 5);
         String path = "C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates\\invoice.pdf";
         String fontPath = "C:\\Users\\X1\\OneDrive\\Documents\\resouces\\VietFontsWeb1_ttf\\vuArial.ttf";
-        String logoPath = "C:\\Users\\X1\\OneDrive\\Documents\\NetBeansProjects\\POLYPOLO\\src\\Icons\\BW_logo.png";
-        String qrPath = "C:\\Users\\X1\\OneDrive\\Documents\\NetBeansProjects\\POLYPOLO\\src\\Icons\\qr_code.png";
-
+        String logoPath = "C:\\Users\\X1\\OneDrive\\Documents\\NetBeansProjects\\POLYPOLO\\src\\Icons\\invoice-BW_logo.png";
+        String qrPath = "C:\\Users\\X1\\OneDrive\\Documents\\NetBeansProjects\\POLYPOLO\\src\\Icons\\invoice-qr.png";
+        
         if (trangT.equalsIgnoreCase("Đã thanh toán")) {
             try (PdfWriter pdfWriter = new PdfWriter(path); PdfDocument pdfDocument = new PdfDocument(pdfWriter); Document doc = new Document(pdfDocument)) {
 
@@ -961,7 +961,6 @@ public class QuanLyBanHang extends javax.swing.JInternalFrame {
 
                 //ROW 1 
                 Table table = new Table(twoColWidth);
-                Paragraph shiftN = new Paragraph("\n");
                 table.addCell(new Cell().add("HÓA ĐƠN").setFont(font).setBorder(Border.NO_BORDER).setBold().setFontSize(20f));
                 table.addCell(new Cell().add("Polo Loves - Live, Love, Polo \nTel: 0375 908 159\n Add: 21 Châu Long, Ba Đình, HN").setBorder(Border.NO_BORDER).setFont(font));
                 doc.add(table.setMarginBottom(12f));

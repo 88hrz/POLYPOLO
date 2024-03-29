@@ -243,7 +243,7 @@ public class KhachHangRepository {
     ///
     public KhachHangViewModel getListt(Integer id) {
         String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang \n"
-                + "INNER JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.MaKhachHang = ?";
+                + "left JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.MaKhachHang = ?";
         KhachHangViewModel kh = new KhachHangViewModel();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {

@@ -201,18 +201,18 @@ INSERT INTO SanPhamChiTiet (MaSanPham, TenSanPhamChiTiet, MaSize, MaMau, TrangTh
 INSERT INTO HoaDon (MaNhanVien, TenKhachHang, TenNhanVien, TongTien, NgayLap, TrangThai, PhuongThucThanhToan, LoaiKhachHang, Deleted)
 				VALUES (1, N'Lê Vũ', N'Loi Choi', 1200000, '2024-01-15', N'Đã thanh toán', N'Chuyển khoản', N'Thành Viên', 0)
 					 , (1, N'Đào Phạm', N'Loi Choi', 780000, '2024-01-04', N'Đã thanh toán', N'Tiền mặt', N'Thành Viên', 0)
-					 , (2, N'Mi Nguyễn', N'Ly Lê', 1680000, '2024-01-17', N'Chưa thanh toán', N'Tiền mặt',N'Thành Viên', 0)
+					 , (2, N'Mi Nguyễn', N'Ly Lê', 1680000, '2024-01-17', N'Đã thanh toán', N'Tiền mặt',N'Thành Viên', 0)
 					 , (2, N'Ly Dương', N'Ly Lê', 480000, '2024-01-22', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
 					 , (1, N'Phan Văn I', N'Loi Choi', 3000000, '2024-02-05', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0)
-					 , (2, N'Vũ Văn K', N'Ly Lê', 3500000, '2024-02-06', N'Chưa thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
+					 , (2, N'Vũ Văn K', N'Ly Lê', 3500000, '2024-02-06', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
 					 , (1, N'Đặng Thị M', N'Loi Choi', 4000000, '2024-02-07', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0)
-					 , (2, N'Bùi Văn O', N'Ly Lê', 4500000, '2024-02-08', N'Chưa thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
+					 , (2, N'Bùi Văn O', N'Ly Lê', 4500000, '2024-02-08',N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
 					 , (3, N'Nguyễn Văn A', N'Hòa Đinh', 2000000, '2024-02-15', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0)
 				   	 , (3, N'Trần Thị B', N'Hòa Đinh', 3000000, '2024-02-20', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
-					 , (4, N'Lê Văn C', N'Linh Hoàng', 2500000, '2024-02-25', N'Chưa thanh toán', N'Tiền mặt',N'Khách Lẻ', 0)
+					 , (4, N'Lê Văn C', N'Linh Hoàng', 2500000, '2024-02-25', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0)
 					 , (4, N'Phạm Thị D', N'Linh Hoàng', 1200000, '2024-03-01', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
 					 , (5, N'Hoàng Văn E', N'Hương Đào', 1800000, '2024-03-05', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0)
-					 , (5, N'Nguyễn Thị F', N'Hương Đào', 2200000, '2024-03-10', N'Chưa thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
+					 , (5, N'Nguyễn Thị F', N'Hương Đào', 2200000, '2024-03-10', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0)
 					 , (3, N'Vũ Văn G', N'Hòa Đinh', 1950000, '2024-03-15', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
 					 (1, N'Nguyễn Văn A', N'Phạm Thị B', 100000, '2024-03-20',N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
 					(2, N'Lê Thị C', N'Tran Van D', 150000, '2024-03-21', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
@@ -226,13 +226,13 @@ INSERT INTO HoaDon (MaNhanVien, TenKhachHang, TenNhanVien, TongTien, NgayLap, Tr
 					(3, N'Tran Hồng S', N'Phạm Văn T', 550000, '2020-03-29', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
 					(2, N'Nguyễn Minh U', N'Lê Thị V', 600000, '2021-03-30',N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
 					(1, N'Phạm Khôi W', N'Tran Văn X', 650000, '2020-04-01', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
-					(3, N'Nguyễn Văn Y', N'Phạm Thị Z', 700000, '2022-04-02',N'Chưa thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
-					(2, N'Lê Thị AA', N'Tran Van BB', 750000, '2022-04-03', N'Chưa thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
-					(1, N'Phan Văn CC', N'Nguyễn Thị DD', 800000, '2022-04-04', N'Chưa thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
-					(3, N'Tran Hồng EE', N'Phạm Văn FF', 850000, '2021-04-05', N'Chưa thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
-					(2, N'Nguyễn Minh GG', N'Lê Thị HH', 900000, '2020-04-06', N'Chưa thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
-					(1, N'Phạm Khôi II', N'Tran Văn JJ', 950000, '2022-04-07', N'Chưa thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
-					(3, N'Nguyễn Văn KK', N'Phạm Thị LL', 1000000, '2021-04-08', N'Chưa thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
+					(3, N'Nguyễn Văn Y', N'Phạm Thị Z', 700000, '2022-04-02',N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
+					(2, N'Lê Thị AA', N'Tran Van BB', 750000, '2022-04-03',N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
+					(1, N'Phan Văn CC', N'Nguyễn Thị DD', 800000, '2022-04-04', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
+					(3, N'Tran Hồng EE', N'Phạm Văn FF', 850000, '2021-04-05', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
+					(2, N'Nguyễn Minh GG', N'Lê Thị HH', 900000, '2020-04-06', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
+					(1, N'Phạm Khôi II', N'Tran Văn JJ', 950000, '2022-04-07', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0),
+					(3, N'Nguyễn Văn KK', N'Phạm Thị LL', 1000000, '2021-04-08', N'Đã thanh toán', N'Tiền mặt',N'Khách Lẻ', 0),
 					(2, N'Lê Thị MM', N'Tran Van NN', 1050000, '2020-04-09', N'Đã thanh toán', N'Chuyển khoản',N'Khách Lẻ', 0);
 					 
 ---------------------
@@ -270,3 +270,9 @@ INSERT INTO KhachHang (MaHoaDon, TenKhachHang, GioiTinh, SoDienThoai, DiaChi, Lo
 					, (7, N'Vũ Văn Ki', 'Nam', '0912345683', N'Quảng Ninh',N'Thành Viên', 0)
 					, (8, N'Đặng Thị Moe', 'Nữ', '0912345684', N'Bình Dương',N'Thành Viên', 0)
 					;
+--
+SELECT * FROM Size WHERE Deleted != 1 AND NOT EXISTS (
+    SELECT * FROM Size WHERE MaSize = 9 AND Deleted != 1
+);
+SELECT * FROM SanPham
+SELECT * FROM SanPhamChiTiet

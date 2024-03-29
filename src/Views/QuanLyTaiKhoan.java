@@ -13,11 +13,18 @@ import Validator.MyValidate;
 import ViewModels.UserViewModel;
 import java.awt.event.ActionListener;
 import static java.awt.image.ImageObserver.HEIGHT;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 
 /**
  *
@@ -27,7 +34,6 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
     UserService uService = new UserService();
     Huong_TaiKhoanRepository taiKhoanRepository = new Huong_TaiKhoanRepository();
     UserRepository userRepository = new UserRepository();
-    NhanSuService nss = new NhanSuService();
     
     /**
      * Creates new form QuanLyTaiKhoan
@@ -105,6 +111,43 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
         User u = new User(userName, passCode, role);
         return u;
     }
+    
+    public void createUserWithQRCode() {
+        try {
+            String username = txtTenDangNhap1.getText();
+            String password = txtMatKhau1.getText();
+            String fileName = txtFileName.getText();
+
+            if (fileName.isEmpty()) {
+                fileName = username + "_" + password;
+            }
+
+            String loginInfo = username + ":" + password;
+            ByteArrayOutputStream out = QRCode.from(loginInfo)
+                    .to(ImageType.PNG).stream();
+
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Chọn đường dẫn lưu");
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File directoryToSave = fileChooser.getSelectedFile();
+                String path = directoryToSave.getAbsolutePath();
+
+                FileOutputStream fout = new FileOutputStream(new File(path, fileName + ".PNG"));
+                fout.write(out.toByteArray());
+                fout.flush();
+                fout.close();
+
+                JOptionPane.showMessageDialog(this, "QR Code đã được thêm thành công tại: " + path);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra trong quá trình tạo QR Code: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     //VALIDATE
     public boolean validateTK() {
@@ -166,6 +209,9 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
         btnSua1 = new javax.swing.JButton();
         btnClear1 = new javax.swing.JButton();
         btnDelete1 = new javax.swing.JButton();
+        txtFileName = new javax.swing.JTextField();
+        btnFilePath = new javax.swing.JButton();
+        btnCreateQR = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblTaiKhoan1 = new javax.swing.JTable();
@@ -306,6 +352,17 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
                 .addGap(16, 16, 16))
         );
 
+        txtFileName.setEnabled(false);
+
+        btnFilePath.setText("Choose File");
+
+        btnCreateQR.setText("TẠO QR");
+        btnCreateQR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCreateQRMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
@@ -314,16 +371,14 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel5))
                             .addGroup(jPanel13Layout.createSequentialGroup()
                                 .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(13, 13, 13)))
+                                .addGap(13, 13, 13))
+                            .addComponent(btnCreateQR))
                         .addGap(28, 28, 28)
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel13Layout.createSequentialGroup()
@@ -335,9 +390,17 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39)
-                        .addComponent(rdoVaiTroQuanLy1)
-                        .addGap(92, 92, 92)
-                        .addComponent(rdoVaiTroNhanVien1)))
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel13Layout.createSequentialGroup()
+                                .addComponent(rdoVaiTroQuanLy1)
+                                .addGap(92, 92, 92)
+                                .addComponent(rdoVaiTroNhanVien1))
+                            .addComponent(txtFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnFilePath)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
@@ -362,7 +425,13 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
                     .addComponent(rdoVaiTroQuanLy1)
                     .addComponent(rdoVaiTroNhanVien1)
                     .addComponent(jLabel31))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 246, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(txtFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnFilePath)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                .addComponent(btnCreateQR)
+                .addGap(47, 47, 47)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -683,7 +752,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
@@ -918,11 +987,9 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
         User u = userRepository.getListUser().get(pos); 
 
         txtMaNguoiDung1.setText(String.valueOf(u.getUserID()));
-
         txtTenDangNhap1.setText(u.getUserName());
         txtMatKhau1.setText(u.getPassCode());
-        System.out.println(u.getUserID());
-        System.out.println(u.getUserName());
+        
         if (u.getRole().equalsIgnoreCase("admin")) {
             rdoVaiTroQuanLy1.setSelected(true);
         } else {
@@ -1100,6 +1167,11 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnResetActionPerformed
 
+    private void btnCreateQRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateQRMouseClicked
+        // CREATE QR
+        createUserWithQRCode();
+    }//GEN-LAST:event_btnCreateQRMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MyInfo;
@@ -1108,7 +1180,9 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane THONGTINTK;
     private javax.swing.JButton btnChangPass;
     private javax.swing.JButton btnClear1;
+    private javax.swing.JButton btnCreateQR;
     private javax.swing.JButton btnDelete1;
+    private javax.swing.JButton btnFilePath;
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSearchByName;
@@ -1163,6 +1237,7 @@ public class QuanLyTaiKhoan extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton rdoVaiTroQuanLy1;
     private javax.swing.JTable tblTaiKhoan;
     private javax.swing.JTable tblTaiKhoan1;
+    private javax.swing.JTextField txtFileName;
     private javax.swing.JTextField txtMaNguoiDung1;
     private javax.swing.JPasswordField txtMatKhau1;
     private javax.swing.JPasswordField txtPassCode;
